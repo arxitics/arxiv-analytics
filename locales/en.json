@@ -1,0 +1,98 @@
+{
+  "index": {
+    "update": "Recent Updates",
+    "message": "New Messages",
+    "start": "Getting Started"
+  },
+  "browse": {
+    "heading": "Browse"
+  },
+  "explore": {
+    "heading": "Explore"
+  },
+  "terminal": {
+    "heading": "Terminal"
+  },
+  "search": {
+    "heading": "Search",
+    "placeholder": "Search or type a command",
+    "title": "Type \"help\" to redirect to the help center",
+    "syntax": "Syntax and Tips"
+  },
+  "login": {
+    "heading": "Login",
+    "button": "Sign in",
+    "email": {
+      "label": "Email",
+      "title": "Please input your email"
+    },
+    "code": {
+      "label": "Security code",
+      "title": "Please input the security code"
+    },
+    "next": "Next",
+    "submit": "Sign in"
+  },
+  "account": {
+    "heading": "User Account",
+    "logout": "Log out"
+  },
+  "profile": {
+    "heading": "Profile"
+  },
+  "preferences": {
+    "heading": "Preferences"
+  },
+  "bookmarks": {
+    "heading": "Bookmarks"
+  },
+  "publications": {
+    "heading": "Publications"
+  },
+  "messages": {
+    "heading": "Messages"
+  },
+  "admin": {
+    "heading": "Admin"
+  },
+  "abstract": {
+    "heading": "Abstract"
+  },
+  "references": {
+    "heading": "References"
+  },
+  "reviews": {
+    "heading": "Reviews"
+  },
+  "resources": {
+    "heading": "Resources"
+  },
+  "about": {
+    "heading": "About Us",
+    "foot": "About"
+  },
+  "terms": {
+    "heading": "Terms of Service",
+    "foot": "Terms"
+  },
+  "privacy": {
+    "heading": "Privacy Policy",
+    "foot": "Privacy policy"
+  },
+  "disclaimer": {
+    "heading": "Disclaimer",
+    "foot": "Disclaimer"
+  },
+  "donate": {
+    "heading": "Donate to Us",
+    "foot": "Donate"
+  },
+  "contribute": {
+    "heading": "How to Contribute",
+    "foot": "Contribute"
+  },
+  "help": {
+    "heading": "Help Center",
+    "foot": "Help"
+  }
+}

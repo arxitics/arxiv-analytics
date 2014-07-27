@@ -1,0 +1,102 @@
+{
+  "index": {
+    "update": "最近更新",
+    "message": "消息通知",
+    "start": "快速入门"
+  },
+  "browse": {
+    "heading": "浏览订阅"
+  },
+  "explore": {
+    "heading": "探索发现"
+  },
+  "terminal": {
+    "heading": "终端界面"
+  },
+  "help": {
+    "heading": "帮助中心",
+    "foot": "获取帮助"
+  },
+  "search": {
+    "heading": "搜索",
+    "placeholder": "搜索或者输入命令",
+    "title": "输入\"help\"可跳转到帮助中心",
+    "syntax": "语法提示"
+  },
+  "login": {
+    "heading": "登录",
+    "button": "登录",
+    "email": {
+      "label": "邮箱",
+      "title": "请输入您的邮箱"
+    },
+    "code": {
+      "label": "验证码",
+      "title": "请输入验证码"
+    },
+    "next": "下一步",
+    "submit": "登录"
+  },  
+  "account": {
+    "heading": "用户中心",
+    "logout": "退出"
+  },
+  "profile": {
+    "heading": "个人主页"
+  },
+  "preferences": {
+    "heading": "账号设置"
+  },
+  "bookmarks": {
+    "heading": "收藏夹"
+  },
+  "publications": {
+    "heading": "发表论文"
+  },
+  "messages": {
+    "heading": "消息通知"
+  },
+  "admin": {
+    "heading": "管理"
+  },
+  "abstract": {
+    "heading": "论文摘要"
+  },
+  "references": {
+    "heading": "参考文献"
+  },
+  "reviews": {
+    "heading": "相关评论"
+  },
+  "resources": {
+    "heading": "附加资源"
+  },
+  "about": {
+    "heading": "关于我们",
+    "foot": "关于我们"
+  },
+  "terms": {
+    "heading": "服务条款",
+    "foot": "服务条款"
+  },
+  "privacy": {
+    "heading": "隐私权政策",
+    "foot": "隐私权政策"
+  },
+  "disclaimer": {
+    "heading": "免责声明",
+    "foot": "免责声明"
+  },
+  "donate": {
+    "heading": "捐赠我们",
+    "foot": "捐赠我们"
+  },
+  "contribute": {
+    "heading": "参与贡献",
+    "foot": "参与贡献"
+  },
+  "address": {
+    "ICP": "京ICP备14026973号",
+    "police": "京公网安备11010802015197"
+  }
+}
