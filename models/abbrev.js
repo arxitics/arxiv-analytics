@@ -25,6 +25,7 @@ module.exports = {
     'Elsevier': 'Elsevier B.V.',
     'Hindawi': 'Hindawi Publishing Corporation',
     'IEEE': 'Institute of Electrical and Electronics Engineers',
-    'IOP': 'Institute of Physics'
+    'IOP': 'Institute of Physics',
+    'Taylor-Francis': 'Taylor & Francis Group'
   }
 };

@@ -39,10 +39,10 @@ exports.extract = function (eprint) {
   var keywords = stats.slice(0, maxRanking).map(function (phrase) {
     return phrase.term;
   });
+  var sequence = keywords.join('|');
   return keywords.filter(function (keyword) {
-    var qualified = keyword.indexOf(' ') !== -1 || keyword.length > 9;
-    var matches = keywords.join('|').match(new RegExp(keyword, 'gi'));
-    return qualified && matches.length === 1;
+    return (keyword.indexOf(' ') !== -1 || keyword.length > 9) && 
+      sequence.match(new RegExp(keyword, 'gi')).length === 1;
   }).slice(0, maxLength);
 };
 

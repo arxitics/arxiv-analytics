@@ -6,12 +6,13 @@
 exports.parse = function (themes) {
   var results = [];
   var object = {};
+  var categories = exports.categories;
   if (Array.isArray(themes)) {
     themes.forEach(function (theme) {
       var parts = theme.split(/\s*\:\s*/);
       var category = parts[0];
       var topic = parts[1];
-      if (exports.categories.indexOf(category) !== -1) {
+      if (categories.indexOf(category) !== -1) {
         if (object.hasOwnProperty(category)) {
           object[category].push(topic);
         } else {
@@ -36,14 +37,10 @@ exports.output = function (themes) {
   var results = [];
   if (Array.isArray(themes)) {
     themes.forEach(function (theme) {
-      var category = theme.category;
-      theme.topics.forEach(function (topic, index) {
-        var prefix = (index) ? '' : category + ': ';
-        results.push(prefix + topic);
-      });
+      results.push(theme.category + ': ' + theme.topics.join(', '));
     });
   }
-  return results;
+  return results.join('; ');
 };
 
 // arXiv eprint categories
@@ -230,6 +227,10 @@ exports.tags = [
     description: 'An article that summarizes the work of a particular sub-field rather than reports on new results.'
   },
   {
+    tag: 'expository article',
+    description: 'A survery on a well specified topic written at a level accessible to non-experts.'
+  },
+  {
     tag: 'conference paper',
     description: 'A paper published in the context of an academic conference.'
   },
@@ -287,15 +288,15 @@ exports.tags = [
   },
   {
     tag: 'renowned paper',
-    description: 'A paper whose number of citations is greater than or equal to 500.'
+    description: 'A paper whose number of citations is among the top 0.2% in the field.'
   },
   {
     tag: 'famous paper',
-    description: 'A paper whose number of citations is greater than or equal to 250 but less than 500.'
+    description: 'A paper whose number of citations is among the top 0.4% in the field.'
   },
   {
     tag: 'well-known paper',
-    description: 'A paper whose number of citations is greater than or equal to 100 but less than 250.'
+    description: 'A paper whose number of citations is among the top 1% in the field.'
   },
   {
     tag: 'featured article',
@@ -1055,10 +1056,10 @@ exports.groups = [
               'algebraic combinatorics',
               'combinatorial game theory',
               'combinatorial optimization',
-              'discrete mathematics',
               'enumerative combinatorics',
               'extremal combinatorics',
               'graph theory',
+              'polyhedral combinatorics',
               'Ramsey theory'
             ]
           },

@@ -26,12 +26,16 @@
       "label": "Email",
       "title": "Please input your email"
     },
+    "key": {
+      "label": "Private key",
+      "title": "Please input the private key"
+    },
     "code": {
       "label": "Security code",
       "title": "Please input the security code"
     },
-    "next": "Next",
-    "submit": "Sign in"
+    "submit": "Submit",
+    "signin": "Sign in"
   },
   "account": {
     "heading": "User Account",
@@ -77,7 +81,7 @@
   },
   "privacy": {
     "heading": "Privacy Policy",
-    "foot": "Privacy policy"
+    "foot": "Privacy"
   },
   "disclaimer": {
     "heading": "Disclaimer",

@@ -2,7 +2,7 @@
   "index": {
     "update": "最近更新",
     "message": "消息通知",
-    "start": "快速入门"
+    "start": "入门指南"
   },
   "browse": {
     "heading": "浏览订阅"
@@ -15,7 +15,7 @@
   },
   "help": {
     "heading": "帮助中心",
-    "foot": "获取帮助"
+    "foot": "帮助中心"
   },
   "search": {
     "heading": "搜索",
@@ -30,12 +30,16 @@
       "label": "邮箱",
       "title": "请输入您的邮箱"
     },
+    "key": {
+      "label": "密钥",
+      "title": "请输入您的密钥"
+    },
     "code": {
       "label": "验证码",
       "title": "请输入验证码"
     },
-    "next": "下一步",
-    "submit": "登录"
+    "submit": "提交",
+    "signin": "登录"
   },  
   "account": {
     "heading": "用户中心",
