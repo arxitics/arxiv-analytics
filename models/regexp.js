@@ -49,7 +49,7 @@ module.exports = {
     }
   },
   message: {
-    receiver: /^(0|[1-9]\d*)\s+<([\w\-\+\. ]+)>$/,
+    receiver: /^(0|[1-9]\d*)\s*<([\w\-\+\. ]+)>$/,
     content: /^[\x00-\x7F]{20,}$/
   },
   review: {
@@ -75,8 +75,8 @@ module.exports = {
     ccs: /^([A-K])\.(\d)(\.(\d))?$/,
     jel: /^[A-Z]\d{2}$/,
     author: {
-      eastern: /^([^\-]+)\s([a-zA-Z]+\-[a-zA-Z]+)$/,
-      surname: /(\'[st]|[dl]\'|des|de|van|von)[^\.]\W*/i
+      eastern: /^([^\-\.]+)\s([a-zA-Z]+\-[a-zA-Z]+)$/,
+      surname: /\W(\'[st]|[dl]\'|des|de|van|von)[^\.]\W*/i
     }
   },
   strip: {

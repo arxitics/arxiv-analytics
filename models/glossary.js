@@ -2,25 +2,8 @@
  * Glossary extraction.
  */
 
-var db = require('./db');
 var regexp = require('./regexp').strip;
 var settings = require('../settings').eprint;
-
-// Push phrase frequency to database
-exports.push = function (query, modifier, callback) {
-  db.phrases.findAndModify({
-    'query': query,
-    'update': modifier,
-    'new': true,
-    'upsert': true
-  }, function (err, doc) {
-    if (err) {
-      console.error(err);
-      console.log('failed to push phrase "' + phrase + '" to database');
-    }
-    return (typeof callback === 'function') ? callback(doc) : null;
-  });
-};
 
 // Extract keywords
 exports.extract = function (eprint) {
@@ -48,7 +31,7 @@ exports.extract = function (eprint) {
 
 // Phrase stats
 exports.stats = function (texts, weights) {
-  var maxWordsNumber = settings.phrase.maxWordsNumber || 5;
+  var maxWords = settings.phrase.maxWords || 5;
   var map = {};
   texts.forEach(function (text, index) {
     var weight = weights[index] || 1;
@@ -56,7 +39,7 @@ exports.stats = function (texts, weights) {
     var length = words.length;
     for (var i = 0; i < length; i++) {
       var segments = [];
-      for (var j = 0; j < maxWordsNumber && j < length - i; j++) {
+      for (var j = 0; j < maxWords && j < length - i; j++) {
         var nominee = exports.nominate(words[i+j]);
         if (nominee) {
           segments.push(nominee);
@@ -116,7 +99,6 @@ exports.combine = function (segments) {
         'term': phrase,
         'value': j - i + 1
       });
-      exports.push({'term': phrase}, {'$inc': {'frequency': 1}});
     }
   }
   return candidates;

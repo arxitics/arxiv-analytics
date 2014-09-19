@@ -6,6 +6,16 @@ var crypto = require('crypto');
 var querystring = require('querystring');
 var regexp = require('./regexp');
 
+// Blacklist certain IP addresses
+exports.checkIP = function (ip) {
+  return [
+    '183.136.190.36',
+    '183.136.190.41',
+    '183.136.190.43',
+    '183.136.190.48'
+  ].indexOf(ip) === -1;
+};
+
 // Generate md5 hash encoded by hex
 exports.md5Hash = function (data) {
   return crypto.createHash('md5').update(data).digest('hex');
