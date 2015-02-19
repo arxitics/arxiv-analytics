@@ -1,0 +1,31 @@
+
+extends ../../layout
+
+block variables
+  - var pageID = 'resources'
+  - var pageTitle = __('resources.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include ../eprint
+    .ui-grid-fluid
+      .ui-grid-70.ui-mobile-expand
+        - var paginationURL = '/articles/' + id + '/resources?page='
+        each resource, index in resources
+          - var last = resources.length - 1
+          section
+            h4.ui-header-compact
+              a(href='#{resource.href}' rel='external' target='_blank')= resource.title
+            .ui-text-muted
+              span Type: #{resource.type}
+              span.ui-offset-large Source: #{resource.source}
+            if index !== last
+              hr
+        .ui-skip-large
+          include ../../pagination
+        if logged
+          div.ui-skip-large
+            a.ui-text-button.ui-button-primary(href='/articles/#{id}/resources/attach') Attach Supplementary Resources
+
+block append foot
+  include ../../mathjax

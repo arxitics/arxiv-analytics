@@ -1,0 +1,113 @@
+
+extends review
+
+block content
+  - var pid = review.pid
+  section
+    - var author = review.author
+    - var published = review.published.toISOString().slice(0, 10)
+    - var edited = review.edited.toISOString().slice(0, 10)
+    h4.ui-header-compact!= parse(review.title).replace(/<\/?p>|\n/g, '')
+    p
+      a(href='/users/#{author.uid}')= author.name
+      span.ui-text-muted  (Published #{published}
+        if edited !== published
+          | , edited 
+          span #{edited}
+        | )
+    .ui-content-post!= parse(review.content)
+    if logged
+      ul.ui-list-inline.ui-text-right
+        - var uid = user.uid
+        - var feedback = review.feedback
+        if voted
+          li
+            a(title='You have voted this review')
+              - var upvotes = feedback.upvotes
+              i(data-schema-icon='thumbs-up')
+              = ' ' + upvotes + ' upvote' + (upvotes !== 1 ? 's' : '')
+          li 
+            a(title='You have voted this review')
+              - var downvotes = feedback.downvotes
+              i(data-schema-icon='thumbs-down')
+              = ' ' + downvotes + ' downvote' + (downvotes !== 1 ? 's' : '')
+        else 
+          li
+            form(action='/users/#{uid}/reviews/voting' method='post' role='form')
+              input(type='hidden' name='_csrf' value=csrfToken)
+              input(type='hidden' name='pid' value=pid)
+              input(type='hidden' name='voting' value='upvote')
+              button.ui-button-link(type='submit' title='This review shows research effort')
+                i(data-schema-icon='thumbs-o-up')
+                |  Upvote
+          li
+            form(action='/users/#{uid}/reviews/voting' method='post' role='form')
+              input(type='hidden' name='_csrf' value=csrfToken)
+              input(type='hidden' name='pid' value=pid)
+              input(type='hidden' name='voting' value='downvote')
+              button.ui-button-link(type='submit' title='This review does not show any research effort')
+                i(data-schema-icon='thumbs-o-down')
+                |  Downvote
+        li
+          if bookmarked
+            a(title='You have bookmarked this review')
+              - var bookmarks = feedback.bookmarks
+              i(data-schema-icon='bookmark')
+              = ' ' + bookmarks + ' bookmark' + (bookmarks !== 1 ? 's' : '')
+          else
+            form(action='/users/#{uid}/reviews/bookmark' method='post' role='form')
+              input(type='hidden' name='_csrf' value=csrfToken)
+              input(type='hidden' name='pid' value=pid)
+              button.ui-button-link(type='submit' title='Add this review to my bookmarks')
+                i(data-schema-icon='bookmark-o')
+                |  Bookmark
+        if editable
+          li
+            a(href='/reviews/#{pid}/edit' title='Revise and improve this review' accesskey='e')
+              i(data-schema-icon='edit')
+              |  Edit
+    //- comments
+    - var length = review.comments.length
+    if length
+      section
+        h4.ui-header-secondary
+          i(data-schema-icon='comments')
+          |  Comments
+        - var last = length - 1
+        each comment, index in review.comments
+          p
+            - var user = comment.user
+            - var published = comment.published.toISOString().slice(0, 10)
+            a(href='/users/#{user.uid}')= user.name
+            span.ui-text-muted  (Published #{published})
+          .ui-content-post!= parse(comment.content)
+          if index !== last
+            hr
+  if logged
+    form.ui-form-fluid(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
+        .ui-grid-fluid
+          input(type='hidden' name='_csrf' value=csrfToken)
+          textarea(name='content' rows='6' placeholder='Please share with us if you have any constructive comments. Markdown and LaTeX are supported.' title='At least 40 characters' required autofocus)
+          .ui-skip-small
+            button(type='submit' formaction='/reviews/#{pid}/comments/preview') Preview
+            button.ui-button-primary.ui-offset-medium(type='submit') Submit
+
+block aside
+  section
+    h4.ui-header-compact Revision History
+    ul
+      each revision in review.revisions
+        - var editor = revision.editor
+        - var additions = revision.additions
+        - var edited = revision.edited.toUTCString().slice(5, -7)
+        li
+          a(href='/users/#{editor.uid}')= editor.name
+          |  &ndash; 
+          span.ui-text-muted= edited
+          div
+            span= revision.summary
+            |  
+            if additions > 0
+              span.ui-text-success (+#{additions})
+            else
+              span(class=(additions < 0 ? 'ui-text-danger' : '')) (#{additions})

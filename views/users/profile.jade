@@ -1,0 +1,103 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'profile'
+  - var pageTitle = __('profile.heading')
+
+block append head
+  link(rel='prerender' href='/users/#{uid}/bookmarks')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include account
+    .ui-grid-40.ui-offset-10.ui-mobile-expand
+      .ui-content-panel
+        .ui-panel-header
+          h4 Basic Information
+        .ui-panel-body
+          - var resume = profile.resume
+          table.ui-table-fluid.ui-table-columns-2
+            tr
+             td UID
+             td= uid
+            tr
+             td Name
+             td= profile.name
+            if resume.career
+              tr
+                td Career status
+                td= resume.career
+            if resume.affiliation
+              tr
+                td Affiliation
+                td= resume.affiliation
+            if resume.location
+              tr
+                td Location
+                td= resume.location
+            if resume.research
+              tr
+                td Research
+                td= resume.research
+            if resume.website
+              tr
+                td Website
+                td: a(href=resume.website rel='external' target='_blank')= resume.website
+      .ui-content-panel
+        .ui-panel-header
+          h4 Authentication
+        .ui-panel-body
+          - var auth = profile.auth
+          table.ui-table-fluid.ui-table-columns-2
+            if authorized
+              tr
+                td Email
+                td= profile.email
+            tr
+              td Account created
+              td= auth.created.toUTCString().slice(5, -7)
+            tr
+              td Last seen
+              td= auth.seen.toUTCString().slice(5, -7)
+            tr
+              td Status
+              td= status
+    .ui-grid-40.ui-mobile-expand
+      .ui-content-panel
+        .ui-panel-header
+          h4 Statistics
+        .ui-panel-body
+          - var stats = profile.stats
+          table.ui-table-fluid.ui-table-columns-2
+            tr
+              td Profile views
+              td= stats.views
+            tr
+              td Publications
+              td= profile.publications.length
+            tr
+              td Documents
+              td= profile.documents.length
+            tr
+              td Reviews
+              td= stats.reviews
+            tr
+              td Comments
+              td= stats.comments
+            tr
+              td Requests
+              td= stats.requests
+            tr
+              - var hours = Math.round(stats.uptime / 3600)
+              td Time count
+              td= hours + ' hour' + (hours !== 1 ? 's' : '')
+            tr
+              td Bonus
+              td= stats.bonus
+            tr
+              td Penalty
+              td= stats.penalty
+            tr
+              td Reputation
+              td= stats.reputation

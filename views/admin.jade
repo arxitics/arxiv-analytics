@@ -1,0 +1,40 @@
+
+extends layout
+
+block variables
+  - var pageID = 'admin'
+  - var pageTitle = __('admin.heading')
+
+block main
+  article.ui-container-fluid
+    h3.ui-header-primary Administration
+    .ui-grid-70.ui-offset-10.ui-mobile-expand
+      form.ui-form-fluid(data-schema-validate action='/admin/eprints/update' method='get' role='form')
+        .ui-grid-fluid
+          label.ui-grid-20(for='category') Category
+          .ui-grid-80
+            input(id='category' type='text' name='category' autofocus)
+          label.ui-grid-20(for='author') Author
+          .ui-grid-80
+            input(id='author' type='text' name='author')
+          label.ui-grid-20(for='skip') Skip
+          .ui-grid-80
+            input(id='skip' type='number' name='skip')
+          label.ui-grid-20(for='limit') Limit
+          .ui-grid-80
+            input(id='limit' type='number' name='limit' value='1000')
+          .ui-grid-fluid
+            label.ui-grid-20(for='sort') Sort
+            .ui-grid-80
+              input(id='sort' type='radio' name='sort' value='submittedDate' checked)
+              |  Submitted date
+              input.ui-offset-small(type='radio' name='sort' value='lastUpdatedDate')
+              |  Last updated date
+              input.ui-offset-small(type='radio' name='sort' value='relevance')
+              |  Relevance
+              label.ui-offset-small
+                input(type='checkbox' name='order' value='ascending')
+                |  Ascending
+        .ui-text-center.ui-skip-large
+          button.ui-button-primary(type='submit') Submit
+          button.ui-offset-medium(type='reset') Reset

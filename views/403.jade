@@ -1,0 +1,16 @@
+
+extends layout
+
+block variables
+  - var pageID = '403'
+
+block main
+  .ui-container-fluid.ui-mobile-expand
+    section.ui-content-jumbotron
+      h3 403 Forbidden: 
+        span.ui-text-muted= message || 'The server refused to respond to your request.'
+      p Please contact 
+        strong help
+          span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+          | @arxitics.com
+        |  if you think this should not happen again.

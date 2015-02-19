@@ -1,0 +1,166 @@
+
+extends layout
+
+block variables
+  - var pageID = 'browse'
+  - var pageTitle = __('browse.heading')
+
+block main
+  - var baseURL = location.replace(/(^|&)page=\d*/, '')
+  aside.ui-grid-30.ui-mobile-expand.ui-phone-hidden
+    form.ui-form-block(data-schema-validate action='/browse' method='get' role='form')
+      - var subscription = user.subscription
+      section
+        h3.ui-header-primary Filters
+        label(for='categories') Categories
+        input.ui-input-fluid(id='categories' type='text' name='categories' value=(filter.categories.join(', ') || false) placeholder='math-ph, math.MP, cs.CC' title='Multiple categories are separated by commas'  required)
+        label(for='subjects') Subjects
+        input.ui-input-fluid(id='subjects' type='text' name='subjects' value=(filter.subjects.join(', ') || false) placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class')
+        label(for='topics') Topics
+        input.ui-input-fluid(id='topics' type='text' name='topics' value=(filter.topics.join(', ') || false) placeholder='exactly solvable system, Painleve analysis' title='You should choose from predefined topics. See a list of topics in the help center')
+        label(for='keywords') Keywords
+        input.ui-input-fluid(id='keywords' type='text' name='keywords' value=(filter.keywords.join(', ') || false) placeholder='perturbative gauge theory, twistor space' title='Multiple keywords are separated by commas')
+        label(for='tags') Tags
+        input.ui-input-fluid(id='tags' type='text' name='tags' value=(filter.tags.join(', ') || false) placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')
+        label(for='authors') Authors
+        input.ui-input-fluid(id='authors' type='text' name='authors' value=(filter.authors.join(', ') || false) placeholder='Albert Einstein, John von Neumann' title='Multiple authors are separated by commas')
+        label(for='published-date') Published date
+        - var today = new Date().toISOString().slice(0, 10)
+        input.ui-input-fluid(id='published-date' type='text' name='published' value=filter.published placeholder='1991-08-14, #{today}' title='You can specify a date range or a specific date')
+      section
+        h3.ui-header-primary Options
+        label
+          input(type='checkbox' name='extend' value='true' checked=(filter.extend === 'true'))
+          |  Use the extend mode to see more
+        label
+          input(type='checkbox' name='abstract' value='true' checked=(filter.abstract === 'true'))
+          |  Display eprint abstracts
+      .ui-skip-huge
+        button.ui-button-primary(type='submit') Submit
+        button.ui-offset-medium(type='reset') Reset
+  article.ui-grid-70.ui-mobile-expand
+    h3.ui-text-left-right.ui-header-primary
+      span Article Lists
+      - var startItem = startIndex + 1
+      - var endItem = Math.min(endIndex, count)
+      if count === 1
+        span.ui-text-muted.ui-zoom-small Showing 1 result
+      else if count && startItem < endItem
+        span.ui-text-muted.ui-zoom-small Showing #{startItem}-#{endItem}
+      else
+        span.ui-text-muted.ui-zoom-small No more results
+    ol.ui-skip-large(start=startIndex + 1)
+      each eprint, index in eprints
+        - var id = eprint.id
+        - var baseSearch = '/search?category=' + eprint.categories[0]
+        - var authorSearch = baseSearch + '&author='
+        - var subjectSearch = baseSearch + '&subject='
+        - var keywordSearch = baseSearch + '&keyword='
+        - var tagSearch = baseSearch + '&tag='
+        - var analyses = eprint.analyses
+        li.ui-skip-medium
+          div
+            - var published = eprint.published.toISOString().slice(0, 10)
+            - var updated = eprint.updated.toISOString().slice(0, 10)
+            a(href='/articles/#{id}') arXiv:#{id}
+            |  (Published 
+            span= published
+            if updated !== published
+              | , updated 
+              span #{updated}
+            | )
+          h4.ui-header-compact= eprint.title
+          div
+            - var authors = eprint.authors
+            - var last = authors.length - 1
+            if last < 7
+              each author, index in authors
+                a(href=normalize(authorSearch + author))= author 
+                if index !== last
+                  | , 
+            else
+              - var author = authors[0]
+              a(href=normalize(authorSearch + author))= author
+              em  et al.
+          div.ui-text-normal
+            - var comment = eprint.comment
+            - var journal = eprint.journal
+            - var doi = eprint.doi || analyses.publication.doi
+            if comment
+              div
+                strong Comments: 
+                span= comment
+            if journal
+              div
+                strong Journal: 
+                span= journal
+            if doi
+              div
+                strong DOI: 
+                a(href='http://dx.doi.org/#{doi}' rel='external' target='_blank')= doi
+            div
+              strong Categories: 
+              - var categories = eprint.categories
+              - var last = categories.length - 1
+              each category, index in categories
+                a(href='/search?category=#{category}')= category
+                if index !== last
+                  | , 
+            if analyses.subjects.length
+              div
+                strong Subjects: 
+                - var subjects = analyses.subjects
+                - var last = subjects.length - 1
+                each subject, index in subjects
+                  a(href=normalize(subjectSearch + subject))= subject
+                  if index !== last
+                    | , 
+            if analyses.themes.length
+              div
+                strong Topics: 
+                - var themes = analyses.themes
+                - var lastTheme = themes.length - 1
+                each theme, themeIndex in themes
+                  - var topicSearch = '/search?themes.category=' + theme.category + '&themes.topics='
+                  - var topics = theme.topics
+                  - var lastTopic = topics.length - 1
+                  each topic, topicIndex in topics
+                    a(href=normalize(topicSearch + topic))= topic
+                    if topicIndex !== lastTopic
+                      | , 
+                  if themeIndex !== lastTheme
+                    | ; 
+            if analyses.keywords.length
+              div
+                strong Keywords: 
+                - var keywords = analyses.keywords
+                - var last = keywords.length - 1
+                each keyword, index in keywords
+                  a(href=normalize(keywordSearch + keyword))= keyword
+                  if index !== last
+                    | , 
+            if analyses.tags.length
+              div
+                strong Tags: 
+                - var tags = analyses.tags
+                - var last = tags.length - 1
+                each tag, index in tags
+                  a(href=normalize(tagSearch + tag))= tag
+                  if index !== last
+                    | , 
+          ul.ui-list-inline.ui-seperator-vbar
+            li: a(href='http://arxiv.org/pdf/#{id}' rel='external' target='_blank') View PDF
+            li: a(href='http://arxiv.org/e-print/#{id}' rel='external') Download source
+            li: a(href='/articles/#{id}/bibtex' download='#{id}.bib') Export citation in BibTeX
+          if query.abstract === 'true'
+            p= eprint.abstract 
+    .ui-skip-large
+      - var paginationURL = baseURL + (baseURL.indexOf('=') !== -1 ? '&' : '') + 'page='
+      if currentPage > 1
+        a.ui-float-left.ui-text-button(rel='prev' href=normalize(paginationURL + (currentPage - 1)) accesskey='p')
+          i(data-schema-icon='arrow-left')
+          |  Previous
+      if endItem === endIndex
+        a.ui-float-right.ui-text-button(rel='next' href=normalize(paginationURL + (currentPage + 1)) accesskey='n')
+          | Next 
+          i(data-schema-icon='arrow-right')

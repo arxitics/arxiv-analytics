@@ -1,0 +1,27 @@
+
+- var reviews = activity.reviews
+each review in reviews 
+  - var pid = review.pid
+  - var post = review.post
+  - var eprint = post.eprints[0]
+  - var author = post.author
+  - var published = post.published.toISOString().slice(0, 10)
+  - var bookmarked = review.bookmarked.toISOString().slice(0, 10)
+  li.ui-skip-medium
+    div
+      - var id = eprint.id
+      a(href='/articles/#{id}')= 'arXiv:' + id
+      |  &raquo; 
+      a(href='/reviews/#{pid}') Review #{pid}
+      |  (Published #{published}, bookmarked #{bookmarked})
+    h4.ui-header-compact= post.title
+    a(href='/users/#{author.uid}')= author.name
+    span.ui-text-list.ui-float-right
+      span
+        - var revisions = post.revisions.length
+        i(data-schema-icon='history')
+        = ' ' + revisions + ' revision' + (revisions !== 1 ? 's' : '')
+      span
+        - var comments = post.comments.length
+        i(data-schema-icon='comments')
+        = ' ' + comments + ' comment' + (comments !== 1 ? 's' : '')

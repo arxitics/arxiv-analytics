@@ -1,0 +1,42 @@
+/*!
+ * Tables
+ */
+
+.ui-table-fluid {
+  width: 100%;
+}
+
+.ui-table-bordered {
+  border: 2px solid #ddd;
+}
+
+.ui-table-bordered th,
+.ui-table-bordered td {
+  border: 1px solid #ddd;
+}
+
+.ui-table-bordered th {
+  border-bottom-width: 2px;
+}
+
+.ui-table-hover tr:hover td,
+.ui-table-hover tr:hover th {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.ui-table-striped tr:nth-child(odd) td {
+  background-color: #f9f9f9;
+}
+
+.ui-table-columns-2 th,
+.ui-table-columns-2 td:first-child {
+  width: 33.3333%;
+}
+
+.ui-table-columns-3 th,
+.ui-table-columns-3 td:first-child {
+  width: 20%;
+}
+
+

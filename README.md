@@ -1,6 +1,6 @@
-arxiv-analytics
+Getting Started
 ===============
 
-A web portal that offers more features and a better user interface for arXiv.org
+ArXiv Analytics is a web portal that offers more features and a better user interface for reading and discussing arXiv eprints.
 
 It is still under development.

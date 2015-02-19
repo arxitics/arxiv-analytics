@@ -1,0 +1,15 @@
+/*!
+ * Events
+ */
+
+.ui-tab-pane,
+.ui-toggle-content,
+.ui-tooltip-target {
+  display: none;
+}
+
+.ui-tab-pane:target,
+.ui-toggle-content:target {
+  display: block;
+}
+

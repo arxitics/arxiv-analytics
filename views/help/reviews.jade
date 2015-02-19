@@ -1,0 +1,22 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-reviews'
+  - var pageTitle = 'The Reviews Section'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact The Reviews Section
+        div
+        p The Reviews section is devoted to open refereeing, defending and discussing of eprints. You can also post errata suggestions, formula derivations, reading notes, literature surveys, and any other content that is conducive to understanding this article.
+        p However, we do not intend to develope this section to be a Q&amp;A forum. You are recommended to ask questions on the websites like 
+          a(href='http://www.physicsoverflow.org/' rel='external' target='_blank') PhysicsOverflow
+          | , 
+          a(href='http://mathoverflow.net/' rel='external' target='_blank') MathOverflow
+          | , and many others in the 
+          a(href='http://stackexchange.com/' rel='external' target='_blank') Stack Exchange
+          |  network. If your questions are closely related to this eprint, please consider adding links to them as supplementary resources.

@@ -1,0 +1,23 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-tips'
+  - var pageTitle = 'Tips for Beginners'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact Tips for Beginners
+        div.ui-skip-small
+          ul
+            li You are strongly recommended to read all the pages in our help center.
+            li All the data you will post on our website should be restricted to 
+              a(href='http://en.wikipedia.org/wiki/ASCII' rel='external' target='_blank') ASCII
+              |  characters only.
+            li Be serious about your actions: votings are irrevocable; reviews, comments, and messages cannot be deleted.
+            li We use the ISO date in our database, which can be described as 
+              code yyyy-mm-ddThh:mm:ss.sssZ
+              | . The timezone is always UTC.

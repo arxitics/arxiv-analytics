@@ -1,0 +1,17 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'reviews'
+  - var pageTitle = 'Reviews'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary.ui-text-left-right
+      span Reviews
+      span.ui-text-list.ui-font-medium(role='navigation')
+        - var tabs = ['newest', 'active', 'revisions', 'comments', 'views', 'bookmarks', 'votes']
+        each tab in tabs
+          - var link = '/reviews' + (tab === 'newest' ? '' : '?sort=' + tab)
+          - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
+          a(class=(tab === type ? 'ui-text-active' : false) href=link)= text

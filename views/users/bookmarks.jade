@@ -1,0 +1,88 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'bookmarks'
+  - var pageTitle = __('bookmarks.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include account
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      - var perpage = query.perpage
+      - var baseURL = '/users/' + uid + '/bookmarks'
+      - var paginationURL = baseURL + '?type=' + type + (perpage ? '&perpage=' + perpage : '') + '&page='
+      ul.ui-nav-stacked.ui-nav-justified(role='tablist')
+        - var tabs = ['articles', 'readings', 'ratings', 'edits', 'reviews', 'votes']
+        each tab in tabs
+          - var link = baseURL + (tab === 'articles' ? '' : '?type=' + tab)
+          li(class=(tab === type ? 'ui-state-active' : false) role='tab')
+            a(href=link)= tab.charAt(0).toUpperCase() + tab.slice(1)
+      ol(start=startIndex + 1)
+        - var activity = profile.activity
+        if type === 'articles'
+          include bookmarks/articles
+        else if type === 'readings'
+          include bookmarks/readings
+        else if type === 'ratings'
+          include bookmarks/ratings
+        else if type === 'edits'
+          include bookmarks/edits
+        else if type === 'reviews'
+          include bookmarks/reviews
+        else if type === 'votes'
+          include bookmarks/votes
+      include ../pagination
+
+block append foot
+  if authorized
+    if type === 'readings'
+      script.
+        $(document).ready(function () {
+          $('form[data-schema-rating]').each(function () {
+            var $_form = $(this);
+            $_form.find('[data-schema-icon="star-o"]').each(function (index) {
+              var $_icon = $(this);
+              $_icon.on('mouseenter', function () {
+                $_icon.prevAll().andSelf().data('schema-icon', 'star');
+                $_icon.nextAll().data('schema-icon', 'star-o');
+                $(document).trigger('generate.icons');
+              });
+              $_icon.parent().on('mouseleave', function () {
+                $(this).children().data('schema-icon', 'star-o');
+                $(document).trigger('generate.icons');
+              });
+              $_icon.on('click', function () {
+                $_form.find('[name="score"]').val(index + 1);
+                $_form.submit();
+              });
+            });
+          });
+        });
+    else if type === 'ratings'
+      script.
+        $(document).ready(function () {
+          $('form[data-schema-rating]').each(function () {
+            var $_form = $(this);
+            $_form.find('[data-schema-icon^="star"]').each(function (index) {
+              var $_icon = $(this);
+              var $_parent = $_icon.parent();
+              $_icon.on('mouseenter', function () {
+                $_icon.prevAll().andSelf().data('schema-icon', 'star');
+                $_icon.nextAll().data('schema-icon', 'star-o');
+                $(document).trigger('generate.icons');
+              });
+              $_parent.on('mouseleave', function () {
+                var $_children = $_parent.children();
+                var score = $_parent.data('schema-score');
+                $_children.data('schema-icon', 'star');
+                $_children.slice(score).data('schema-icon', 'star-o');
+                $(document).trigger('generate.icons');
+              });
+              $_icon.on('click', function () {
+                $_form.find('[name="score"]').val(index + 1);
+                $_form.submit();
+              });
+            });
+          });
+        });

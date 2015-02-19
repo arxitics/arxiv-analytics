@@ -1,0 +1,35 @@
+
+extends ../../layout
+
+block variables
+  - var pageID = 'documents'
+  - var pageTitle = __('documents.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include ../account
+    .ui-grid-fluid
+      .ui-grid-70.ui-mobile-expand
+        - var paginationURL = '/users/' + uid + '/documents?page='
+        - var documents = profile.documents
+        each doc, index in documents
+          - var last = documents.length - 1
+          section
+            h4.ui-header-compact
+              a(href='#{doc.href}' rel='external' target='_blank')= doc.title
+              if doc.tex
+                |  &raquo; 
+                a(href='#{doc.tex}' rel='external' target='_blank') TeX Source
+            .ui-text-muted
+              - var uploaded = doc.uploaded.toISOString().slice(0, 10)
+              span Type: #{doc.type}
+              span.ui-offset-large Source: #{doc.source}
+              span.ui-offset-large Language: #{doc.language}
+              span.ui-offset-large Uploaded: #{uploaded}
+            if index !== last
+              hr
+        .ui-skip-large
+          include ../../pagination
+        if authorized
+          .ui-skip-large
+            a.ui-text-button.ui-button-primary(href='/users/#{uid}/documents/upload') Upload New Documents

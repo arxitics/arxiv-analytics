@@ -1,0 +1,34 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-commands'
+  - var pageTitle = 'List of Commands'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact List of Commands
+        div
+          p To improve the browsing efficiency, we have provided a command-line interface. The commands serve as shortcuts and can be used in the 
+            code terminal
+            |  page or the 
+            strong "Search or type a command"
+            |  box.
+          ul
+            each entry in commands
+              li
+                strong= entry.command
+                |  &mdash; #{entry.description}
+                div
+                  span Usage: 
+                  code= entry.usage
+                div
+                  span Options: 
+                  ul.ui-list-unstyled.ui-offset-large
+                    each item in entry.options
+                      li
+                        code= item.option
+                        span.ui-offset-large!= item.description

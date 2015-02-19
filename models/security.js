@@ -5,15 +5,50 @@
 var crypto = require('crypto');
 var querystring = require('querystring');
 var regexp = require('./regexp');
+var settings = require('../settings').session;
+
+// Generate request report
+exports.generate = function (req) {
+  var ip = req.ip || req._remoteAddress;
+  var requests = req.session.stats.requests;
+  var userAgent = req.get('User-Agent');
+  var pattern = regexp.browser;
+  var report = {
+    result: 'accepted',
+    browser: {
+      isBot: pattern.bot.test(userAgent),
+      isDesktop: pattern.desktop.test(userAgent),
+      isMobile: pattern.mobile.test(userAgent)
+    }
+  };
+  report.isHuman = !(report.browser.isBot || requests > settings.threshold);
+  if (exports.blockIP(ip)) {
+    report.result = 'refused';
+    report.reason = 'IP blocked';
+    report.message = 'Your IP address has been blocked by the administrator.';
+    console.warn('detected a request from blocked IP ' + ip);
+  } else if (requests > settings.maxRequests) {
+    report.result = 'refused';
+    report.reason = 'DDoS attack';
+    report.message = 'You have sent too many requests in a short period.';
+    console.warn('detected a potential DDoS attack');
+  }
+  return report;
+};
 
 // Blacklist certain IP addresses
-exports.checkIP = function (ip) {
+exports.blockIP = function (ip) {
   return [
     '183.136.190.36',
     '183.136.190.41',
     '183.136.190.43',
-    '183.136.190.48'
-  ].indexOf(ip) === -1;
+    '183.136.190.48',
+    '183.136.190.49',
+    '183.136.190.51',
+    '183.136.190.55',
+    '183.136.190.57',
+    '183.136.190.58'
+  ].indexOf(ip) !== -1;
 };
 
 // Generate md5 hash encoded by hex
@@ -64,13 +99,13 @@ exports.censor = function (body) {
 // Serialize an object to a query string
 exports.serialize = function (query, options) {
   var object = {};
-  var combinedParams = options && options.combinedParams;
+  var paramsCombined = options && options.paramsCombined;
   for (var key in query) {
     if (query.hasOwnProperty(key)) {
       var value = query[key];
       var test = String(value).trim();
       if (test !== '' && test !== 'null') {
-        if (combinedParams && Array.isArray(value)) {
+        if (paramsCombined && Array.isArray(value)) {
           value = value.join(',');
         }
         object[key] = value;
@@ -86,7 +121,7 @@ exports.normalize = function (url) {
   var repeat = regexp.url.repeat;
   url = url.replace(regexp.url.empty, '').replace(/\+/g, ' ');
   while (url.match(repeat)) {
-    url = url.replace(repeat, '$1$2');
+    url = url.replace(repeat, '$1$2$3');
   }
   url = url.replace(/[?&]+$/, '');
   return url.replace(regexp.url.unsafe, function (x) {

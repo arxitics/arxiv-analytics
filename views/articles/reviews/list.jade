@@ -1,0 +1,36 @@
+
+extends review
+
+block content
+  - var paginationURL = '/articles/' + id + '/reviews?page='
+  each review, index in reviews
+    - var last = reviews.length - 1
+    section
+      - var author = review.author
+      - var published = review.published.toISOString().slice(0, 10)
+      - var edited = review.edited.toISOString().slice(0, 10)
+      h4.ui-header-compact
+        a(href='/reviews/#{review.pid}')!= parse(review.title).replace(/<\/?p>|\n/g, '')
+      div
+        a(href='/users/#{author.uid}')= author.name
+        span.ui-text-muted  (Published #{published}
+          if edited !== published
+            | , edited 
+            span #{edited}
+          | )
+        span.ui-text-list.ui-float-right
+          span
+            - var revisions = review.revisions.length
+            i(data-schema-icon='history')
+            = ' ' + revisions + ' revision' + (revisions !== 1 ? 's' : '')
+          span
+            - var comments = review.comments.length
+            i(data-schema-icon='comments')
+            = ' ' + comments + ' comment' + (comments !== 1 ? 's' : '')
+      div!= parse(review.content.split('\n')[0].replace(/\s+$/, ' ...'))
+      if index !== last
+        hr
+  include ../../pagination
+  if logged
+    div.ui-skip-large
+      a.ui-text-button.ui-button-primary(href='/articles/#{id}/reviews/post') Post Your Review

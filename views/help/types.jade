@@ -1,0 +1,20 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-types'
+  - var pageTitle = 'List of Resource Types'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact List of Resource Types
+        div
+          p Resource types are used to classify supplementary resources of arXiv eprints and users' documents.
+          ul
+            each entry in types
+              li
+                strong= entry.type
+                | : #{entry.description}

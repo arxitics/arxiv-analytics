@@ -1,0 +1,37 @@
+
+extends review
+
+block content
+  section
+    h4.ui-header-compact!= parse(preview.title).replace(/<\/?p>|\n/g, '')
+    .ui-content-post!= parse(preview.content)
+    if review
+      - var pid = review.pid
+      form.ui-form-fluid(data-schema-validate action='/reviews/#{pid}/submit' method='post' role='form')
+        .ui-grid-fluid
+          input(type='hidden' name='_csrf' value=csrfToken)
+          input(type='text' name='title' pattern=pattern.title value=preview.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)
+          textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 200 characters' required)!= preview.content
+          input(type='text' name='summary' pattern=pattern.summary value=preview.summary placeholder='Edit summary: to briefly explain your changes' title='A short summary improved formatting, removed typos, added new references' required)
+        if authorized
+          label.ui-float-right
+            input(type='checkbox' name='wiki' value='true' checked=preview.isWiki)
+            |  Encourage others to edit your post
+        div(class=(authorized ? 'ui-skip-large' : 'ui-skip-small'))
+          button(type='submit' formaction='/reviews/#{pid}/preview') Preview
+          button.ui-button-primary.ui-offset-medium(type='submit') Submit
+    else
+      form.ui-form-fluid(data-schema-validate action='/articles/#{id}/reviews/submit' method='post' role='form')
+        .ui-grid-fluid
+          input(type='hidden' name='_csrf' value=csrfToken)
+          input(type='text' name='title' pattern=pattern.title value=preview.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)
+          textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 200 characters' required)!= preview.content
+        label.ui-float-right
+          input(type='checkbox' name='wiki' value='true' checked=preview.isWiki)
+          |  Encourage others to edit your post
+        .ui-skip-large
+          button(type='submit' formaction='/articles/#{id}/reviews/preview') Preview
+          button.ui-button-primary.ui-offset-medium(type='submit') Submit
+
+block aside
+  include ../format

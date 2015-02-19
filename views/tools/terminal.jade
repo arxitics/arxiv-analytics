@@ -1,0 +1,12 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'terminal'
+  - var pageTitle = __('terminal.heading')
+
+block main
+  aside.ui-grid-30.ui-mobile-expand
+    include toolset
+  article.ui-grid-70.ui-mobile-expand
+    h3.ui-header-primary Terminal Emulator

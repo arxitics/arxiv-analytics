@@ -25,7 +25,9 @@ exports.parse = function (themes) {
     if (object.hasOwnProperty(key)) {
       results.push({
         'category': key,
-        'topics': object[key]
+        'topics': object[key].filter(function (topic, index, array) {
+          return array.indexOf(topic) === index;
+        })
       });
     }
   }
@@ -661,10 +663,10 @@ exports.groups = [
           'holographic superconductor',
           'Liouville field theory',
           'M-theory',
-          'maximally helicity violating amplitude',
           'noncommutative field theory',
           'quantum field theory',
           'renormalization',
+          'scattering amplitudes',
           'string duality',
           'string field theory',
           'string phenomenology',
@@ -727,7 +729,7 @@ exports.groups = [
               category: 'chao-dyn'
             },
             topics: [
-              'chaos thoery',
+              'chaos theory',
               'cycle expansion',
               'dynamical system',
               'quantum chaos',
@@ -802,6 +804,9 @@ exports.groups = [
           {
             category: 'physics.acc-ph',
             description: 'Accelerator Physics',
+            subsumption: {
+              category: 'acc-phys'
+            },
             topics: [
 
             ]
@@ -809,6 +814,9 @@ exports.groups = [
           {
             category: 'physics.ao-ph',
             description: 'Atmospheric and Oceanic Physics',
+            subsumption: {
+              category: 'ao-sci'
+            },
             topics: [
 
             ]
@@ -816,6 +824,9 @@ exports.groups = [
           {
             category: 'physics.atom-ph',
             description: 'Atomic Physics',
+            subsumption: {
+              category: 'atom-ph'
+            },
             topics: [
 
             ]
@@ -837,6 +848,9 @@ exports.groups = [
           {
             category: 'physics.chem-ph',
             description: 'Chemical Physics',
+            subsumption: {
+              category: 'chem-ph'
+            },
             topics: [
 
             ]
@@ -858,6 +872,9 @@ exports.groups = [
           {
             category: 'physics.data-an',
             description: 'Data Analysis, Statistics and Probability',
+            subsumption: {
+              category: 'bayes-an'
+            },
             topics: [
 
             ]
@@ -928,6 +945,9 @@ exports.groups = [
           {
             category: 'physics.plasm-ph',
             description: 'Plasma Physics',
+            subsumption: {
+              category: 'plasm-ph'
+            },
             topics: [
 
             ]

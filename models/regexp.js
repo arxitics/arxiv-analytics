@@ -24,11 +24,16 @@ module.exports = {
   xss: /<(?=\/?(script|style|iframe|object|embed|audio|video|base|meta))/gi,
   url: {
     empty: /[^\?&\=]+\=(&|$)/g,
-    repeat: /([^&]+\=[^&]+)(&.*)?&\1/gi,
+    repeat: /(^|&)([^&]+\=[^&]+)(&.*)?&\2/gi,
     unsafe: /[ <>\[\\\]\^`\{|\}]/g
   },
   filename: {
     unsafe: /["\-\:\*\?|<>\/\\\s]+/g
+  },
+  browser: {
+    bot: /bot|googlebot|crawler|spider|robot|crawling/i,
+    desktop: /Windows|Macintosh|X11.+Linux/i,
+    mobile: /Android|iPhone|iPad|mobile|phone|tablet/i
   },
   terminal: {
     separator: /\s*([\=,])\s*/g,
@@ -46,6 +51,13 @@ module.exports = {
     auth: {
       key: /^[a-f0-9]{32}$/,
       code: /^[1-9][0-9]{5}/
+    },
+    doc: {
+      type: /^[a-z]{4,}$/,
+      source: /^[a-zA-Z\- ]+$/,
+      language: /^[a-z]{2}$/,
+      title: /^[\x00-\x7F]{10,}$/,
+      href: /^http:\/\/oss\.arxitics\.com\/users\/\d+\/((pdf\/[a-z\d\-\.]{4,}\.pdf)|(tex\/[a-z\d\-\.]{4,}\.(tex|latex|zip))|(images\/[a-z\d\-\.]{4,}\.(svg|png)))$/
     }
   },
   message: {
@@ -67,16 +79,29 @@ module.exports = {
   arxiv: {
     group: /^(math|cs|q-bio|q-fin|stat)$/,
     archive: /^([a-z\-\.]+[a-zA-Z])|(\d{2}(0[1-9]|1[0-2]))/,
-    identifier: /^((\d{2})(0[1-9]|1[0-2])\.(\d{4})|[a-zA-Z\-\.]+\/(9[1-9]|0[0-7])(0[1-9]|1[0-2])(\d{3}))(v[1-9][0-9]*)?$/,
+    identifier: /^((\d{2})(0[1-9]|1[0-2])\.(\d{4,5})|[a-zA-Z\-\.]+\/(9[1-9]|0[0-7])(0[1-9]|1[0-2])(\d{3}))(v[1-9][0-9]*)?$/,
     version: /v[1-9][0-9]*$/,
     date: /^((19\d{2}|2\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1]))(T([0-1]\d|2[0-3]):([0-4]\d|5[0-9]):([0-4]\d|5[0-9])Z)?$/,
+    category: /^([a-z]+\-?([a-z]{2,})?)\.?([a-z]+\-?([a-z]{2,})?|[A-Z]{2})?$/,
     pacs: /^(\d{2})\.(\d{2})\.([a-zA-Z\+\-][a-z\-])$/,
     msc: /^(\d{2})([A-Z\-])(\d{2}|xx)$/,
-    ccs: /^([A-K])\.(\d)(\.(\d))?$/,
+    ccs: /^([A-K])\.(\d|m)(\.(\d|m))?$/,
     jel: /^[A-Z]\d{2}$/,
     author: {
       eastern: /^([^\-\.]+)\s([a-zA-Z]+\-[a-zA-Z]+)$/,
       surname: /\W(\'[st]|[dl]\'|des|de|van|von)[^\.]\W*/i
+    },
+    publication: {
+      year: /^(19\d{2}|2\d{3})$/,
+      month: /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)$/,
+      volume: /^[1-9]\d*$/,
+      number: /^(\d+|\d+\-\d+)$/,
+      pages: /^(\d+|\d+\-\d+)$/
+    },
+    resource: {
+      type: /^[a-z]{4,}$/,
+      source: /^[a-zA-Z\- ]+$/,
+      title: /^[\x00-\x7F]{10,}$/
     }
   },
   strip: {
@@ -182,7 +207,7 @@ module.exports = {
     },
     {
       label: 'lecture note',
-      pattern: /\blecture.+(note|course|school)\b/i
+      pattern: /\blecture.+(notes?|courses?|school)\b/i
     },
     {
       label: 'manual',

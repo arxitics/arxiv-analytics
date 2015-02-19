@@ -1,0 +1,37 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-reputation'
+  - var pageTitle = 'Reputation and the Credit System'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact Reputation and the Credit System
+        div
+          p Reputation is a rough measurement of how much you get involved in our website. It helps decide the permissions you get and how much the community trusts you.
+          p: strong You gain reputation when:
+          ul
+            li you claim the authorship of an article: +100
+            li you upload a document to share with others: +20
+            li you attach a supplementary resource for an article: +5
+            li you edit the extended metadata of an article: +2
+            li you finish reading an article: +1
+            li you publish a new review: +5
+            li your review is voted up by a user: +5
+            li your review is bookmarked by a user: +2
+            li you make a comment on a review: +2
+            li bounty awarded by moderators: +full bounty amount
+          p: strong You lose reputation when:
+          ul
+            li you rate an article: -1
+            li you vote a review: -1
+            li your review is voted down by a user: -5
+            li penalty decided by moderators: -full penalty amount
+          p: strong Privileges are determinted by your reputation:
+          ul
+            li you need at least 100 reputation to edit the metadata of an article
+            li you need at least 10 reputation to publish a new review

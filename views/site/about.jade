@@ -1,0 +1,36 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'about'
+  - var pageTitle = __('about.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary= __('about.heading')
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact What we are
+        div
+          p Arxitics is a set of projects dedicated to providing high-quality web services or tools for scientific researchers and students, with the modest goal of making the Internet a better place. We also believe in 
+            a(href='http://blog.codinghorror.com/the-principle-of-least-power/' rel='external' target='_blank') Atwood's Law
+            | : 
+            q(cite='http://blog.codinghorror.com/the-principle-of-least-power/') any application that can be written in JavaScript, will eventually be written in JavaScript
+            | . 
+          p As our first project, arXiv Analytics is a web portal that offers more features and a better user interface for reading eprints provided by 
+            a(href='http://arxiv.org/' rel='external' target='_blank') arXiv.org
+            | . You can search, subscribe, bookmark, review eprints, and interact with the community. The project is still under development. Any feedback is greatly appreciated.
+      section.ui-skip-large
+        h4.ui-header-compact How to contact us
+        div
+          p Before contacting us, please review our 
+            a(href='/help') help pages
+            |  first to see if your problem is explained there. If your issue cannot be resolved without personal help, please contact us by email 
+            strong help
+              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+              | @arxitics.com
+            | , with a precise and detailed description of your problem. If you are a registered user, you can also send messages to 
+            code 999 &lt;service&gt;
+            | . Besides, you can also ask for help in the 
+            a(href='/chat') chat room
+            | .

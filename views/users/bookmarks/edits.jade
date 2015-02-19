@@ -1,0 +1,28 @@
+
+- var edits = activity.edits
+each edit in edits
+  - var id = edit.id
+  - var eprint = edit.eprint
+  - var primaryCategory = eprint.categories[0]
+  - var baseSearch = '/search?category=' + primaryCategory
+  - var authorSearch = baseSearch + '&author='
+  - var edited = edit.edited.toISOString().slice(0, 10)
+  li.ui-skip-medium
+    div
+      - var primary = id.match(/^\d{4}/) ? ' [' + primaryCategory + ']' : ''
+      - var published = eprint.published.toISOString().slice(0, 10)
+      a(href='/articles/#{id}')= 'arXiv:' + id + primary
+      |  (Published #{published}, edited #{edited})
+    h4.ui-header-compact= eprint.title
+    div
+      - var authors = eprint.authors
+      - var last = authors.length - 1
+      if last < 7
+        each author, index in authors
+            a(href=normalize(authorSearch + author))= author 
+            if index !== last
+              | , 
+      else
+        - var author = authors[0]
+        a(href=normalize(authorSearch + author))= author
+        em  et al.

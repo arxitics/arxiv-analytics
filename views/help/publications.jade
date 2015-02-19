@@ -1,0 +1,20 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-publications'
+  - var pageTitle = 'Listing Your Publications'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact Listing Your Publications
+        div
+          p If you have published some preprints on arXiv.org, you may would like to list them in your 
+            strong "Publications"
+            |  page. It helps us to resolve the duplication of author names. Besides, you can also gain 100 
+            a(href='/help/reputation') reputation
+            |  for one publication.
+          p To add an article, you should certify that you are an author of it. Although we do not intent to handle authorship disputes, others may use your publications to identify you. If we detect that you have listed publications that do not belong to you, you will be punished or even blocked.

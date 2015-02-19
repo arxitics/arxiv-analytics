@@ -1,0 +1,25 @@
+
+script(src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')
+script(type='text/x-mathjax-config').
+  MathJax.Hub.Config({
+    MMLorHTML: {
+      prefer: {Firefox: 'MML'}
+    },
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)'], ['\\\\(', '\\\\)'], ['\\begin{math}', '\\end{math}']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]'], ['\\\\[', '\\\\]'], ['\\begin{displaymath}', '\\end{displaymath}']],
+      processEscapes: true
+    },
+    TeX: {
+      equationNumbers: {autoNumber: 'AMS'},
+      Macros: {
+        slashed: ['\\not{\\!#1}', 1]
+      },
+      noUndefined: {
+        attributes: {
+          mathcolor: ''
+        }
+      }
+    },
+    messageStyle: 'none'
+  });

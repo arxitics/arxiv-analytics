@@ -1,0 +1,115 @@
+doctype html
+
+block variables
+
+html(id=pageID lang=locale)
+  head
+    block head
+      meta(charset='utf-8')
+      title= (pageTitle ? pageTitle + ' | ' : '') + appTitle
+      meta(http-equiv='X-UA-Compatible' content='IE=edge')
+      meta(name='keywords' content= pageKeywords || appKeywords)
+      meta(name='description' content=pageDescription || appDescription)
+      meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      meta(name='application-name' content='Arxitics')
+      meta(name='mobile-web-app-capable' content='yes')
+      link(rel='icon' type='image/x-ico' href='/images/favicon.ico')
+      link(rel='icon' type='image/png' href='/images/favicon.png')
+      link(rel='icon' sizes='128x128' href='/images/favicon@2x.png')
+      link(rel='icon' sizes='256x256' href='/images/favicon@4x.png')
+      link(rel='icon' type='image/svg+xml' sizes='any' href='/images/favicon.svg')
+      meta(name='apple-mobile-web-app-title' content='Arxitics')
+      meta(name='apple-mobile-web-app-capable' content='yes')
+      meta(name='format-detection' content='telephone=no')
+      link(rel='apple-touch-icon' sizes='57x57 72x72' href='/images/favicon.png')
+      link(rel='apple-touch-icon' sizes='112x112 144x144' href='/images/favicon@2x.png')
+      link(rel='apple-touch-icon' sizes='180x180' href='/images/favicon@4x.png')
+      meta(name='msapplication-TileColor' content='#428bca')
+      meta(name='msapplication-TileImage' content='/images/app-icon72x72@2x.png')
+      link(rel='stylesheet' href='#{appStorage}/stylesheets/ui-schema-#{appVersion}.min.css' media='all')
+      link(rel='dns-prefetch' href='http://cdn.mathjax.org/')
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-52769098-1', 'auto');
+      ga('send', 'pageview');
+  body
+    header.ui-header-navbar.ui-container-fluid.ui-grid-fluid(role='banner')
+      block header
+        .ui-header-brand
+          h2: a(rel='index' href='/' accesskey='0')= appTitle
+        nav.ui-grid-33.ui-mobile-auto(role='navigation')
+          ul
+            li: a(href='/browse' accesskey='1')= __('browse.heading')
+            li: a(href='/explore' accesskey='2')= __('explore.heading')
+            li: a(href='/tools' accesskey='3')= __('tools.heading')
+        if logged
+          .ui-header-account.ui-float-right.ui-menu-dropdown.ui-pull-right(role='menu')
+            - var length = user.notifications.length
+            div.ui-skip-tiny(class=(length === 0 ? 'ui-text-success' : 'ui-text-danger'))
+              i.ui-fixed-height(data-schema-icon=(privilege.isModerator ? 'user-md' : 'user'))
+              span.ui-offset-tiny= user.name
+            ul.ui-text-left
+              li: a(href='/users/#{user.uid}' accesskey='u')
+                i.ui-fixed-wdith(data-schema-icon='home')
+                |  
+                = __('profile.heading')
+              li: a(href='/users/#{user.uid}/bookmarks' accesskey='b')
+                i.ui-fixed-wdith(data-schema-icon='bookmarks')
+                |  
+                = __('bookmarks.heading')
+              li: a(href='/users/#{user.uid}/messages' accesskey='m')
+                i.ui-fixed-wdith(data-schema-icon='envelope')
+                |  
+                = __('messages.heading')
+                if length >= 1
+                  |  
+                  span.ui-text-danger (#{length})
+              li: a(href='/chat' accesskey='c')
+                i.ui-fixed-wdith(data-schema-icon='chat')
+                |  
+                = __('chat.heading')
+              li: a(href='/auth/logout')
+                i.ui-fixed-wdith(data-schema-icon='sign-out')
+                |  
+                = __('account.logout')
+        else
+          .ui-header-account.ui-float-right
+            a.ui-text-button.ui-button-primary(href='/auth/login' role='button')= __('login.button')
+        form.ui-grid-40.ui-mobile-expand(data-schema-validate action='/search' method='get' role='form')
+          .ui-input-addon
+            input.ui-grid-80(type='search' name='q' placeholder=__('search.placeholder') title=__('search.title') accesskey='s' tabindex='1')
+            button(type='submit' tabindex='-1')
+              i(data-schema-icon='search') Go!
+
+    main.ui-container-fluid.ui-grid-fluid(role='main')
+      block main
+    footer.ui-container-fluid(role='contentinfo')
+      block footer
+        address
+          .ui-float-left.ui-text-muted.ui-mobile-expand
+            span &copy; 2014&ndash;2015 Arxitics &nbsp;
+            if locale === 'zh'
+              a(href='http://www.miitbeian.gov.cn/' rel='external' target='_blank')= __('address.ICP')
+              |  
+              span= __('address.police')
+            else
+              span user contributions licensed under a 
+                a(href='http://creativecommons.org/licenses/by-sa/4.0/' rel='external' target='_blank')
+                  abbr(title='Creative Commons Attribution-ShareAlike 4.0 International') CC BY-SA 4.0
+                |  license
+          ul.ui-float-right.ui-list-inline.ui-mobile-expand
+            li: a(href='/site/about' accesskey='4')= __('about.foot')
+            li: a(href='/site/terms' accesskey='5')= __('terms.foot')
+            li: a(href='/site/privacy' accesskey='6')= __('privacy.foot')
+            li: a(href='/site/disclaimer' accesskey='7')= __('disclaimer.foot')
+            li: a(href='/site/contribute' accesskey='8')= __('contribute.foot')
+            li: a(href='/site/donate' accesskey='9')= __('donate.foot')
+            li: a(href='/help' accesskey='h')= __('help.foot')
+
+    block foot
+      script(src='#{appStorage}/javascripts/jquery-2.1.1.min.js')
+      script(src='#{appStorage}/javascripts/ui-schema-#{appVersion}.min.js')

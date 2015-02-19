@@ -1,0 +1,33 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-markdown'
+  - var pageTitle = 'Writing and Previewing Markdown'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact Writing and Previewing Markdown
+        div
+          p 
+            a(href='http://daringfireball.net/projects/markdown/' rel='external' target='_blank') Markdown
+            |  is a text-to-HTML conversion tool for web writers. It allows you to write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid HTML. We use the Node.js module 
+            a(href='https://github.com/chjj/marked' rel='external' target='_blank') marked
+            |  as our markdown parser and compiler. To preview the input dynamically, you are strongly recommended to use an online editor such as 
+            a(href='https://stackedit.io/' rel='external' target='_blank') StackEdit
+            | , 
+            a(href='http://markx.herokuapp.com/' rel='external' target='_blank') Markx
+            | , or 
+            a(href='http://dillinger.io/' rel='external' target='_blank') Dillinger
+            |  to compose your reviews and comments before posting them on our website. The following are some tips and tricks:
+          ul
+            li To insert an image, you should upload it to our server in your 
+              strong "Documents"
+              |  page first. The 
+              a(href='https://en.wikipedia.org/wiki/Scalable_Vector_Graphics' rel='external' target='_blank')
+                abbr(title='Scalable Vector Graphics') SVG
+              |  format is prefered.
+            li Please do not use your knowledge of JavaScript to create cross-site scripting attacks,  otherwise your account will be locked once detected.

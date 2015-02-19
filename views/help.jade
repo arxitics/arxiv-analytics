@@ -1,0 +1,58 @@
+
+extends layout
+
+block variables
+  - var pageID = 'help'
+  - var pageTitle = __('help.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary= __('help.heading')
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section.ui-book-contents
+        h4.ui-header-compact Table of Contents
+        ol.ui-columns-2.ui-mobile-expand.ui-skip-medium
+          li
+            a(href='/help/general') General Information
+            ol
+              li: a(href='/help/browsers') Supported Browsers
+              li: a(href='/help/keyboard') Keyboard Navigation
+              li: a(href='/help/tips') Tips for Beginners
+              li: a(href='/help/faq') Frequently Asked Questions
+          li
+            a(href='/help/accounts') User Accounts
+            ol
+              li: a(href='/help/authentication') The Authentication Mechanism
+              li: a(href='/help/subscription') To Subscribe to arXiv Eprints
+              li: a(href='/help/bookmarks') How to Manage Your Bookmarks
+              li: a(href='/help/ratings') Guidelines for Rating Articles
+              li: a(href='/help/publications') Listing Your Publications
+              li: a(href='/help/documents') Sharing Your Documents
+              li: a(href='/help/messages') Sending and Receiving Messages
+              li: a(href='/help/reputation') Reputation and the Credit System
+          li
+            a(href='/help/search') Searching and Browsing
+            ol
+              li: a(href='/help/interfaces') Search User Interfaces
+              li: a(href='/help/view') Viewing Articles
+              li: a(href='/help/metadata') Understanding the Metadata
+              li: a(href='/help/bibtex') Exporting Citation in BibTeX
+              li: a(href='help/mongodb') Search Engine Powered by MongoDB
+          li
+            a(href='/help/reviews') The Reviews Section
+            ol
+              li: a(href='/help/posts') Guidelines for Preparing Your Posts
+              li: a(href='/help/markdown') Writing and Previewing Markdown
+              li: a(href='/help/mathjax') Typesetting Math Using MathJax
+              li: a(href='/help/interactions') Interactions with the Community
+          li
+            a(href='/help/references') References
+            ol
+              li: a(href='/help/categories') List of Categories
+              li: a(href='/help/topics') List of Themes and Topics
+              li: a(href='/help/journals') List of Journals
+              li: a(href='/help/tags') List of Tags
+              li: a(href='/help/types') List of Resource Types
+              li: a(href='/help/commands') List of Commands
+          li
+            a(href='/help/updates') Project Updates

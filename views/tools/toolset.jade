@@ -1,0 +1,8 @@
+
+h3.ui-header-primary Toolset
+.ui-content-panel
+  .ui-panel-body
+    mixin link(page, text)
+      a(class=(pageID === page ? 'ui-state-active' : '') href='/#{page}')= text
+    .ui-list-group.ui-zoom-large
+      +link('terminal', 'Terminal Emulator')

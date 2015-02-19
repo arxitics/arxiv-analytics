@@ -1,0 +1,60 @@
+/*!
+ * Shapes
+ */
+
+.ui-caret-down,
+.ui-caret-left,
+.ui-caret-right,
+.ui-caret-up {
+  border: 0.4em solid transparent;
+  display: inline-block;
+  height: 0;
+  width: 0;
+  vertical-align: middle;
+}
+
+.ui-caret-down {
+  border-bottom: none;
+  border-top-color: #333;
+}
+
+.ui-caret-left {
+  border-left: none;
+  border-right-color: #333;
+}
+
+.ui-caret-right {
+  border-left-color: #333;
+  border-right: none;
+}
+
+.ui-caret-up {
+  border-bottom-color: #333;
+  border-top: none;
+}
+
+.ui-seperator-horizontal {
+  background-color: #e5e5e5;
+  height: 1px;
+  margin: .4em 0;
+  overflow: hidden;
+}
+
+.ui-seperator-vertical {
+  border-right: 1px solid #e5e5e5;
+  margin: 0 .4em;
+  width: 0;
+}
+
+.ui-seperator-raquo > li + li::before {
+  content: "\00bb\00a0";
+}
+
+.ui-seperator-bullet > li + li::before {
+  content: "\2022\00a0";
+}
+
+.ui-seperator-vbar > li + li::before {
+  content: "|\00a0";
+}
+

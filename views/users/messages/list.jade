@@ -1,0 +1,61 @@
+
+extends ../../layout
+
+block variables
+  - var pageID = 'messages'
+  - var pageTitle = __('messages.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include ../account
+    .ui-grid-fluid
+      .ui-grid-70.ui-mobile-expand
+        - var paginationURL = '/users/' + uid + '/messages?page='
+        each message in profile.messages
+          - var unread = (message.status === 'unread')
+          div(class=(unread ? 'ui-panel-danger ' : '') + 'ui-content-alert')
+            if message.hasOwnProperty('inbox')
+              .ui-header-compact.ui-text-left-right
+                - var sender = message.sender
+                - var received = message.received.toUTCString().slice(5, -7)
+                strong Sent from 
+                  a(href='/users/#{sender.uid}')= sender.name
+                  |  on #{received}
+                if authorized
+                  .ui-text-list(role='navigation')
+                    form(action='/users/#{uid}/messages/reply' method='post' role='form')
+                      input(type='hidden' name='_csrf' value=csrfToken)
+                      input(type='hidden' name='receiver' value='#{sender.uid} <#{sender.name}>')
+                      input(type='hidden' name='content' value='Regarding your last message on #{received}, ...')
+                      button.ui-button-link(type='submit')
+                        i(data-schema-icon='mail-reply')
+                        |  Reply
+                    if unread
+                      form.ui-offset-medium(action='/users/#{uid}/messages/read' method='post' role='form')
+                        input(type='hidden' name='_csrf' value=csrfToken)
+                        input(type='hidden' name='inbox' value=message.inbox)
+                        button.ui-button-link(type='submit')
+                          i(data-schema-icon='check-square-o')
+                          |  Mark as read
+                    form.ui-offset-medium(action='/users/#{uid}/messages/delete' method='post' role='form')
+                      input(type='hidden' name='_csrf' value=csrfToken)
+                      input(type='hidden' name='inbox' value=message.inbox)
+                      button.ui-button-link(type='submit')
+                        i(data-schema-icon='trash-o')
+                        |  Delete
+            else
+              .ui-header-compact
+                - var receiver = message.receiver
+                - var sent = message.sent.toUTCString().slice(5, -7)
+                strong Sent to 
+                  a(href='/users/#{receiver.uid}')= receiver.name
+                  |  on #{sent}
+            hr
+            .ui-content-post!= parse(message.content)
+        include ../../pagination
+        if authorized
+          div(class=(lastPage > 1 ? 'ui-skip-large': 'ui-skip-huge'))
+            a.ui-text-button.ui-button-primary(href='/users/#{uid}/messages/compose') Compose New Message
+
+block append foot
+  include ../../mathjax

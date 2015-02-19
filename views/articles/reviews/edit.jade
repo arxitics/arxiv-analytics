@@ -1,0 +1,24 @@
+
+extends review
+
+block content
+  - var pid = review.pid
+  section
+    h4.ui-header-compact!= parse(review.title).replace(/<\/?p>|\n/g, '')
+    .ui-content-post!= parse(review.content)
+    form.ui-form-fluid(data-schema-validate='changed' action='/reviews/#{pid}/submit' method='post' role='form')
+      .ui-grid-fluid
+        input(type='hidden' name='_csrf' value=csrfToken)
+        input(type='text' name='title' pattern=pattern.title value=review.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)
+        textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 200 characters' required)!= review.content
+        input(type='text' name='summary' pattern=pattern.summary placeholder='Edit summary: to briefly explain your changes' title='A short summary like improved formatting, removed typos, added new references' required)
+      if authorized
+        label.ui-float-right
+          input(type='checkbox' name='wiki' value='true' checked=review.note.wiki)
+          |  Encourage others to edit your post
+      div(class=(authorized ? 'ui-skip-large' : 'ui-skip-small'))
+        button(type='submit' formaction='/reviews/#{pid}/preview') Preview
+        button.ui-button-primary.ui-offset-medium(type='submit') Submit
+
+block aside
+  include ../format

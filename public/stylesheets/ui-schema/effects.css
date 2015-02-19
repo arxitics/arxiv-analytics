@@ -1,0 +1,111 @@
+/*!
+ * Effects
+ */
+
+.ui-border-none {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.ui-border-bottom {
+  border-bottom: 1px solid #ccc;
+}
+
+.ui-seamless-top:not(:empty) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.ui-seamless-bottom:not(:empty) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ui-frame-rounded,
+.ui-frame-circular,
+.ui-frame-stadium {
+  border: 1px solid #ccc;
+  padding: .4em .8em;
+}
+
+.ui-frame-rounded {
+  border-radius: .4rem;
+}
+
+.ui-frame-circular {
+  border-radius: 50%;
+}
+
+.ui-frame-stadium {
+  border-radius: 1.11428em;
+  line-height: 1.42857;
+}
+
+.ui-columns-seperated > li + li,
+.ui-columns-seperated > div + div,
+.ui-columns-seperated > span + span {
+  border-left: 1px solid #ccc;
+}
+
+.ui-rows-seperated > li + li,
+.ui-rows-seperated > div + div,
+.ui-rows-seperated > span + span {
+  border-top: 1px solid #ccc;
+}
+
+.ui-progress-striped::-moz-progress-bar {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  -webkit-background-size: 3em 3em;
+  background-size: 3em 3em;
+}
+
+.ui-progress-striped::-webkit-progress-value {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  -webkit-background-size: 3em 3em;
+  background-size: 3em 3em;
+}
+
+.ui-rotate-90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.ui-rotate-180 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.ui-rotate-270 {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+.ui-flip-horizontal {
+  -webkit-transform: scale(-1, 1);
+  -moz-transform: scale(-1,1);
+  -ms-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.ui-flip-vertical {
+  -webkit-transform: scale(1, -1);
+  -moz-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  -o-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+

@@ -1,0 +1,39 @@
+
+extends ../../layout
+
+block variables
+  - var pageID = 'publications'
+  - var pageTitle = __('publications.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include ../account
+    .ui-grid-fluid
+      .ui-grid-70.ui-mobile-expand
+        - var paginationURL = '/users/' + uid + '/publications?page='
+        ol(start=startIndex + 1)
+          each publication in profile.publications
+            - var id = publication.id
+            - var eprint = publication.eprint
+            - var primaryCategory = eprint.categories[0]
+            - var baseSearch = '/search?category=' + primaryCategory
+            - var authorSearch = baseSearch + '&author='
+            - var added = publication.added.toISOString().slice(0, 10)
+            li.ui-skip-medium
+              div
+                - var primary = id.match(/^\d{4}/) ? ' [' + primaryCategory + ']' : ''
+                - var published = eprint.published.toISOString().slice(0, 10)
+                a(href='/articles/#{id}')= 'arXiv:' + id + primary
+                |  (Published #{published}, added #{added})
+              h4.ui-header-compact= eprint.title
+              div
+                - var authors = eprint.authors
+                - var last = authors.length - 1
+                each author, index in authors
+                  a(href=normalize(authorSearch + author))= author 
+                  if index !== last
+                    | , 
+        include ../../pagination
+        if authorized
+          .ui-skip-large
+            a.ui-text-button.ui-button-primary(href='/users/#{uid}/publications/add') Add New Publications

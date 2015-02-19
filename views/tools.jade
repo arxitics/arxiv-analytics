@@ -1,0 +1,19 @@
+
+extends layout
+
+block variables
+  - var pageID = 'tools'
+  - var pageTitle = __('tools.heading')
+
+block main
+  aside.ui-grid-30.ui-mobile-expand
+    include tools/toolset
+  article.ui-grid-70.ui-mobile-expand
+    h3.ui-header-primary Overview
+    p To suggest a tool that can be integrated into this website, please create an issue at our 
+      a(href='https://github.com/arxitics/arxiv-analytics/issues' rel='external' target='_blank') GitHub repository
+      |  or contact us by email 
+      strong help
+        span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+        | @arxitics.com
+      | . 

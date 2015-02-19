@@ -1,0 +1,18 @@
+
+extends review
+
+block content
+  form.ui-form-fluid.ui-skip-medium(data-schema-validate action='/articles/#{id}/reviews/submit' method='post' role='form')
+    .ui-grid-fluid
+      input(type='hidden' name='_csrf' value=csrfToken)
+      input(type='text' name='title' pattern=pattern.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)
+      textarea(name='content' rows='12' placeholder='Content: to be constructive and specific. Markdown and LaTeX are supported.' title='At least 200 characters' required)
+    label.ui-float-right
+      input(type='checkbox' name='wiki' value='true' checked)
+      |  Encourage others to edit your post
+    .ui-skip-large
+      button(type='submit' formaction='/articles/#{id}/reviews/preview') Preview
+      button.ui-button-primary.ui-offset-medium(type='submit') Submit
+
+block aside
+  include ../format

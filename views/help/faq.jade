@@ -1,0 +1,37 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-faq'
+  - var pageTitle = 'Frequently Asked Questions'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact Frequently Asked Questions
+        .ui-skip-large
+          dl.ui-list-indent.ui-list-numbered
+            dt How can I register an account?
+            dd You should provide an email in our 
+              a(href='/auth/login') registration
+              |  page, and we will send you a confirmation email by 
+              strong noreply
+                span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+                | @arxitics.com
+              | . Please follow the instructions contained therein to sign in.
+            dt Why can't I receive my private key for each email confirmation?
+            dd In consideration of security, you can only receive you private key in the first three emails. You should keep it confidential and never share with others unless requested by our website.
+            dt When the eprints are daily updated?
+            dd We update the eprints from arXiv.org at 1:40 and 4:40 in Greenwich Mean Time. There are no daily updates at weekends.
+            dt If I have other questions, what should I do?
+            dd You can contact us by email 
+              strong help
+                span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+                | @arxitics.com
+              |  or sending messages to 
+              code 999 &lt;service&gt;
+              | . Besides, you can also ask for help in the 
+              a(href='/chat') chat room
+              | .

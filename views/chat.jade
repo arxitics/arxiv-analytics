@@ -1,0 +1,53 @@
+
+extends layout
+
+block variables
+  - var pageID = 'chat'
+  - var pageTitle = __('chat.heading')
+
+block append head
+  style.
+    #chat-room {
+      height: 50vh;
+      min-height: 20vh;
+      overflow-y: auto;
+      resize: vertical;
+    }
+    #chat-room p {
+      margin-top: .4em;
+    }
+    #chat-room > li + li {
+      margin-top: 1em;
+    }
+block main
+  article.ui-grid-70.ui-mobile-expand
+    h3.ui-header-primary= __('chat.heading')
+    .ui-text-left-right
+      .ui-button-group.ui-space-collapse.ui-block-inline
+        button(id='chat-view' title='View chat history') View
+        button(id='chat-clear' title='Clear current chat room') Clear
+        button(id='chat-export' title='Export chat data as JSON') Export
+        button(id='chat-delete' title='Delete all chat data') Delete
+      .ui-button-group.ui-space-collapse.ui-block-inline
+        button(id='chat-refresh' title='Refresh this page') Refresh
+        button(id='chat-close' title='Close the connection') Close
+    .ui-content-alert.ui-skip-large
+      ul.ui-list-unstyled(id='chat-room')
+      form.ui-form-fluid(id='chat-form' action='/chat' method='post' role='form')
+        input(type='hidden' name='_csrf' value=csrfToken)
+        textarea(name='content' rows='3' placeholder='Markdown and LaTeX are supported.' title='Please mind your manners and watch your tone' autofocus)
+        .ui-skip-small
+          button.ui-button-primary(type='submit') Send Your Message
+  aside.ui-grid-30.ui-mobile-expand
+    section
+      h3.ui-header-primary Online Users
+      ul.ui-list-unstyled(id='user-list')
+    section
+      h3.ui-header-primary Options
+      label
+        input(id='chat-safe' type='checkbox' name='safe' value='true' title='Only receive messages from the selected users')
+        |  Use the safe mode for anti-spam
+
+block append foot
+  include mathjax
+  script(src='#{appStorage}/javascripts/chat-#{appVersion}.min.js')

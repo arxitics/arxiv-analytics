@@ -1,0 +1,26 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-journals'
+  - var pageTitle = 'List of Journals'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact List of Journals
+        .ui-skip-large
+          ul.ui-nav-stacked.ui-nav-justified(role='tablist')
+            li(class=(group === 'Physics'? 'ui-state-active' : false) role='tab'): a(href='/help/journals') Physics
+            each value, key in abbrev.group
+              li(class=(group === value ? 'ui-state-active' : false) role='tab'): a(href='/help/journals?group=' + key)= value
+        ul
+          each journal in journals
+            li
+              - var publisher = journal.publisher
+              strong= journal.label
+              span : #{journal.title}
+              | , 
+              span.ui-text-muted= abbrev.publisher[publisher] || publisher

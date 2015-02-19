@@ -1,0 +1,117 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'articles'
+  - var pageTitle = 'Articles'
+
+block main
+  - var baseURL = location.replace(/&?page=\d*/, '')
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary.ui-text-left-right
+      span Articles
+      span.ui-text-list.ui-font-medium(role='navigation')
+        - var tabs = ['views', 'reviews', 'comments', 'bookmarks', 'readers', 'ratings', 'score']
+        each tab in tabs
+          - var link = '/articles' + (tab === 'views' ? '' : '?sort=' + tab)
+          - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
+          a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
+    .ui-grid-fluid
+      .ui-grid-70.ui-mobile-expand
+        - var startItem = startIndex + 1
+        - var endItem = Math.min(endIndex, count)
+        ol(start=startIndex + 1)
+          each eprint, index in eprints
+            - var id = eprint.id
+            - var baseSearch = '/search?category=' + eprint.categories[0]
+            - var authorSearch = baseSearch + '&author='
+            - var subjectSearch = baseSearch + '&subject='
+            - var keywordSearch = baseSearch + '&keyword='
+            - var tagSearch = baseSearch + '&tag='
+            - var analyses = eprint.analyses
+            li.ui-skip-medium
+              div
+                - var published = eprint.published.toISOString().slice(0, 10)
+                - var updated = eprint.updated.toISOString().slice(0, 10)
+                a(href='/articles/#{id}') arXiv:#{id}
+                |  (Published 
+                span= published
+                if updated !== published
+                  | , updated 
+                  span #{updated}
+                | )
+              h4.ui-header-compact= eprint.title
+              div
+                - var authors = eprint.authors
+                - var last = authors.length - 1
+                if last < 7
+                  each author, index in authors
+                    a(href=normalize(authorSearch + author))= author 
+                    if index !== last
+                      | , 
+                else
+                  - var author = authors[0]
+                  a(href=normalize(authorSearch + author))= author
+                  em  et al.
+                div
+                  strong Categories: 
+                  - var categories = eprint.categories
+                  - var last = categories.length - 1
+                  each category, index in categories
+                    a(href='/search?category=#{category}')= category
+                    if index !== last
+                      | , 
+                if analyses.subjects.length
+                  div
+                    strong Subjects: 
+                    - var subjects = analyses.subjects
+                    - var last = subjects.length - 1
+                    each subject, index in subjects
+                      a(href=normalize(subjectSearch + subject))= subject
+                      if index !== last
+                        | , 
+                if analyses.themes.length
+                  div
+                    strong Topics: 
+                    - var themes = analyses.themes
+                    - var lastTheme = themes.length - 1
+                    each theme, themeIndex in themes
+                      - var topicSearch = '/search?category=' + theme.category + '&topic='
+                      - var topics = theme.topics
+                      - var lastTopic = topics.length - 1
+                      each topic, topicIndex in topics
+                        a(href=normalize(topicSearch + topic))= topic
+                        if topicIndex !== lastTopic
+                          | , 
+                      if themeIndex !== lastTheme
+                        | ; 
+                if analyses.keywords.length
+                  div
+                    strong Keywords: 
+                    - var keywords = analyses.keywords
+                    - var last = keywords.length - 1
+                    each keyword, index in keywords
+                      a(href=normalize(keywordSearch + keyword))= keyword
+                      if index !== last
+                        | , 
+                if analyses.tags.length
+                  div
+                    strong Tags: 
+                    - var tags = analyses.tags
+                    - var last = tags.length - 1
+                    each tag, index in tags
+                      a(href=normalize(tagSearch + tag))= tag
+                      if index !== last
+                        | , 
+        .ui-skip-large
+          - var paginationURL = baseURL + (baseURL.indexOf('=') !== -1 ? '&' : '') + 'page='
+          if currentPage > 1
+            a.ui-float-left.ui-text-button(rel='prev' href=normalize(paginationURL + (currentPage - 1)) accesskey='p')
+              i(data-schema-icon='arrow-left')
+              |  Previous
+          if endItem === endIndex
+            a.ui-float-right.ui-text-button(rel='next' href=normalize(paginationURL + (currentPage + 1)) accesskey='n')
+              | Next 
+              i(data-schema-icon='arrow-right')
+      .ui-grid-30.ui-mobile-expand
+        div

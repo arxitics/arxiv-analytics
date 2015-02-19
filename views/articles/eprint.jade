@@ -1,0 +1,12 @@
+
+h3.ui-header-primary.ui-text-left-right
+  span= 'arXiv:' + id
+    if id.match(/^\d{4}/)
+      = ' [' + eprint.categories[0] + ']'
+  span.ui-text-list.ui-font-medium(role='navigation')
+    each page in ['abstract', 'references', 'reviews', 'resources']
+      - var link = '/articles/' + id + (page === 'abstract' ? '' : '/' + page)
+      if page === pageID
+        a.ui-text-active(href=link)= __(page + '.heading')
+      else 
+        a(href=link)= __(page + '.heading')

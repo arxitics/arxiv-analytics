@@ -1,0 +1,72 @@
+
+article.ui-grid-70.ui-mobile-expand
+  h3.ui-header-primary= __('search.heading')
+  div
+    form.ui-form-fluid(data-schema-validate action='/search' method='get' role='form')
+      .ui-grid-fluid
+        label.ui-grid-20(for='title') Title
+        .ui-grid-80
+          input(id='title' type='text' name='title' placeholder='Bayesian probabilistic matrix factorization' title='Pattern matching for the "title" field is case-insensitive' autofocus)
+        label.ui-grid-20(for='authors') Authors
+        .ui-grid-80
+          input(id='authors' type='text' name='authors' placeholder='Albert Einstein, John von Neumann, Emmy Noether' title='Multiple authors are separated by commas')
+        label.ui-grid-20(for='abstract') Abstract
+        .ui-grid-80
+          input(id='abstract' type='text' name='abstract' placeholder='(small|big) quantum cohomology' title='Pattern matching for the "abstract" field is case-insensitive')
+        label.ui-grid-20(for='comments') Comments
+        .ui-grid-80
+          input(id='comments' type='text' name='comments' placeholder='Les Houches summer school' title='Pattern matching for the "comments" field is case-insensitive')
+        label.ui-grid-20(for='journal') Journal
+        .ui-grid-80
+          input(id='journal' type='text' name='journal' placeholder='Commun. Math. Phys.' title='The abbreviation is preferred. See a list of journals in the help center')
+        label.ui-grid-20(for='categories') Categories
+        .ui-grid-80
+          input(id='categories' type='text' name='categories' placeholder='cs.CC, cs.DM; math.CO' title='Multiple categories are separated by commas and semicolons')
+        label.ui-grid-20(for='subjects') Subjects
+        .ui-grid-80
+          input(id='subjects' type='text' name='subjects' placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class')
+        label.ui-grid-20(for='topics') Topics
+        .ui-grid-80
+          input(id='topics' type='text' name='topics' placeholder='exactly solvable system, Painleve analysis, soliton theory' title='You should choose from predefined topics. See a list of topics in the help center')
+        label.ui-grid-20(for='keywords') Keywords
+        .ui-grid-80
+          input(id='keywords' type='text' name='keywords' placeholder='/(field|gauge).theor(y|ies)/' title='Please use regular expressions for fuzzy matching')
+        label.ui-grid-20(for='tags') Tags
+        .ui-grid-80
+          input(id='tags' type='text' name='tags' placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')
+        div
+          label.ui-grid-20(for='sort') Sort by
+          .ui-grid-80
+            input(id='sort' type='radio' name='sort' value='published' checked)
+            |  Published date
+            input.ui-offset-small(type='radio' name='sort' value='updated')
+            |  Updated date
+            input.ui-offset-small(type='radio' name='sort' value='views')
+            |  Article views
+            input.ui-offset-small(type='radio' name='sort' value='rating')
+            |  Rating score
+        div
+          label.ui-grid-20(for='order') Sort order
+          .ui-grid-80
+            input(id='order' type='radio' name='order' value='ascending')
+            |  Ascending
+            input.ui-offset-small(type='radio' name='order' value='descending' checked)
+            |  Descending
+      .ui-text-center.ui-skip-large
+         button.ui-button-primary(type='submit') Submit
+         button.ui-offset-medium(type='reset') Reset
+
+aside.ui-grid-30.ui-mobile-expand.ui-phone-hidden
+  h3.ui-header-primary= __('search.syntax')
+  ul
+    li Values separated by commas or semicolons specify an 
+      code $in
+      |  or 
+      code $all
+      |  expression for the array.
+    li Regular expressions are supported, 
+      em e.g.
+      | 
+      code /(W|Z|Higgs).*boson/
+      | .
+    li If only one result is found, you will be redirected to the article page.

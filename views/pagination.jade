@@ -1,0 +1,12 @@
+
+if lastPage > 1
+  ol.ui-nav-pagination.ui-skip-medium
+    if currentPage > 1
+      li: a(rel='prev' href=normalize(paginationURL + (currentPage - 1)) title='Previous page' accesskey='p') &laquo;
+    - for (var i = startPage; i <= endPage; i++)
+      if i === currentPage
+        li.ui-state-active: span(title='Current page')= i
+      else
+        li: a(href=normalize(paginationURL + i))= i
+    if currentPage < lastPage
+      li: a(rel='next' href=normalize(paginationURL + (currentPage + 1)) title='Next page' accesskey='n') &raquo;

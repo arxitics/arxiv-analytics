@@ -1,7 +1,7 @@
 {
   "index": {
-    "update": "Recent Updates",
-    "message": "New Messages",
+    "recommender": "Recommended Articles",
+    "features": "Main Features",
     "start": "Getting Started"
   },
   "browse": {
@@ -10,11 +10,17 @@
   "explore": {
     "heading": "Explore"
   },
+  "tools": {
+    "heading": "Tools"
+  },
   "terminal": {
     "heading": "Terminal"
   },
+  "chat": {
+    "heading": "Chat Room"
+  },
   "search": {
-    "heading": "Search",
+    "heading": "Advanced Search",
     "placeholder": "Search or type a command",
     "title": "Type \"help\" to redirect to the help center",
     "syntax": "Syntax and Tips"
@@ -55,6 +61,9 @@
   },
   "messages": {
     "heading": "Messages"
+  },
+  "documents": {
+    "heading": "Documents"
   },
   "admin": {
     "heading": "Admin"

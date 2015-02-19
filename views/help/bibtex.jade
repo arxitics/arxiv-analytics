@@ -1,0 +1,78 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-bibtex'
+  - var pageTitle = 'Exporting Citation in BibTeX'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact Exporting Citation in BibTeX
+        div
+          p The 
+            a(href='https://en.wikipedia.org/wiki/BibTeX' target="_blank") BibTeX
+            |  format is used to export the citation of an article. We only support the following entry fields:
+          table.ui-table-fluid.ui-table-striped
+            thead
+              tr
+                th Field
+                th Description
+            tbody
+              tr
+                td eprint
+                td The arXiv identifier for the eprint.
+              tr
+                td type
+                td The field overriding the default type of publication.
+              tr
+                td author
+                td The names of the authors are separated by the 
+                  code and 
+                  |  keyword but not by commas.
+              tr
+                td title
+                td The work's title typed as explained in the LaTeX book.
+              tr
+                td booktitle
+                td The title of a book, part of which is being cited. For book entries, use the 
+                  code title 
+                  | field instead.
+              tr
+                td chapter
+                td The chapter number of a book.
+              tr
+                td edition
+                td The edition of a book in the long form such as "First" or "Second".
+              tr
+                td editor
+                td The names of the editors of the book or collection.
+              tr
+                td publisher
+                td The publisher's name.
+              tr
+                td journal
+                td The journal or magazine the work was published in.
+              tr
+                td year
+                td The year of publication. Generally it should consist of four numerals.
+              tr
+                td month
+                td The month in which the work was published using the standard three-letter abbreviation.
+              tr
+                td volume
+                td The volume of a journal or multi-volume book.
+              tr
+                td number
+                td The (issue) number of a journal, magazine, technical report, or work in a series if applicable.
+              tr
+                td pages
+                td The page numbers separated either by commas or double-hyphens.
+              tr
+                td doi
+                td The digital object identifier of the article.
+              tr
+                td url
+                td The web address of the article.

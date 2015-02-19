@@ -1,0 +1,18 @@
+
+extends ../../layout
+
+block variables
+  - var pageID = 'reviews'
+  - var pageTitle = __('reviews.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include ../eprint
+    .ui-grid-fluid
+      .ui-grid-70.ui-mobile-expand
+        block content
+      .ui-grid-30.ui-mobile-expand.ui-phone-hidden
+        block aside
+
+block append foot
+  include ../../mathjax

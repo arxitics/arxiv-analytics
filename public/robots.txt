@@ -1,0 +1,5 @@
+# Date: 2014-07-04
+
+User-agent: *
+Crawl-delay: 10
+Disallow: /*?*

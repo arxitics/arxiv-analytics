@@ -1,0 +1,236 @@
+/*!
+ * Forms
+ */
+
+.ui-form-block,
+.ui-form-fluid {
+  display: block;
+}
+
+.ui-form-block label {
+  display: block;
+  margin: 0 1.5rem .4rem 0;
+}
+
+.ui-form-block input:not([type="checkbox"]):not([type="radio"]),
+.ui-form-block textarea {
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.ui-form-fluid label[for] {
+  padding: .4em 0;
+  text-align: right;
+}
+
+.ui-form-fluid input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.ui-form-fluid textarea {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.ui-form-fluid input[type="file"] {
+  padding-left: 0;
+  height: 2em;
+}
+
+.ui-form-fluid input {
+  height: 2.4em;
+}
+
+.ui-form-fluid textarea {
+  max-width: 100%;
+  min-width: 100%;
+  resize: vertical;
+}
+
+.ui-button-link {
+  padding: 0;
+  color: #428bca;
+  border: none;
+}
+
+.ui-button-link:hover,
+.ui-button-link:focus {
+  color: #3071a9;
+  background-color: transparent;
+}
+
+.ui-button-link path {
+  fill: #428bca;
+  stroke: #428bca;
+}
+
+.ui-button-link path:hover {
+  fill: #3071a9;
+  stroke: #3071a9;
+}
+
+.ui-button-toolbar .ui-button-group {
+  display: inline-block;
+  margin-left: 1rem;
+  vertical-align: middle;
+}
+
+.ui-button-toolbar .ui-button-group:first-child {
+  margin-left: 0;
+}
+
+.ui-button-group > input[type="radio"],
+.ui-button-group > input[type="checkbox"],
+.ui-button-switch > input[type="checkbox"] {
+  display: none;
+}
+
+.ui-button-switch > label {
+  border: 1px solid #ccc;
+  border-radius: .4rem;
+  display: inline-block;
+  font-weight: normal;
+  overflow: hidden;
+}
+
+.ui-button-switch > label > span {
+  background-color: #ebebeb;
+  display: inline-block;
+  padding: .4em .8em;
+  visibility: hidden;
+}
+
+.ui-button-switch > input:checked + label > span:first-child,
+.ui-button-switch > input:not(:checked) + label > span:last-child {
+  visibility: visible;
+}
+
+.ui-button-switch > input:checked ~ :not(label) {
+  display: block;
+}
+
+.ui-button-group > label {
+  border: 1px solid #ccc;
+  display: inline-block;
+  font-weight: normal;
+  padding: .4em .8em;
+}
+
+.ui-button-group > div {
+  display: inline-block;
+}
+
+.ui-button-group:not(.ui-space-collapse) > label {
+  border-radius: .4rem;
+}
+
+.ui-button-group.ui-space-collapse > button,
+.ui-button-group.ui-space-collapse label:not(:first-of-type) {
+  border-left-width: 0;
+  border-radius: 0;
+}
+
+.ui-button-group.ui-space-collapse > button:first-child,
+.ui-button-group.ui-space-collapse > div:first-child > button:first-of-type,
+.ui-button-group.ui-space-collapse label:first-of-type {
+  border-top-left-radius: .4rem;
+  border-bottom-left-radius: .4rem;
+}
+
+.ui-button-group.ui-space-collapse > button:last-child,
+.ui-button-group.ui-space-collapse > div:last-child > button:last-of-type,
+.ui-button-group.ui-space-collapse label:last-of-type {
+  border-top-right-radius: .4rem;
+  border-bottom-right-radius: .4rem;
+}
+
+.ui-button-group.ui-space-collapse > button:first-child,
+.ui-button-group.ui-space-collapse > div:first-child > button:first-of-type {
+  border-left-width: 1px;
+}
+
+.ui-button-group input:checked + label {
+  background-color: #ebebeb;
+}
+
+.ui-button-block button {
+  display: block;
+  margin-top: .8em;
+  padding: auto 0;
+  width: 100%;
+}
+
+.ui-button-block button:first-child {
+  margin-top: 0;
+}
+
+.ui-input-addon > button:first-child {
+  margin-right: 0;
+}
+
+.ui-input-addon {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  height: 2.34694em;
+}
+
+.ui-input-addon > :not(button):not(input) {
+  border: 1px solid #ccc;
+  border-radius: .4rem;
+  padding: .4em .8em;
+}
+
+.ui-input-addon > input {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1; 
+  flex: 1;
+}
+
+.ui-input-addon > :first-child,
+.ui-input-addon > input,
+.ui-input-addon > :last-child {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  height: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ui-input-addon > input:not(:first-child) {
+  border-left: none;
+}
+
+.ui-input-addon > input:not(:last-child) {
+  border-right: none;
+}
+
+.ui-input-addon > :first-child,
+.ui-input-addon > input:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.ui-input-addon > input:not(:first-child),
+.ui-input-addon > :last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.ui-input-fluid {
+  width: -moz-calc(100% - 1.6em - 2px);
+  width: -webkit-calc(100% - 1.6em - 2px);
+  width: calc(100% - 1.6em - 2px);
+}
+
+.ui-link-disabled {
+  color: #999;
+  cursor: default;
+  pointer-events: none;
+}

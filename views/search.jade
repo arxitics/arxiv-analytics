@@ -1,0 +1,17 @@
+
+extends layout
+
+block variables
+  - var pageID = 'search'
+  - var pageTitle = __('search.heading')
+
+block main
+  if searched
+    include search/show
+  else
+    include search/interface
+
+block append foot
+  if searched
+    //- Options for displaying search results
+    script(src='#{appStorage}/javascripts/search-#{appVersion}.min.js')

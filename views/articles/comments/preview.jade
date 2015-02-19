@@ -1,0 +1,16 @@
+
+extends comment
+
+block content
+  div
+    .ui-content-post!= parse(preview.content)
+    form.ui-form-fluid(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
+      .ui-grid-fluid
+        input(type='hidden' name='_csrf' value=csrfToken)
+        textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 40 characters' required)!= preview.content
+      .ui-skip-small
+        button(type='submit' formaction='/reviews/#{pid}/comments/preview') Preview
+        button.ui-button-primary.ui-offset-medium(type='submit') Submit
+
+block aside
+  include ../format

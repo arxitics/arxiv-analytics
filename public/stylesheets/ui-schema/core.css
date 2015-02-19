@@ -1,0 +1,492 @@
+/*!
+ * Core
+ */
+
+/**
+ * Set default font size to 10pt.
+ */
+
+html {
+  font-size: 50%;
+}
+
+/* SVGA 800x600 */
+@media (min-width: 768px) {
+  html {
+    font-size: 56.25%;
+  }
+}
+
+/* XGA 1024x768 */
+@media (min-width: 992px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+/* WXGA 1280x800 */
+@media (min-width: 1248px) {
+  html {
+    font-size: 68.75%;
+  }
+}
+
+/* HD 1366x768 */
+@media (min-width: 1334px) {
+  html {
+    font-size: 75%;
+  }
+}
+
+/* WXGA+ 1440x900 */
+@media (min-width: 1408px) {
+  html {
+    font-size: 81.25%;
+  }
+}
+
+/* HD+ 1600x900 */
+@media (min-width: 1568px) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
+/* FHD 1920x1080 */
+@media (min-width: 1888px) {
+  html {
+    font-size: 93.75%;
+  }
+}
+
+/* QWXGA 2048x1152 */
+@media (min-width: 2016px) {
+  html {
+    font-size: 100%;
+  }
+}
+
+/**
+ * 1. Set `line-height` to 20/14.
+ * 2. 
+ */
+
+body {
+  background-color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Droid Sans Fallback", "Microsoft YaHei", "Apple LiGothic Medium", sans-serif;
+  color: #333;
+  font-size: 1.4rem;
+  line-height: 1.42857; /* 1 */
+}
+
+/**
+ * 1. Justify content text on both sides.
+ */
+
+main {
+  margin: 4rem 0;
+  min-height: 60vh;
+}
+
+h1 {
+  font-size: 3.6rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2.4rem;
+}
+
+h4 {
+  font-size: 1.8rem;
+}
+
+h5 {
+  font-size: 1.4rem;
+}
+
+h6 {
+  font-size: 1.2rem;
+}
+
+header {
+  font-size: 1.6rem;
+}
+
+p {
+  margin: .8em 0;
+  line-height: 1.42857;
+}
+
+/* Links
+   ========================================================================== */
+
+a {
+  color: #428bca;
+  text-decoration: none;
+}
+
+/**
+ * Set cursor for placeholder hyperlink without the `href` attribute.
+ */
+
+a:not([href]) {
+  cursor: pointer;
+}
+
+a:hover {
+  color: #3071a9;
+}
+
+/* Embedded content
+   ========================================================================== */
+
+img {
+  vertical-align: middle;
+}
+
+i {
+  display: inline-block;
+  height: 1.25em;
+  font-style: normal;
+  vertical-align: text-bottom;
+}
+
+i > svg {
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+/**
+ * 1. Reset the default appearance of progress in Chrome.
+ */
+
+progress {
+  -webkit-appearance: none; /* 1 */
+  appearance: none;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: .5em;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  color: #428bca;
+  height: 1.5em;
+  overflow: hidden;
+  width: 100%;
+}
+
+/**
+ * Reset the appearance for the indeterminate state in Firefox.
+ */
+
+progress:not([value])::-moz-progress-bar {
+  background-color: #f5f5f5;
+}
+
+progress::-moz-progress-bar {
+  background-color: #428bca;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #f5f5f5;
+  border-radius: .5em;
+}
+
+progress::-webkit-progress-value {
+  background-color: #428bca;
+}
+
+/* Grouping content
+   ========================================================================== */
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+blockquote {
+  border-left: .4em solid #eee;
+  font-size: 125%;
+  margin: 0 0 2em;
+  overflow: hidden;
+  padding: .5em 1em;
+}
+
+address {
+  margin-bottom: 1em;
+  font-style: normal;
+  line-height: 1.71428;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 90%;
+}
+
+pre {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: .4em;
+  display: block;
+  padding: .6em;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+pre > code {
+  white-space: pre-wrap;
+}
+
+/* Lists
+   ========================================================================== */
+
+/**
+ * Set `line-height` to 24/14.
+ */
+
+ul,
+ol,
+dl {
+  line-height: 1.71428;
+  margin: 0 0 1em;
+}
+
+ul,
+ol {
+  padding-left: 3rem;
+}
+
+ul ul,
+ul ol,
+ol ul,
+ol ol,
+dl dl {
+  margin-bottom: 0;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin: 0 0 .5em;
+}
+
+/* Forms
+   ========================================================================== */
+
+form {
+  display: inline-block;
+}
+
+fieldset {
+  margin: 1.5em 0;
+  padding: .8em 1.5em;
+}
+
+legend {
+  padding: 0 .4em;
+  color: #999;
+}
+
+fieldset,
+button,
+input:not([type="file"]),
+textarea {
+  border: 1px solid #ccc;
+  border-radius: .4rem;
+  vertical-align: baseline;
+}
+
+button {
+  background-color: transparent;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0;
+  padding: .4em .8em;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none;
+}
+
+button:hover,
+button:focus {
+  background-color: #ebebeb;
+}
+
+input {
+  height: 1.53061em;
+}
+
+input,
+textarea {
+  background-color: #fff;
+  display: inline-block;
+  padding: .4em .8em;
+  outline: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  padding: 0;
+  vertical-align: middle;
+}
+
+input[type="file"] {
+  cursor: pointer;
+}
+
+input:invalid,
+textarea:invalid {
+  border-color: #a94442;
+}
+
+input:not([type="file"]):not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 .4em rgba(102,175,233,.6);
+}
+
+input:not([type="file"]):not([type="checkbox"]):not([type="radio"]):invalid:focus,
+textarea:invalid:focus {
+  border-color: #843534;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 .3em #ce8483;
+}
+
+label {
+  cursor: pointer;
+}
+
+label[for] {
+  font-weight: bold;
+}
+
+/**
+ * Placeholder style for Firefox 4-18.
+ */
+ 
+:-moz-placeholder {
+  color: #999;
+}
+
+/**
+ * Placeholder style for Firefox 19+.
+ */
+
+::-moz-placeholder {
+  color: #999;
+}
+
+/**
+ * Placeholder style for IE 10+.
+ */
+
+:-ms-input-placeholder {
+  color: #999;
+}
+
+/**
+ * Placeholder style for Chrome, Opera 15+, Safari.
+ */
+
+::-webkit-input-placeholder {
+  color: #999;
+}
+
+:disabled,
+[disabled] {
+  background-color: #eee;
+  opacity: .65;
+  pointer-events: none;
+}
+
+::-moz-selection {
+  color: #fff;
+  background-color: #3071a9;
+}
+
+::selection { 
+  color: #fff;
+  background-color: #3071a9;
+} 
+
+/* Tables
+   ========================================================================== */
+
+table {
+  margin: 1.2em 0 1.6em;
+  text-align: left;
+}
+
+td,
+th {
+  border-top: 1px solid #ddd;
+  padding: .6em .8em; 
+  vertical-align: middle;
+}
+
+th {
+  text-align: left;
+  border-bottom-width: 2px;
+}
+
+/* ARIA
+   ========================================================================== */
+[aria-hidden="true"] {
+  display: none;
+}
+
+/* Animations
+   ========================================================================== */
+
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes spin {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

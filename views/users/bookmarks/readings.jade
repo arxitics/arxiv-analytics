@@ -1,0 +1,39 @@
+
+- var readings = activity.readings
+each reading in readings
+  - var id = reading.id
+  - var eprint = reading.eprint
+  - var primaryCategory = eprint.categories[0]
+  - var baseSearch = '/search?category=' + primaryCategory
+  - var authorSearch = baseSearch + '&author='
+  - var read = reading.read.toISOString().slice(0, 10)
+  li.ui-skip-medium
+    div
+      - var primary = id.match(/^\d{4}/) ? ' [' + primaryCategory + ']' : ''
+      - var published = eprint.published.toISOString().slice(0, 10)
+      a(href='/articles/#{id}')= 'arXiv:' + id + primary
+      |  (Published #{published}, read #{read})
+      if authorized
+        form.ui-offset-medium(data-schema-rating action='/users/#{uid}/articles/rating' method='post' role='form')
+          input(type='hidden' name='_csrf' value=csrfToken)
+          input(type='hidden' name='id' value=id)
+          input(type='hidden' name='score')
+          a(role='button')
+            i(data-schema-icon='star-o')
+            i(data-schema-icon='star-o')
+            i(data-schema-icon='star-o')
+            i(data-schema-icon='star-o')
+            i(data-schema-icon='star-o')
+    h4.ui-header-compact= eprint.title
+    div
+      - var authors = eprint.authors
+      - var last = authors.length - 1
+      if last < 7
+        each author, index in authors
+            a(href=normalize(authorSearch + author))= author 
+            if index !== last
+              | , 
+      else
+        - var author = authors[0]
+        a(href=normalize(authorSearch + author))= author
+        em  et al.

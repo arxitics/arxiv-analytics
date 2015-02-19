@@ -1,0 +1,20 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'help-tags'
+  - var pageTitle = 'List of Tags'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    include navigation
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact List of Tags
+        div
+          p A tag is a label that classifies eprints in a non-hierarchical manner. Using the tags makes it easier to find articles with specific features.
+          ul
+            each entry in tags
+              li
+                strong= entry.tag
+                | : #{entry.description}

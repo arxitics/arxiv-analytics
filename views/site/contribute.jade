@@ -1,0 +1,23 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'contribute'
+  - var pageTitle = __('contribute.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary= __('contribute.heading')
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact GitHub repositories
+        div
+          p We have created an organization named 
+            a(href='https://github.com/arxitics' rel='external' target='_blank') Arxitics
+            |  on GitHub. Please join us to contribute your code or open issues. You can also submit improvements or request new features by contacting us at 
+            strong help
+              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+              | @arxitics.com
+            |  or sending messages to 
+            code 999 &lt;service&gt;
+            | .

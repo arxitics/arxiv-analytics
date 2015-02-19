@@ -1,0 +1,39 @@
+
+extends layout
+
+block variables
+  - var pageID = 'explore'
+  - var pageTitle = __('explore.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary.ui-text-left-right
+      span Explore Arxitics
+      span.ui-text-list.ui-font-medium(role='navigation')
+      //-.
+        - var tabs = ['articles', 'reviews', 'users']
+        each tab in tabs
+          - var link = (tab === 'articles' ? '/explore' : '/' + tab)
+          - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
+          a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
+    .ui-text-center.ui-skip-huge
+      .ui-grid-80.ui-offset-10.ui-mobile-expand
+        .ui-grid-50.ui-mobile-expand
+          .ui-content-link
+            a(href='/articles')
+              h4 Collaborative Filtering 
+        .ui-grid-50.ui-mobile-expand
+          .ui-content-link
+            a(href='/search')
+              h4 Advanced Search
+      .ui-grid-80.ui-offset-10.ui-skip-huge.ui-mobile-expand
+        .ui-grid-50.ui-mobile-expand
+          .ui-content-link
+            - var categories = user.subscription.categories.join(',')
+            - var filter = (categories ? '?categories[$in]=' + categories : '')
+            a(href=normalize('/articles/random' + filter))
+              h4 Random Article
+        .ui-grid-50.ui-mobile-expand
+          .ui-content-link
+            a(href='/visual')
+              h4 Data Visualization
