@@ -25,7 +25,8 @@ exports.template = {
     'affiliation': '',
     'location': '',
     'research': '',
-    'website': ''
+    'website': '',
+    'orcid': ''
   },
   'auth': {
     'created': new Date(0),
@@ -410,7 +411,7 @@ exports.grant = function (user) {
   var uid = user.uid;
   return {
     isPublic: uid >= exports.range,
-    isModerator: role.match(/^(moderator|administrator)$/) !== null,
+    isModerator: /^(moderator|administrator)$/.test(role),
     articlePost: reputation >= article.post,
     editMetadata: reputation >= article.edit
   };

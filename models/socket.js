@@ -12,7 +12,7 @@ module.exports = function (server, secret) {
     verifyClient: function (client) {
       var environment = settings.environment;
       var host = settings[environment].host;
-      // We should always verify the connection's origin 
+      // We should always verify the connection's origin
       // and decide whether or not to accept it.
       if (client.origin === 'http://' + host) {
         return true;
@@ -54,7 +54,11 @@ module.exports = function (server, secret) {
     var req = socket.upgradeReq;
     cookieParser(req, null, function () {
       // Retrieve user identity information from cookies
-      var sender = req.signedCookies;
+      var cookies = req.signedCookies;
+      var sender = {
+        uid: cookies.uid,
+        name: cookies.name
+      };
       socket.uid = sender.uid;
       socket.safe = false;
       socket.receivers = socketServer.users;

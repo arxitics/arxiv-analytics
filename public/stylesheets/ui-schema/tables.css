@@ -7,16 +7,14 @@
 }
 
 .ui-table-bordered {
-  border: 2px solid #ddd;
-}
-
-.ui-table-bordered th,
-.ui-table-bordered td {
   border: 1px solid #ddd;
+  border-collapse: separate;
+  border-radius: .4rem;
 }
 
-.ui-table-bordered th {
-  border-bottom-width: 2px;
+.ui-table-bordered th + th,
+.ui-table-bordered td + td {
+  border-left: 1px solid #ddd;
 }
 
 .ui-table-hover tr:hover td,
@@ -38,5 +36,3 @@
 .ui-table-columns-3 td:first-child {
   width: 20%;
 }
-
-

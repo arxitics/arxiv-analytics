@@ -22,13 +22,18 @@ articles.get('/', function (req, res) {
   var tab = query.sort || 'views';
   var filter = {};
   var search = {};
-  var unfiltered = Object.keys(query).every(function (field) {
-    return String(field).match(/^categor(y|ies)$/) === null;
+  var filtered = Object.keys(query).some(function (field) {
+    return /^categor(y|ies)$/.test(String(field));
   });
-  if (req.logged && unfiltered) {
+  if (req.logged && !filtered) {
     var categories = req.user.subscription.categories;
     if (categories.length) {
       search.categories = {'$in': categories};
+    }
+  }
+  for (var key in query) {
+    if (query.hasOwnProperty(key)) {
+      filter[key] = String(query[key]).trim();
     }
   }
   search.sort = {};
@@ -93,7 +98,7 @@ articles.use(function (req, res, next) {
   var identifier = (path.match(route) || [''])[0];
   var id = identifier.replace(/v\d+$/, '');
   var version = (identifier.match(/v\d+$/) || ['v0'])[0];
-  if (identifier.match(regexp.arxiv.identifier)) {
+  if (regexp.arxiv.identifier.test(identifier)) {
     article.lookup({'id': id}, function (eprint) {
       if (eprint) {
         var user = req.user;
@@ -126,7 +131,7 @@ articles.post('*/reviews/submit', function (req, res) {
   var content = String(body.content).trim();
   var pattern = regexp.review;
   if (req.privilege.isPublic) {
-    if (title.match(pattern.title) && content.match(pattern.content)) {
+    if (pattern.title.test(title) && pattern.content.test(content)) {
       var user = req.user;
       var eprint = req.eprint;
       var id = eprint.id;
@@ -185,7 +190,7 @@ articles.post('*/reviews/preview', function (req, res) {
   var title = String(body.title).trim();
   var content = String(body.content).trim();
   var pattern = regexp.review;
-  if (title.match(pattern.title) && content.match(pattern.content)) {
+  if (pattern.title.test(title) && pattern.content.test(content)) {
     res.render('articles/reviews/preview', {
       parse: review.parse,
       preview: {
@@ -266,7 +271,7 @@ articles.post('*/edit', function (req, res) {
         if (key === 'subjects') {
           values = values.filter(function (value) {
             return ['pacs', 'msc', 'ccs', 'jel'].some(function (code) {
-              return value.match(arxiv[code]);
+              return arxiv[code].test(value);
             });
           });
         } else if (key === 'themes') {
@@ -279,7 +284,7 @@ articles.post('*/edit', function (req, res) {
             }
           }
           values = scheme.parse(values.filter(function (value) {
-            return value.match(regexp.account.theme);
+            return regexp.account.theme.test(value);
           }));
         } else if (key === 'tags') {
           var tags = scheme.tags;
@@ -298,8 +303,8 @@ articles.post('*/edit', function (req, res) {
       if (body.hasOwnProperty('publication.' + entry)) {
         var value = String(body['publication.' + entry]).trim();
         var pattern = arxiv.publication[entry];
-        if (!pattern || value.match(pattern)) {
-          if (value.match(/^[1-9]\d*$/)) {
+        if (!pattern || pattern.test(value)) {
+          if (/^[1-9]\d*$/.test(value)) {
             value = parseInt(value);
           }
           if (value) {
@@ -313,7 +318,7 @@ articles.post('*/edit', function (req, res) {
     for (var key in note) {
       if (note.hasOwnProperty(key) && body.hasOwnProperty('note.' + key)) {
         var value = String(body['note.' + key]).trim();
-        if (value.match(/^\d+$/)) {
+        if (/^\d+$/.test(value)) {
           value = parseInt(value);
         }
         if (value) {

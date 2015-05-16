@@ -1,0 +1,16 @@
+
+extends ../layout
+
+block variables
+  - var pageTitle = __('help.heading') + ': ' + pageHeading
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary.ui-text-left-right
+      span= __('help.heading')
+      span.ui-font-medium
+        a(href='/help' accesskey='z' tabindex='2') Back to Table of Contents
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      section
+        h4.ui-header-compact= pageHeading
+        block content

@@ -20,27 +20,23 @@
   overflow: auto;
 }
 
-.ui-container-flex {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-
-.ui-grid-fluid {
+.ui-container-grid {
   display: block;
   height: auto;
 }
 
-.ui-grid-column {
-  display: table-cell !important;
-  float: none !important;
-  vertical-align: top;
+.ui-container-flex {
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .ui-grid-10,
 .ui-grid-15,
+.ui-grid-17,
 .ui-grid-20,
 .ui-grid-25,
 .ui-grid-30,
@@ -52,6 +48,7 @@
 .ui-grid-70,
 .ui-grid-75,
 .ui-grid-80,
+.ui-grid-83,
 .ui-grid-85,
 .ui-grid-90 {
   -moz-box-sizing: border-box;
@@ -64,6 +61,11 @@
   padding-right: 2rem;
 }
 
+.ui-grid-collpase {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .ui-grid-10,
 .ui-fluid-10 {
   width: 10%;
@@ -72,6 +74,11 @@
 .ui-grid-15,
 .ui-fluid-15 {
   width: 15%;
+}
+
+.ui-grid-17,
+.ui-fluid-17 {
+  width: 16.6667%;
 }
 
 .ui-grid-20,
@@ -129,6 +136,11 @@
   width: 80%;
 }
 
+.ui-grid-83,
+.ui-fluid-83 {
+  width: 83.3333%;
+}
+
 .ui-grid-85,
 .ui-fluid-85 {
   width: 85%;
@@ -139,12 +151,36 @@
   width: 90%;
 }
 
+.ui-box-tiny {
+  width: 4em;
+}
+
+.ui-box-small {
+  width: 8em;
+}
+
+.ui-box-medium {
+  width: 16em;
+}
+
+.ui-box-large {
+  width: 24em;
+}
+
+.ui-box-huge {
+  width: 32em;
+}
+
 .ui-offset-10 {
   margin-left: 10%;
 }
 
 .ui-offset-15 {
   margin-left: 15%;
+}
+
+.ui-offset-17 {
+  margin-left: 16.6667%;
 }
 
 .ui-offset-20 {
@@ -222,16 +258,6 @@
   width: 100% !important;
 }
 
-.ui-absolute-center {
-  position: absolute;
-  height: 50vh;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-}
-
 .ui-vertical-center {
   display: table-cell !important;
   height: 50vh;
@@ -250,7 +276,7 @@
  * Micro clearfix hack.
  */
 
-.ui-grid-fluid:after,
+.ui-container-grid:after,
 .ui-float-left:after,
 .ui-float-right:after,
 .ui-float-clear:after {
@@ -271,21 +297,21 @@
 }
 
 .ui-fixed-top {
-  top: 0;
   border-width: 0 0 1px;
+  top: 0;
 }
 
 .ui-fixed-bottom {
-  bottom: 0;
   border-width: 1px 0 0;
+  bottom: 0;
 }
 
 .ui-fixed-width {
-  width: 1.25em !important;
+  width: 1.42857em !important;
 }
 
 .ui-fixed-height {
-  height: 1.25em !important;
+  height: 1.42857em !important;
 }
 
 .ui-columns-2 {
@@ -305,4 +331,3 @@
   -webkit-column-gap: 2em;
   column-gap: 2em;
 }
-

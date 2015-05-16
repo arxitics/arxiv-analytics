@@ -33,7 +33,7 @@ block main
         button(id='chat-close' title='Close the connection') Close
     .ui-content-alert.ui-skip-large
       ul.ui-list-unstyled(id='chat-room')
-      form.ui-form-fluid(id='chat-form' action='/chat' method='post' role='form')
+      form.ui-form-horizontal(id='chat-form' action='/chat' method='post' role='form')
         input(type='hidden' name='_csrf' value=csrfToken)
         textarea(name='content' rows='3' placeholder='Markdown and LaTeX are supported.' title='Please mind your manners and watch your tone' autofocus)
         .ui-skip-small
@@ -50,4 +50,4 @@ block main
 
 block append foot
   include mathjax
-  script(src='#{appStorage}/javascripts/chat-#{appVersion}.min.js')
+  script(src='#{appStorage}/javascripts/chat-1.0.2.min.js')

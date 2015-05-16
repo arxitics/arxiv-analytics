@@ -5,10 +5,12 @@
 var express = require('express');
 var account = require('../models/account');
 var arxiv = require('../models/arxiv');
+var inspire = require('../models/inspire');
+var adsabs = require('../models/adsabs');
 var article = require('../models/article');
 var scheme = require('../models/scheme');
 var statistics = require('../models/statistics');
-var settings = require('../settings').admin;
+var settings = require('../settings');
 
 var admin = express.Router();
 
@@ -34,6 +36,45 @@ admin.get('/eprints/update', function (req, res) {
   arxiv.update(req.query, function (success) {
     res.render('admin');
   });
+});
+
+// GET method for eprint patches
+admin.get('/eprints/patch', function (req, res) {
+  if (settings.arxiv.patch) {
+    var query = req.query;
+    var count = query.count || 0;
+    var skip = Math.max(parseInt(query.skip) || 0, 0);
+    var limit = Math.min(parseInt(query.limit) || 5, 10);
+    var length = Math.ceil(count / limit);
+    if (length) {
+      var interval = settings.arxiv.interval;
+      Array.apply(null, {length: length}).forEach(function(value, index) {
+        setTimeout(function () {
+          article.find({
+            'analyses.authors.affiliation': {'$exists': true},
+            'skip': skip,
+            'limit': limit
+          }, function (eprints) {
+            if (eprints.length) {
+              eprints.forEach(function (eprint) {
+                var id = eprint.id;
+                arxiv.update({'list': id}, function (success) {
+                  console.log('updated eprint ' + id + ' successfully');
+                });
+              });
+            } else {
+              console.log('no eprints need patches');
+            }
+          });
+        }, interval * index);
+      });
+    }
+    res.render('admin');
+  } else {
+    res.render('403', {
+      message: 'This page has been locked by administrator.'
+    });
+  }
 });
 
 // GET eprint RSS feeds
@@ -62,12 +103,12 @@ admin.get('/eprints/feed', function (req, res) {
 
 // GET method for eprint check
 admin.get('/eprints/check', function (req, res) {
-  article.find(req.query, function (docs) {
-    if (docs.length) {
-      var last = docs.length - 1;
-      docs.forEach(function (doc, index) {
-        var id = doc.id;
-        var version = parseInt(doc.version.slice(1));
+  article.find(req.query, function (eprints) {
+    if (eprints.length) {
+      var last = eprints.length - 1;
+      eprints.forEach(function (eprint, index) {
+        var id = eprint.id;
+        var version = parseInt(eprint.version.slice(1));
         while (version--) {
           var identifier = id + 'v' + (version + 1);
           arxiv.retrieve(identifier, function () {
@@ -86,13 +127,14 @@ admin.get('/eprints/check', function (req, res) {
 
 // GET method for fetching eprints
 admin.get('/eprints/fetch', function (req, res) {
-  if (settings.eprints.fetch) {
+  if (settings.arxiv.fetch) {
     var query = req.query;
     var category = query.category;
-    var skip = parseInt(query.skip) || 0;
+    var start = parseInt(query.start) || 0;
+    var end = parseInt(query.end) || -1;
     var categories = statistics.categories.map(function (item) {
       return item.category;
-    }).slice(skip);
+    }).slice(start, end);
     if (category && categories.indexOf(category) !== -1) {
       arxiv.fetch(query, function (success) {
         if (success) {
@@ -100,7 +142,7 @@ admin.get('/eprints/fetch', function (req, res) {
         }
       });
     } else {
-      var interval = settings.eprints.interval || 0;
+      var interval = settings.arxiv.interval || 0;
       categories.forEach(function (category, index) {
         setTimeout(function () {
           query.category = category;
@@ -110,6 +152,66 @@ admin.get('/eprints/fetch', function (req, res) {
             }
           });
         }, 60 * interval * index);
+      });
+    }
+    res.render('admin');
+  } else {
+    res.render('403', {
+      message: 'This page has been locked by administrator.'
+    });
+  }
+});
+
+// GET method for fetching InspireHEP metadata
+admin.get('/inspire/fetch', function (req, res) {
+  if (settings.inspire.fetch) {
+    var query = req.query;
+    if (query && query.hasOwnProperty('skip')) {
+      inspire.update(query, function (success) {
+        if (success) {
+          console.log('requested to update INSPIRE-HEP metadata');
+        }
+      });
+    } else {
+      inspire.fetch(query, function (success) {
+        if (success) {
+          console.log('requested to fetch INSPIRE-HEP metadata');
+        }
+      });
+    }
+    res.render('admin');
+  } else {
+    res.render('403', {
+      message: 'This page has been locked by administrator.'
+    });
+  }
+});
+
+// GET method for fetching ADS metadata
+admin.get('/adsabs/fetch', function (req, res) {
+  if (settings.adsabs.fetch) {
+    var query = req.query;
+    if (query && query.hasOwnProperty('skip')) {
+      adsabs.update(query, function (success) {
+        if (success) {
+          console.log('requested to update ADS metadata');
+        }
+      });
+    } else {
+      var interval = settings.adsabs.interval || 0;
+      var start = parseInt(query.start) || 0;
+      var end = parseInt(query.end) || -1;
+      statistics.submissions.map(function (item) {
+        return item.month;
+      }).slice(start, end).forEach(function (month, index) {
+        setTimeout(function () {
+          query.month = month;
+          adsabs.fetch(query, function (success) {
+            if (success) {
+              console.log('requested to fetch ADS metadata in month ' + month);
+            }
+          });
+        }, interval * index);
       });
     }
     res.render('admin');

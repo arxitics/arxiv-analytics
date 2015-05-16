@@ -1,13 +1,22 @@
 
-h3.ui-header-primary.ui-text-left-right
-  span User: #{uid} &lt;#{profile.name}&gt;
-  span.ui-text-list.ui-font-medium(role='navigation')
-    - var authorizedLinks = ['profile', 'preferences', 'bookmarks', 'publications', 'documents', 'messages']
-    - var guestLinks = ['profile', 'bookmarks', 'publications', 'documents']
-    - var links = (authorized) ? authorizedLinks : guestLinks
-    each page in links
-      - var link = '/users/' + uid + (page === 'profile' ? '' : '/' + page)
-      if page === pageID
-        a.ui-text-active(href=link)= __(page + '.heading')
-      else 
-        a(href=link)= __(page + '.heading')
+extends ../layout
+
+block variables
+  - var userID = 'User: ' + uid + ' <' + profile.name + '>'
+  - var pageTitle = userID + ' ' + __(pageID + '.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary.ui-text-left-right
+      span= userID
+      span.ui-text-list.ui-font-medium(role='navigation')
+        - var authorizedLinks = ['profile', 'preferences', 'bookmarks', 'publications', 'documents', 'messages']
+        - var guestLinks = ['profile', 'bookmarks', 'publications', 'documents']
+        - var links = (authorized) ? authorizedLinks : guestLinks
+        each page in links
+          - var link = '/users/' + uid + (page === 'profile' ? '' : '/' + page)
+          if page === pageID
+            a.ui-text-active(href=link)= __(page + '.heading')
+          else 
+            a(href=link)= __(page + '.heading')
+    block content

@@ -1,7 +1,7 @@
 
 extends review
 
-block content
+block review
   - var pid = review.pid
   section
     - var author = review.author
@@ -15,7 +15,7 @@ block content
           | , edited 
           span #{edited}
         | )
-    .ui-content-post!= parse(review.content)
+    .ui-article-body!= parse(review.content)
     if logged
       ul.ui-list-inline.ui-text-right
         - var uid = user.uid
@@ -84,8 +84,8 @@ block content
           if index !== last
             hr
   if logged
-    form.ui-form-fluid(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
-        .ui-grid-fluid
+    form.ui-form-horizontal.ui-skip-large(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
+        .ui-container-grid
           input(type='hidden' name='_csrf' value=csrfToken)
           textarea(name='content' rows='6' placeholder='Please share with us if you have any constructive comments. Markdown and LaTeX are supported.' title='At least 40 characters' required autofocus)
           .ui-skip-small

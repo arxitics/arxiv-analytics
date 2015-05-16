@@ -1,25 +1,22 @@
 
-extends ../../layout
+extends ../account
 
-block variables
+block prepend variables
   - var pageID = 'publications'
-  - var pageTitle = __('publications.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include ../account
-    .ui-grid-70.ui-offset-15.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate action='/users/#{uid}/publications/submit' method='post' role='form')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        fieldset
-          legend Add New Publications
-          label.ui-grid-15(for='article-id') Article ID
-          .ui-grid-85
-            textarea(id='article-id' name='identifiers' rows='3' placeholder='math/0509560, math/0610604,  1101.5707, 1206.1893' title='Multile articles are separated by commas' required)
-          .ui-grid-85.ui-offset-15
-            label
-              input(type='checkbox' name='certified' value='true' required)
-              |  I certify that I am an author of these articles.
-        .ui-text-center.ui-skip-large
-          button.ui-button-primary(type='submit') Submit
-          button.ui-offset-medium(type='reset') Reset
+block content
+  .ui-grid-70.ui-offset-15.ui-mobile-expand
+    form.ui-form-horizontal(data-schema-validate action='/users/#{uid}/publications/submit' method='post' role='form')
+      input(type='hidden' name='_csrf' value=csrfToken)
+      fieldset
+        legend Add New Publications
+        label.ui-grid-15(for='article-id') Article ID
+        .ui-grid-85
+          textarea(id='article-id' name='identifiers' rows='3' placeholder='math/0509560, math/0610604,  1101.5707, 1206.1893' title='Multile articles are separated by commas' required)
+        .ui-grid-85.ui-offset-15
+          label
+            input(type='checkbox' name='certified' value='true' required)
+            |  I certify that I am an author of these articles.
+      .ui-text-center.ui-skip-large
+        button.ui-button-primary(type='submit') Submit
+        button.ui-offset-medium(type='reset') Reset

@@ -6,7 +6,7 @@ block variables
   - var pageTitle = 'Articles'
 
 block main
-  - var baseURL = location.replace(/&?page=\d*/, '')
+  - var baseURL = location.replace(/(^|\&|(\?))page=\d*/, '$2')
   article.ui-container-fluid.ui-mobile-expand
     h3.ui-header-primary.ui-text-left-right
       span Articles
@@ -16,7 +16,7 @@ block main
           - var link = '/articles' + (tab === 'views' ? '' : '?sort=' + tab)
           - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
           a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
-    .ui-grid-fluid
+    .ui-container-grid
       .ui-grid-70.ui-mobile-expand
         - var startItem = startIndex + 1
         - var endItem = Math.min(endIndex, count)

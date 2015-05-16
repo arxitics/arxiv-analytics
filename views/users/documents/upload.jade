@@ -1,43 +1,55 @@
 
-extends ../../layout
+extends ../account
 
-block variables
+block prepend variables
   - var pageID = 'documents'
-  - var pageTitle = __('documents.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include ../account
-    .ui-grid-70.ui-offset-15.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate action='/users/#{uid}/documents/submit' method='post' enctype='multipart/form-data' role='form')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        fieldset
-          legend Upload New Documents
-          label.ui-grid-15(for='type') Type
-          .ui-grid-85
-            input(id='type' type='text' name='type' placeholder='reports' pattern=pattern.type title='You should choose from predefined resource types. See a list of resource types in the help center' required)
-          label.ui-grid-15(for='source') Source
-          .ui-grid-85
-            input(id='source' type='text' name='source' value='Arxitics OSS' pattern=pattern.source title='Please specify the source for your document' disabled)
-          label.ui-grid-15(for='language') Language
-          .ui-grid-85
-            input(id='language' type='text' name='language' placeholder='en' pattern=pattern.language title='Please specify the two-letter language code of your document' required)
-          label.ui-grid-15(for='source') Title
-          .ui-grid-85
-            input(id='title' type='text' name='title' placeholder='Introduction to the Structure and Properties of Graphene' pattern=pattern.title title='Please specify the title of your document' required) 
-          label.ui-grid-15(for='href') Reference
-          .ui-grid-85
-            input(id='href' type='url' name='href' placeholder='http://oss.arxitics.com/users/#{uid}/pdf/graphene.pdf' pattern=pattern.href title='Please specify a unique hyperlink reference to your document. Valid document names should consist of at least four characters from the set of lowercase letters, digits, the hyphen, and the period' required)
-          label.ui-grid-15(for='file') File
-          .ui-grid-85
-            input(id='file' type='file' name='file' accept='.pdf, .svg, .png, .zip, text/plain' title='We only accept .pdf, .svg, .png, .zip, and text files' required)
-          .ui-grid-85.ui-offset-15
-            label
-              input(type='checkbox' name='certified' value='true' required)
-              |  I certify that this is my own work and I agree to distribute it under 
-              a(href='http://creativecommons.org/licenses/by-sa/4.0/' rel='external' target='_blank')
-                abbr(title='Creative Commons Attribution-ShareAlike 4.0 International') CC BY-SA 4.0
-              | .
-        .ui-text-center.ui-skip-large
-          button.ui-button-primary(type='submit') Submit
-          button.ui-offset-medium(type='reset') Reset
+block content
+  .ui-grid-70.ui-offset-15.ui-mobile-expand
+    form.ui-form-horizontal(data-schema-validate action='/users/#{uid}/documents/submit' method='post' enctype='multipart/form-data' role='form')
+      input(type='hidden' name='_csrf' value=csrfToken)
+      fieldset
+        legend Upload New Documents
+        label.ui-grid-15(for='type') Type
+        .ui-grid-85
+          input(id='type' type='text' name='type' placeholder='reports' pattern=pattern.type title='You should choose from predefined resource types. See a list of resource types in the help center' required)
+        label.ui-grid-15(for='source') Source
+        .ui-grid-85
+          input(id='source' type='text' name='source' value='Arxitics OSS' pattern=pattern.source title='Please specify the source for your document' disabled)
+        label.ui-grid-15(for='language') Language
+        .ui-grid-85
+          input(id='language' type='text' name='language' placeholder='en' pattern=pattern.language title='Please specify the two-letter language code of your document' required)
+        label.ui-grid-15(for='title') Title
+        .ui-grid-85
+          input(id='title' type='text' name='title' placeholder='Introduction to the Structure and Properties of Graphene' pattern=pattern.title title='Please specify the title of your document' required) 
+        label.ui-grid-15(for='href') Reference
+        .ui-grid-85
+          input(id='href' type='url' name='href' placeholder='http://oss.arxitics.com/users/#{uid}/pdf/graphene.pdf' pattern=pattern.href title='Please specify a unique hyperlink reference to your document. Valid document names should consist of at least four characters from the set of lowercase letters, digits, the hyphen, and the period' required)
+        label.ui-grid-15(for='file') File
+        .ui-grid-85
+          input(id='file' type='file' name='file' accept='application/pdf, image/svg+xml, image/png, application/zip, text/plain' title='We only accept .pdf, .svg, .png, .zip, and text files' required)
+        .ui-grid-85.ui-offset-15
+          label
+            input(type='checkbox' name='certified' value='true' required)
+            |  I certify that this is my own work and I agree to distribute it under 
+            a(href='http://creativecommons.org/licenses/by-sa/4.0/' rel='external' target='_blank')
+              abbr(title='Creative Commons Attribution-ShareAlike 4.0 International') CC BY-SA 4.0
+            | .
+      .ui-text-center.ui-skip-large
+        button.ui-button-primary(type='submit') Submit
+        button.ui-offset-medium(type='reset') Reset
+
+block append foot
+  script.
+    $(document).ready(function () {
+      $('#type, #language, #href').on('keypress blur', function () {
+        var $_this = $(this);
+        $_this.val($_this.val().toLowerCase());
+      });
+      $('#file').on('change', function () {
+        var file = $(this).get(0).files[0];
+        if (file.size > 100000000) {
+          $_this.val('');
+        }
+      });
+    });

@@ -3,10 +3,10 @@
  */
 
 var db = require('./db');
-var abbrev = require('./abbrev');
 var regexp = require('./regexp');
+var resource = require('./resource');
 var analysis = require('./analysis');
-var settings = require('../settings').search;
+var settings = require('../settings');
 
 // Article template
 exports.template = {
@@ -73,6 +73,7 @@ exports.classifications = [
 // Article metadata filed aliases
 exports.aliases = {
   author: 'authors',
+  affiliation: 'affiliations',
   category: 'categories',
   subject: 'subjects',
   theme: 'themes',
@@ -95,7 +96,8 @@ exports.wildcards = [
   'title',
   'comment',
   'journal',
-  'abstract'
+  'abstract',
+  'analyses.authors.affiliations'
 ];
 
 // Search options as filters
@@ -147,7 +149,7 @@ exports.parse = function (field, value) {
     var matches = value.match(regexp.syntax);
     if (matches) {
       result = new RegExp(matches[1], matches[2]);
-    } else if (value.match(/^".+"$/)) {
+    } else if (/^".+"$/.test(value)) {
       result = value.replace(/^"|"$/g, '');
     } else if (literal.hasOwnProperty(value)) {
       result = literal[value];
@@ -155,10 +157,20 @@ exports.parse = function (field, value) {
       result = exports.parseDate(value);
     } else if (wildcards.indexOf(field) !== -1) {
       result = new RegExp(String(value).replace(/\s|,/g, ' .*'), 'i');
-    } else if (value.match(/[,;]/)) {
+    } else if (/[,;]/.test(value)) {
       result = value.split(/\s*[,;]\s*/).map(function (item) {
         return exports.parse(field, item);
       });
+    } else if (field === 'categories') {
+      if (/\.[a-z]{2}$/i.test(value)) {
+        result = value.replace(/^[a-z\-]+\./i, function (str) {
+          return str.toLowerCase();
+        }).replace(/\.[a-z]{2}$/i, function (str) {
+          return str.toUpperCase();
+        });
+      } else {
+        result = value.toLowerCase();
+      }
     } else {
       var numeric = parseInt(value);
       if (String(numeric) === value) {
@@ -174,10 +186,8 @@ exports.parse = function (field, value) {
     for (var key in result) {
       if (result.hasOwnProperty(key)) {
         var term = result[key];
-        if (operators.indexOf(key) !== -1) {
-          term = [].concat(term);
-        }
-        result[key] = exports.parse(key, term);
+        result[key] = (operators.indexOf(key) === -1) ?
+          exports.parse(key, term) : exports.parse(field, [].concat(term));
       }
     }
     if (operators.indexOf(field) !== -1) {
@@ -197,7 +207,7 @@ exports.parse = function (field, value) {
 // Parse date
 exports.parseDate = function (value) {
   var result = {};
-  if (value.match(/[,;]/)) {
+  if (/[,;]/.test(value)) {
     var values = value.split(/\s*[,;]\s*/);
     result = {
       '$gte': new Date(values[0] || 0),
@@ -207,11 +217,11 @@ exports.parseDate = function (value) {
     var dateFrom = new Date(value);
     var dateTo = new Date(value);
     result['$gte'] = dateFrom;
-    if (value.match(/^\d{4}$/)) {
+    if (/^\d{4}$/.test(value)) {
       dateTo.setFullYear(dateFrom.getFullYear() + 1);
-    } else if (value.match(/^\d{4}\-\d{2}$/)) {
+    } else if (/^\d{4}\-\d{2}$/.test(value)) {
       dateTo.setMonth(dateFrom.getMonth() + 1);
-    } else if (value.match(/^\d{4}\-\d{2}\-\d{2}$/)) {
+    } else if (/^\d{4}\-\d{2}\-\d{2}$/.test(value)) {
       dateTo.setDate(dateFrom.getDate() + 1);
     }
     if (dateTo.getTime() < Date.now()) {
@@ -246,20 +256,23 @@ exports.parseDateRange = function (query) {
 
 // Preprocess query parameters
 exports.preprocess = function (query) {
+  var operators = exports.operators;
+  var constraints = query['$and'] || [];
   for (var key in query) {
-    if (query.hasOwnProperty(key)) {
+    if (query.hasOwnProperty(key) && operators.indexOf(key) === -1) {
+      var state = 'pass';
       var value = query[key];
+      var object = {};
       if (Array.isArray(value)) {
         value = value.join(';');
       }
       value = String(value).trim();
       if (value === '') {
-        delete query[key];
+        state = 'deleted';
       } else if (value.indexOf(';') !== -1) {
         var values = value.split(/\s*;\s*/);
         var conjunctions = [];
         var disjunctions = [];
-        var object = {};
         values.filter(function (item, index) {
           return item !== '' && values.indexOf(item) === index;
         }).forEach(function (item) {
@@ -273,20 +286,35 @@ exports.preprocess = function (query) {
         if (disjunctions.length) {
           object['$in'] = disjunctions;
         }
-        query[key] = object;
+        state = 'changed';
       } else if (value.indexOf(',') !== -1) {
         var values = value.split(/\s*,\s*/);
         values = values.filter(function (item, index) {
           return item !== '' && values.indexOf(item) === index;
         });
-        query[key] = {'$in': values};
+        object = {'$in': values};
+        state = 'changed';
+      }
+      if (key === 'doi') {
+        constraints.push({
+          '$or': [{'doi': value}, {'analyses.publication.doi': value}]
+        });
+        state = 'deleted';
+      }
+      if (state === 'deleted') {
+        delete query[key];
+      } else if (state === 'changed') {
+        query[key] = object;
       }
     }
+  }
+  if (constraints.length) {
+    query['$and'] = constraints;
   }
   if (!query.sort) {
     query.sort = (query.hasOwnProperty('q')) ? 'relevance' : 'published';
   }
-  query.limit = Math.min(parseInt(query.limit) || settings.limit, 1000);
+  query.limit = Math.min(parseInt(query.limit) || settings.search.limit, 1000);
   query['date-range'] = query['date-range'] || 'all';
   return query;
 };
@@ -320,22 +348,25 @@ exports.find = function (query, callback) {
   var skip = parseInt(query.skip) || 0;
   var limit = parseInt(query.limit) || 0;
   var template = exports.template;
+  var analyses = template.analyses;
   var filters = exports.filters;
   for (var key in query) {
     if (query.hasOwnProperty(key)) {
       var value = query[key];
-      key = key.toLowerCase().replace(/[^\w\-\.]/g, '');
+      key = key.toLowerCase().replace(/[^\w\-\.\$]/g, '');
       if (filters.indexOf(key) === -1) {
         var field = exports.aliases[key] || key;
         var entry = field.replace(/\..+/, '');
-        if (template.analyses.hasOwnProperty(entry)) {
+        if (analyses.hasOwnProperty(entry)) {
           if (field !== 'authors') {
             field = 'analyses.' + field;
           }
+        } else if (field === 'affiliations') {
+          field = 'analyses.authors.affiliations';
         } else if (field === 'topics') {
           field = 'analyses.themes.topics';
         } else if (field === 'journal') {
-          var collected = regexp.journals.some(function (journal) {
+          var collected = resource.journals.some(function (journal) {
             return journal.label === value;
           });
           if (collected) {
@@ -365,10 +396,10 @@ exports.find = function (query, callback) {
     projection['score'] = {'$meta': 'textScore'};
   }
   if (typeof sort === 'string') {
-    if (sortby === 'readers') {
-      sortby = 'analyses.feedback.readers';
-    } else if (sortby === 'rating') {
-      sortby = 'analyses.feedback.score';
+    if (analyses.feedback.hasOwnProperty(sortby)) {
+      sortby = 'analyses.feedback.' + sortby;
+    } else if (sortby === 'citations') {
+      sortby = 'analyses.citations.count';
     }
     sort = {};
     if (criteria.hasOwnProperty('$text')) {
@@ -498,13 +529,13 @@ exports.commit = function (article, callback) {
   var version = article.revisions.version;
   var analyses = article.analyses;
   exports.lookup({'id': id}, function (eprint) {
-    var unused = true;
+    var approved = true;
     if (eprint) {
       var revisions = eprint.revisions;
-      unused = revisions.every(function (revision) {
+      approved = revisions.every(function (revision) {
         return revision.version !== version;
       });
-      if (unused) {
+      if (approved) {
         var submission = article.revisions;
         var keys = ['title', 'abstract', 'comment', 'journal', 'doi'];
         if (version < eprint.version) {
@@ -567,14 +598,33 @@ exports.commit = function (article, callback) {
       eprint.version = version;
       eprint.revisions = [article.revisions];
     }
-    if (unused) {
+    if (approved) {
       console.log('updating version ' + version + ' of eprint ' + id);
       exports.upsert(id, {'$set': eprint}, function (updated) {
         analysis.parse(updated, callback);
       });
     } else {
-      return callback(eprint);
+      if (settings.arxiv.patch) {
+        exports.patch(article, callback);
+      } else {
+        return callback(eprint);
+      }
     }
+  });
+};
+
+// Update article patches
+exports.patch = function (article, callback) {
+  callback = (typeof callback === 'function') ? callback : function() {};
+  var id = article.id;
+  var changes = {
+    'analyses.authors': article['analyses.authors']
+  };
+  exports.update({'id': id}, {'$set': changes}, function (eprint) {
+    if (eprint) {
+      console.log('updated patch for eprint ' + id);
+    }
+    return callback(eprint);
   });
 };
 
@@ -609,10 +659,16 @@ exports.exportBibtex = function (eprint) {
   publication['eprint'] = eprint.id;
   publication['primaryClass'] = eprint.categories[0];
   publication['author'] = eprint.authors.join(' and ');
-  publication['title'] = eprint.title; 
+  publication['title'] = eprint.title;
   if (publication.hasOwnProperty('publisher')) {
-    var publisher = publication['publisher'];
-    publication['publisher'] = abbrev.publisher[publisher] || publisher;
+    var label = publication['publisher'];
+    resource.publishers.some(function (publisher) {
+      if (publisher.label === label) {
+        publication['publisher'] = publisher.entity;
+        return true;
+      }
+      return false;
+    });
   }
   if (eprint.hasOwnProperty('doi') && eprint.doi) {
     publication['doi'] = eprint.doi;
@@ -637,7 +693,7 @@ exports.parsePublication = function (eprint) {
   var doi = eprint.doi || publication.doi;
   var journal = publication.journal;
   if (doi && journal) {
-    regexp.journals.every(function (entry) {
+    resource.journals.some(function (entry) {
       if (entry.label === journal) {
         if (entry.hasOwnProperty('pdf')) {
           var pdf = doi.replace(entry.doi, entry.pdf);
@@ -659,9 +715,9 @@ exports.parsePublication = function (eprint) {
             publication['pdf'] = pdf;
           }
         }
-        return false;
+        return true;
       }
-      return true;
+      return false;
     });
   }
   return publication;
@@ -720,7 +776,7 @@ exports.subscribe = function (subscription) {
 // Article pagination
 exports.paginate = function (query, docs) {
   query.page = parseInt(query.page) || 1;
-  query.perpage = Math.max(Math.min(parseInt(query.perpage) || settings.perpage, 100), 10);
+  query.perpage = Math.max(Math.min(parseInt(query.perpage) || settings.search.perpage, 100), 10);
 
   var length = docs.length;
   var current = query.page;

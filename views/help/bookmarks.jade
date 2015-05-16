@@ -1,39 +1,34 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-bookmarks'
-  - var pageTitle = 'How to Manage Your Bookmarks'
+  - var pageHeading = 'How to Manage Your Bookmarks'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact How to Manage Your Bookmarks
-        div
-          p In the 
-            strong "Bookmarks"
-            |  page of your account, you can view bookmarks by types:
-          ul
-            li
-              strong Articles: 
-              |  Lists all the eprints you have bookmarked. Only when you have bookmarked an article, you are allowed to mark it as read.
-            li
-              strong Readings:
-              |  Lists all the eprints you have marked as read. Only when you have read an article, you are allowed to rate it.
-            li
-              strong Ratings:
-              |  Lists all the eprints you have rated. This list can only be viewed by yourself.
-            li
-              strong Edits:
-              |  Lists all the eprints you have edited the extended metadata.
-            li
-              strong Reviews:
-              |  Lists all the reviews you have bookmarked.
-            li
-              strong Votes:
-              |  Lists all the reviews you have voted.
-          p If you prefer to use a reference management software, 
-            a(href='https://www.zotero.org/' rel='external' target='_blank') Zotero
-            |  is a good choice.
+block content
+  div
+    p In the 
+      strong "Bookmarks"
+      |  page of your account, you can view bookmarks by types:
+    ul
+      li
+        strong Articles: 
+        |  Lists all the eprints you have bookmarked. Only when you have bookmarked an article, you are allowed to mark it as read.
+      li
+        strong Readings:
+        |  Lists all the eprints you have marked as read. Only when you have read an article, you are allowed to rate it.
+      li
+        strong Ratings:
+        |  Lists all the eprints you have rated. This list can only be viewed by yourself.
+      li
+        strong Edits:
+        |  Lists all the eprints you have edited the extended metadata.
+      li
+        strong Reviews:
+        |  Lists all the reviews you have bookmarked.
+      li
+        strong Votes:
+        |  Lists all the reviews you have voted.
+    p If you prefer to use a reference management software, 
+      a(href='https://www.zotero.org/' rel='external' target='_blank') Zotero
+      |  is a good choice.

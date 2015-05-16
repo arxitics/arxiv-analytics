@@ -9,7 +9,7 @@ block main
   .ui-container-fluid.ui-mobile-expand.ui-vertical-center
     if !authorized
       .ui-grid-40.ui-offset-10.ui-mobile-expand
-        form.ui-form-block(data-schema-validate='once' action='/auth' method='post' role='form')
+        form.ui-form-fluid(data-schema-validate='once' action='/auth' method='post' role='form')
           input(type='hidden' name='_csrf' value=csrfToken)
           .ui-input-addon
             label(for='email' title=__('login.email.label'))
@@ -18,7 +18,7 @@ block main
           .ui-input-addon.ui-skip-large
             label(for='key' title=__('login.key.label'))
               i(data-schema-icon='key') Key
-            input.ui-fluid-80(id='key' type='text' name='key' pattern=pattern.auth.key title=__('login.key.title'))
+            input.ui-fluid-80(id='key' type='text' name='key' inputmode='verbatim' pattern=pattern.auth.key title=__('login.key.title'))
           button.ui-button-primary.ui-skip-large(type='submit')= __('login.submit')
       .ui-grid-40.ui-mobile-expand
         .ui-content-alert.ui-alert-info
@@ -29,7 +29,7 @@ block main
             | . Please add this contact to your address book or white list to avoid spam filters.
     else
       .ui-grid-40.ui-offset-10.ui-mobile-expand
-        form.ui-form-block(data-schema-validate='once' action='/auth/login' method='post' role='form')
+        form.ui-form-fluid(data-schema-validate='once' action='/auth/login' method='post' role='form')
           input(type='hidden' name='_csrf' value=csrfToken)
           .ui-input-addon
             label(for='email' title=__('login.email.label'))

@@ -1,0 +1,46 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'tools/parser'
+  - var pageTitle = 'Expression Parser'
+
+block append head
+  style.
+    #math-notebook {
+      height: 50vh;
+      min-height: 20vh;
+      overflow-y: auto;
+      resize: vertical;
+    }
+    #math-notebook code {
+      color: #999;
+    }
+    #math-notebook > li + li {
+      margin-top: 1em;
+    }
+block main
+  aside.ui-grid-30.ui-mobile-expand
+    include toolset
+  article.ui-grid-70.ui-mobile-expand
+    h3.ui-header-primary Expression Parser
+    .ui-text-left-right
+      .ui-button-group.ui-space-collapse.ui-block-inline
+        button(id='notebook-view' title='View notebook history') View
+        button(id='notebook-clear' title='Clear current notebook') Clear
+        button(id='notebook-export' title='Export notebook data as JSON') Export
+        button(id='notebook-delete' title='Delete all notebook data') Delete
+      .ui-button-group.ui-space-collapse.ui-block-inline
+        a.ui-text-button(id='parser-examples' href='http://mathjs.org/' title='Visit the project Math.js' target='_blank') Math.js
+        a.ui-text-button(id='parser-examples' href='http://mathjs.org/examples/index.html' title='See some Math.js examples' target='_blank') Examples
+    .ui-content-alert.ui-skip-large
+      ul.ui-list-unstyled(id='math-notebook')
+      form.ui-form-horizontal(id='parser-form' action='/tools/parser' method='post' role='form')
+        input(type='hidden' name='_csrf' value=csrfToken)
+        textarea(name='expr' rows='3' placeholder='Supports arithmetic, complex numbers, matrices, trigonometry, probability, and units.' title='Powered by Math.js' autofocus)
+        .ui-skip-small
+          button.ui-button-primary(type='submit') Submit and Evaluate
+
+block append foot
+  include ../mathjax
+  script(src='#{appStorage}/javascripts/parser-1.0.0.min.js')

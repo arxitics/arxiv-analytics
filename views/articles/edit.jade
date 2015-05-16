@@ -1,80 +1,77 @@
 
-extends ../layout
+extends eprint
 
-block variables
+block prepend variables
   - var pageID = 'abstract'
-  - var pageTitle = __('abstract.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include eprint
-    .ui-grid-70.ui-offset-15.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate='changed' action='/articles/#{id}/edit' method='post' role='form')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        - var analyses = eprint.analyses
-        fieldset
-          legend Classifications
-          label.ui-grid-15(for='subjects') Subjects
+block content
+  .ui-grid-70.ui-offset-15.ui-mobile-expand
+    form.ui-form-horizontal(data-schema-validate='changed' action='/articles/#{id}/edit' method='post' role='form')
+      input(type='hidden' name='_csrf' value=csrfToken)
+      - var analyses = eprint.analyses
+      fieldset
+        legend Classifications
+        label.ui-grid-15(for='subjects') Subjects
+        .ui-grid-85
+          input(id='subjects' type='text' name='subjects' value=(analyses.subjects.join(', ') || false) placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class' autofocus)
+        label.ui-grid-15(for='themes') Themes
+        .ui-grid-85
+          textarea(id='themes' name='themes' rows='3' placeholder='nlin.SI: exactly solvable system, Painleve analysis; math.AP: soliton theory' title='You should choose from predefined themes. See a list of themes in the help center')= output(analyses.themes)
+        label.ui-grid-15(for='keywords') Keywords
+        .ui-grid-85
+          textarea(id='keywords' name='keywords' rows='3' title='Multiple keywords are separated by commas' required)= analyses.keywords.join(', ')
+        label.ui-grid-15(for='tags') Tags
+        .ui-grid-85
+          textarea(id='tags' name='tags' rows='3' placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')= analyses.tags.join(', ')
+      fieldset
+        legend Journal Information
+        - var publication = analyses.publication
+        label.ui-grid-15(for='publication.publisher') Publisher
+        .ui-grid-85
+          input(id='publication.publisher' type='text' name='publication.publisher' value=publication.publisher placeholder='Springer-Verlag' title='Please input the publisher\'s name')
+        label.ui-grid-15(for='publication.journal') Journal
+        .ui-grid-85
+          input(id='publication.journal' type='text' name='publication.journal' value=publication.journal placeholder='Commun. Math. Phys.' title='Please input the standard abbreviation for the journal name')
+        label.ui-grid-15(for='publication.year') Year
+        .ui-grid-85
+          input(id='publication.year' type='text' name='publication.year' value=publication.year pattern=pattern.year placeholder='2004' title='Please input the four-digit format of the year of publication')
+        label.ui-grid-15(for='publication.month') Month
+        .ui-grid-85
+          input(id='publication.month' type='text' name='publication.month' value=publication.month pattern=pattern.month placeholder='Dec' title='Please use the standard three-letter abbreviation for the month')
+        label.ui-grid-15(for='publication.volume') Volume
+        .ui-grid-85
+          input(id='publication.volume' type='text' name='publication.volume' value=publication.volume pattern=pattern.volume placeholder='252' title='Please input the volume of a journal')
+        label.ui-grid-15(for='publication.number') Number
+        .ui-grid-85
+          input(id='publication.number' type='text' name='publication.number' value=publication.number pattern=pattern.number placeholder='1-3' title='Please input the (issue) number of a journal if applicable')
+        label.ui-grid-15(for='publication.pages') Pages
+        .ui-grid-85
+          input(id='publication.pages' type='text' name='publication.pages' value=publication.pages pattern=pattern.pages placeholder='189-258' title='Please input one or more page numbers or range of numbers')
+        label.ui-grid-15(for='publication.doi') DOI
+        .ui-grid-85
+          input(id='publication.doi' type='text' name='publication.doi' value=(publication.doi || eprint.doi) placeholder='10.1007/s00220-004-1187-3' title='Please input the digital object identifier (DOI)')
+        label.ui-grid-15(for='publication.url') URL
+        .ui-grid-85
+          input(id='publication.url' type='url' name='publication.url' value=publication.url placeholder='http://link.springer.com/article/10.1007/s00220-004-1187-3' title='Please input a link to the published article')
+      fieldset
+        legend Miscellaneous
+        - var note = analyses.note
+        label.ui-grid-15(for='note.typesetting') Typesetting
+        .ui-grid-85
+          input(id='note.typesetting' type='text' name='note.typesetting' value=note.typesetting title='Please specify the typesetting system of the article' required)
+        label.ui-grid-15(for='note.pages') Pages
+        .ui-grid-85
+          input(id='note.pages' type='text' name='note.pages' value=note.pages title='Please input the page number of the PDF')
+        label.ui-grid-15(for='note.language') Language
+        .ui-grid-85
+          input(id='note.language' type='text' name='note.language' value=note.language title='Please specify the two-letter language code of the article' required)
+        label.ui-grid-15(for='note.license') License
+        .ui-grid-85
+          input(id='note.license' type='text' name='note.license' value=note.license title='Please do not edit this field unless the article is distributed under other licenses' required)
+        if privilege.isModerator
+          label.ui-grid-15(for='note.status') Status
           .ui-grid-85
-            input(id='subjects' type='text' name='subjects' value=(analyses.subjects.join(', ') || false) placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class' autofocus)
-          label.ui-grid-15(for='themes') Themes
-          .ui-grid-85
-            textarea(id='themes' name='themes' rows='3' placeholder='nlin.SI: exactly solvable system, Painleve analysis; math.AP: soliton theory' title='You should choose from predefined themes. See a list of themes in the help center')= output(analyses.themes)
-          label.ui-grid-15(for='keywords') Keywords
-          .ui-grid-85
-            textarea(id='keywords' name='keywords' rows='3' title='Multiple keywords are separated by commas' required)= analyses.keywords.join(', ')
-          label.ui-grid-15(for='tags') Tags
-          .ui-grid-85
-            textarea(id='tags' name='tags' rows='3' placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')= analyses.tags.join(', ')
-        fieldset
-          legend Journal Information
-          - var publication = analyses.publication
-          label.ui-grid-15(for='publication.publisher') Publisher
-          .ui-grid-85
-            input(id='publication.publisher' type='text' name='publication.publisher' value=publication.publisher placeholder='Springer-Verlag' title='Please input the publisher\'s name')
-          label.ui-grid-15(for='publication.journal') Journal
-          .ui-grid-85
-            input(id='publication.journal' type='text' name='publication.journal' value=publication.journal placeholder='Commun. Math. Phys.' title='Please input the standard abbreviation for the journal name')
-          label.ui-grid-15(for='publication.year') Year
-          .ui-grid-85
-            input(id='publication.year' type='text' name='publication.year' value=publication.year pattern=pattern.year placeholder='2004' title='Please input the four-digit format of the year of publication')
-          label.ui-grid-15(for='publication.month') Month
-          .ui-grid-85
-            input(id='publication.month' type='text' name='publication.month' value=publication.month pattern=pattern.month placeholder='Dec' title='Please use the standard three-letter abbreviation for the month')
-          label.ui-grid-15(for='publication.volume') Volume
-          .ui-grid-85
-            input(id='publication.volume' type='text' name='publication.volume' value=publication.volume pattern=pattern.volume placeholder='252' title='Please input the volume of a journal')
-          label.ui-grid-15(for='publication.number') Number
-          .ui-grid-85
-            input(id='publication.number' type='text' name='publication.number' value=publication.number pattern=pattern.number placeholder='1-3' title='Please input the (issue) number of a journal if applicable')
-          label.ui-grid-15(for='publication.pages') Pages
-          .ui-grid-85
-            input(id='publication.pages' type='text' name='publication.pages' value=publication.pages pattern=pattern.pages placeholder='189-258' title='Please input one or more page numbers or range of numbers')
-          label.ui-grid-15(for='publication.doi') DOI
-          .ui-grid-85
-            input(id='publication.doi' type='text' name='publication.doi' value=(publication.doi || eprint.doi) placeholder='10.1007/s00220-004-1187-3' title='Please input the digital object identifier (DOI)')
-          label.ui-grid-15(for='publication.url') URL
-          .ui-grid-85
-            input(id='publication.url' type='url' name='publication.url' value=publication.url placeholder='http://link.springer.com/article/10.1007/s00220-004-1187-3' title='Please input a link to the published article')
-        fieldset
-          legend Miscellaneous
-          - var note = analyses.note
-          label.ui-grid-15(for='note.typesetting') Typesetting
-          .ui-grid-85
-            input(id='note.typesetting' type='text' name='note.typesetting' value=note.typesetting title='Please specify the typesetting system of the article' required)
-          label.ui-grid-15(for='note.pages') Pages
-          .ui-grid-85
-            input(id='note.pages' type='text' name='note.pages' value=note.pages title='Please input the page number of the PDF')
-          label.ui-grid-15(for='note.language') Language
-          .ui-grid-85
-            input(id='note.language' type='text' name='note.language' value=note.language title='Please specify the two-letter language code of the article' required)
-          label.ui-grid-15(for='note.license') License
-          .ui-grid-85
-            input(id='note.license' type='text' name='note.license' value=note.license title='Please do not edit this field unless the article is distributed under other licenses' required)
-          if privilege.isModerator
-            label.ui-grid-15(for='note.status') Status
-            .ui-grid-85
-              input(id='note.status' type='text' name='note.status' value=note.status title='Changing this value to "locked" will lock the metadata' required)
-        .ui-text-center.ui-skip-large
-          button.ui-button-primary(type='submit') Submit
-          button.ui-offset-medium(type='reset') Reset
+            input(id='note.status' type='text' name='note.status' value=note.status title='Changing this value to "locked" will lock the metadata' required)
+      .ui-text-center.ui-skip-large
+        button.ui-button-primary(type='submit') Submit
+        button.ui-offset-medium(type='reset') Reset

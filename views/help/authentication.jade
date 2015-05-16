@@ -1,22 +1,17 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-authentication'
-  - var pageTitle = 'The Authentication Mechanism'
+  - var pageHeading = 'The Authentication Mechanism'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact The Authentication Mechanism
-        div
-          p We use only email addresses for authentication. No account passwords are required. The first thing you should do is to add our email 
-            strong noreply
-              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-              | @arxitics.com
-            |  to your address book or white list to avoid spam filters.
-          p Once you have regersted an account, we will generate a permanent private key for you. It can be used to confirm any authentication or authorization. You should keep it confidential and never share with others unless requested by our website.
-          p You can choose to login with your permanent private key or a temporary security code. If you submit the login form without your private key, an email containing the security code will sent to you by us. You can input the security code or click the signature link contained therein to complete the authentication. Sometimes you may experience a delay to receive our email. It is better for you to wait a few minutes rather than repeat the request.
-          p To allow the website to remember you, we use signed cookies that is stored on your computer so that you can auto login for the next time. The cookies experie in three months by default. If you really hate cookies, you can always clear them manully at any time or visit our website using the private browsing or the incognito mode.
+block content
+  div
+    p We use only email addresses for authentication. No account passwords are required. The first thing you should do is to add our email 
+      strong noreply
+        span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+        | @arxitics.com
+      |  to your address book or white list to avoid spam filters.
+    p Once you have regersted an account, we will generate a permanent private key for you. It can be used to confirm any authentication or authorization. You should keep it confidential and never share with others unless requested by our website.
+    p You can choose to login with your permanent private key or a temporary security code. If you submit the login form without your private key, an email containing the security code will sent to you by us. You can input the security code or click the signature link contained therein to complete the authentication. Sometimes you may experience a delay to receive our email. It is better for you to wait a few minutes rather than repeat the request.
+    p To allow the website to remember you, we use signed cookies that is stored on your computer so that you can auto login for the next time. The cookies experie in three months by default. If you really hate cookies, you can always clear them manully at any time or visit our website using the private browsing or the incognito mode.

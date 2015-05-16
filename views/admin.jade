@@ -9,8 +9,8 @@ block main
   article.ui-container-fluid
     h3.ui-header-primary Administration
     .ui-grid-70.ui-offset-10.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate action='/admin/eprints/update' method='get' role='form')
-        .ui-grid-fluid
+      form.ui-form-horizontal(data-schema-validate action='/admin/eprints/update' method='get' role='form')
+        .ui-container-grid
           label.ui-grid-20(for='category') Category
           .ui-grid-80
             input(id='category' type='text' name='category' autofocus)
@@ -23,7 +23,7 @@ block main
           label.ui-grid-20(for='limit') Limit
           .ui-grid-80
             input(id='limit' type='number' name='limit' value='1000')
-          .ui-grid-fluid
+          .ui-container-grid
             label.ui-grid-20(for='sort') Sort
             .ui-grid-80
               input(id='sort' type='radio' name='sort' value='submittedDate' checked)

@@ -1,25 +1,20 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-messages'
-  - var pageTitle = 'Sending and Receiving Messages'
+  - var pageHeading = 'Sending and Receiving Messages'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Sending and Receiving Messages
-        div
-          p The functionality of sending messages is only provided as a method to contact the user without knowing his or her email. We do not intend to develope it to be a replacement of the communication by email or real-time chat.
-          p To send a message, you should specify both the UID and username exactly in the form 
-            code uid &lt;username&gt;
-            | . Please note that you can send and receive messages, but you can't see the messages you have already sent. When you delete a message, it is marked as read and will not appear again, but it still resides in our database. If you like, you can also send messages to yourself.
-          p For real-time communications, we have developed the 
-            a(href='/chat') chat room
-            |  based on the protocol of 
-            a(href='http://en.wikipedia.org/wiki/WebSocket' rel='external' target='_blank') WebSocket
-            | . You should ensure that your browser fully 
-            a(href='http://caniuse.com/websockets' rel='external' target='_blank') supports
-            |  this technology. Also note that all the chat data are saved as Local Storage.
+block content
+  div
+    p The functionality of sending messages is only provided as a method to contact the user without knowing his or her email. We do not intend to develope it to be a replacement of the communication by email or real-time chat.
+    p To send a message, you should specify both the UID and username exactly in the form 
+      code.ui-color-emphasis uid &lt;username&gt;
+      | . Please note that you can send and receive messages, but you can't see the messages you have already sent. When you delete a message, it is marked as read and will not appear again, but it still resides in our database. If you like, you can also send messages to yourself.
+    p For real-time communications, we have developed the 
+      a(href='/chat') chat room
+      |  based on the protocol of 
+      a(href='http://en.wikipedia.org/wiki/WebSocket' rel='external' target='_blank') WebSocket
+      | . You should ensure that your browser fully 
+      a(href='http://caniuse.com/websockets' rel='external' target='_blank') supports
+      |  this technology. Also note that all the chat data are saved as Local Storage.

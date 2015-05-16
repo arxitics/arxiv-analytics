@@ -1,35 +1,32 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-documents'
-  - var pageTitle = 'Sharing Your Documents'
+  - var pageHeading = 'Sharing Your Documents'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Sharing Your Documents
-        div
-          p If you have lecture notes, literature surveys, or any other original content that have not been published online, you may would like to share them in your 
-            strong "Documents"
-            |  page. The community will benefit from your openness. Besides, you can also gain 20 
-            a(href='/help/reputation') reputation
-            |  for one document.
-          p To upload a document, you should certify that it is your own work and agree to distribute it under 
-            a(href='http://creativecommons.org/licenses/by-sa/4.0/' rel='external' target='_blank')
-              abbr(title='Creative Commons Attribution-ShareAlike 4.0 International') CC BY-SA 4.0
-            | . Please note that we only accept .pdf, .svg, .png, .zip, and text files. To allow others to remix, transform, and build upon your content, you are strongly encouraged to share your TeX source files. When uploading your document, you are required to provide the 
-            a(href='/help/types') resource type
-            |  and a unique hyperlink reference which should be constructed as
-          pre: code http://oss.arxitics.com/users/{your-uid}/{resource-group}/{document-name}
-          p where the resource group should be chosen from 
-            code pdf
-            | , 
-            code tex
-            | , and 
-            code images
-            | . Valid document names should consist of 
-            strong: em at least four characters from the set of lowercase letters, digits, the hyphen, and the period
-            | . Please note that uppercase letters are not allowed.
+block content
+  div
+    p If you have lecture notes, literature surveys, or any other original content that have not been published online, you may would like to share them in your 
+      strong "Documents"
+      |  page. The community will benefit from your openness. Besides, you can also gain 20 
+      a(href='/help/reputation') reputation
+      |  for one document.
+    p To upload a document, you should certify that it is your own work and agree to distribute it under 
+      a(href='http://creativecommons.org/licenses/by-sa/4.0/' rel='external' target='_blank')
+        abbr(title='Creative Commons Attribution-ShareAlike 4.0 International') CC BY-SA 4.0
+      | . Please note that we only accept 
+      strong: em .pdf, .svg, .png, .zip, and text files
+      | . To allow others to remix, transform, and build upon your content, you are strongly encouraged to share your TeX source files. When uploading your document, you are required to provide the 
+      a(href='/help/types') resource type
+      |  and a unique hyperlink reference which should be constructed as
+    pre: code http://oss.arxitics.com/users/{your-uid}/{resource-group}/{document-name}
+    p where the resource group should be chosen from 
+      code pdf
+      | , 
+      code tex
+      | , and 
+      code images
+      | . Valid document names should consist of 
+      strong: em at least four characters from the set of lowercase letters, digits, the hyphen, and the period
+      | . Please note that uppercase letters are not allowed.

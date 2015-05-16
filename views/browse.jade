@@ -6,9 +6,9 @@ block variables
   - var pageTitle = __('browse.heading')
 
 block main
-  - var baseURL = location.replace(/(^|&)page=\d*/, '')
+  - var baseURL = location.replace(/(^|\&|(\?))page=\d*/, '$2')
   aside.ui-grid-30.ui-mobile-expand.ui-phone-hidden
-    form.ui-form-block(data-schema-validate action='/browse' method='get' role='form')
+    form.ui-form-fluid(data-schema-validate action='/browse' method='get' role='form')
       - var subscription = user.subscription
       section
         h3.ui-header-primary Filters
@@ -89,7 +89,7 @@ block main
             if comment
               div
                 strong Comments: 
-                span= comment
+                span(data-schema-extract='url')= comment
             if journal
               div
                 strong Journal: 
@@ -97,7 +97,12 @@ block main
             if doi
               div
                 strong DOI: 
-                a(href='http://dx.doi.org/#{doi}' rel='external' target='_blank')= doi
+                - var entries = doi.split(/[\,\;]?\s+/)
+                - var last = entries.length - 1
+                each entry, index in entries
+                  a(href='http://dx.doi.org/#{entry}' rel='external' target='_blank')= entry
+                  if index !== last
+                    | , 
             div
               strong Categories: 
               - var categories = eprint.categories

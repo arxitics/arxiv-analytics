@@ -1,108 +1,103 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-mongodb'
-  - var pageTitle = 'Search Engine Powered by MongoDB'
+  - var pageHeading = 'Search Engine Powered by MongoDB'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Search Engine Powered by MongoDB
-        div
-          p
-            a(href='http://www.mongodb.org/' rel='external' target='_blank') MongoDB
-            |  is a NoSQL database in favor of JSON-like documents with dynamic schemas, on which we build our search engine. To get some prerequisite knowledge, please read the offical tutorial on 
-            a(href='http://docs.mongodb.org/manual/tutorial/query-documents/' rel='external' target='_blank') query documents
-            |  first. We will expalin the syntax in our examples:
-          table.ui-table-fluid.ui-table-striped
-            thead
-              tr
-                th Expression
-                th Explaination
-            tbody
-              tr
-                td: code categories.0: quant-ph
-                td Matches eprints whose primary category is 
-                  code quant-ph
-                  | .
-              tr
-                td: code tags: lecture note
-                td Matches eprints in which the 
-                  code tags
-                  |  field has an element 
-                  code lecture note
-                  | .
-              tr
-                td: code publication.publisher: Hindawi
-                td Matches eprints published on a journal with the publisher 
-                  code Hindawi
-                  | .
-          p If you have learnt how to construct the query criteria, you can enter a 
-            a(href='http://json.org/' rel='external' target='_blank')
-              abbr(title='JavaScript Object Notation') JSON
-            |  in our universal search interface to uncover more features.
-          section.ui-skip-large
-            h5.ui-header-compact Query operators
-            p You can use almost all the 
-              a(href='http://docs.mongodb.org/manual/reference/operator/query/' rel='external' target='_blank') query operators 
-              |  that MongoDB supports. Please note that the operator should be set using the bracket notation. The following provides some examples:
-            table.ui-table-fluid.ui-table-striped
-              thead
-                tr
-                  th Expression
-                  th Explaination
-              tbody
-                tr
-                  td: code note.pages[$gte]: 100
-                  td The 
-                    code note.pages
-                    |  field value is greater than or equal to 
-                    code 100
-                    | .
-                tr
-                  td: code tags[$nin]: manual, textbook
-                  td The 
-                    code tags
-                    |  field holds an array with no elements matching 
-                    code manual
-                    |  or 
-                    code textbook
-                    | .
-                tr
-                  td: code $or[journal]: null $or[doi]: null
-                  td The 
-                    code journal
-                    |  field value is 
-                    code null
-                    |  or the 
-                    code doi
-                    |  field value is 
-                    code null
-                    | .
-                tr
-                  td: code categories[$size]: 5
-                  td The 
-                    code categories
-                    |  field is an array with 
-                    code 5
-                    |  elements.
-                tr
-                  td: code $where: "this.title.length &lt; 20"
-                  td Matches eprints that satisfy the JavaScript expression.
-          section.ui-skip-large
-            h5.ui-header-compact Full-text search
-            p
-              a(href='http://docs.mongodb.org/manual/reference/operator/query/text/' rel='external' target='_blank') Full-text search
-              |  ignores stop words such as 
-              code the
-              | , 
-              code and
-              |, 
-              code is
-              | , etc., and matches on the complete stemmed word. The 
-              code $text
-              |  operator performs a text search on the content of the indexed fields. It treats most punctuation in the string as delimiters, except a hyphen - that negates term or a double quotes  that specifies a phrase.
-            p We have indexed all fields with string content. The text search returns results sorted in terms of the results’ score, which is calculated based on their relevance and the weights of indexed fileds.
+block content
+  div
+    p
+      a(href='http://www.mongodb.org/' rel='external' target='_blank') MongoDB
+      |  is a NoSQL database in favor of JSON-like documents with dynamic schemas, on which we build our search engine. To get some prerequisite knowledge, please read the offical tutorial on 
+      a(href='http://docs.mongodb.org/manual/tutorial/query-documents/' rel='external' target='_blank') query documents
+      |  first. We will expalin the syntax in our examples:
+    table.ui-table-fluid.ui-table-striped
+      thead
+        tr
+          th Expression
+          th Explaination
+      tbody
+        tr
+          td: code.ui-color-emphasis categories.0: quant-ph
+          td Matches eprints whose primary category is 
+            code.ui-color-emphasis quant-ph
+            | .
+        tr
+          td: code.ui-color-emphasis tags: lecture note
+          td Matches eprints in which the 
+            code.ui-color-emphasis tags
+            |  field has an element 
+            code.ui-color-emphasis lecture note
+            | .
+        tr
+          td: code.ui-color-emphasis publication.publisher: Hindawi
+          td Matches eprints published on a journal with the publisher 
+            code.ui-color-emphasis Hindawi
+            | .
+    p If you have learnt how to construct the query criteria, you can enter a 
+      a(href='http://json.org/' rel='external' target='_blank')
+        abbr(title='JavaScript Object Notation') JSON
+      |  in our universal search interface to uncover more features.
+    section.ui-skip-large
+      h5.ui-header-compact Query operators
+      p You can use almost all the 
+        a(href='http://docs.mongodb.org/manual/reference/operator/query/' rel='external' target='_blank') query operators 
+        |  that MongoDB supports. Please note that the operator should be set using the bracket notation. The following provides some examples:
+      table.ui-table-fluid.ui-table-striped
+        thead
+          tr
+            th Expression
+            th Explaination
+        tbody
+          tr
+            td: code.ui-color-emphasis note.pages[$gte]: 100
+            td The 
+              code.ui-color-emphasis note.pages
+              |  field value is greater than or equal to 
+              code.ui-color-emphasis 100
+              | .
+          tr
+            td: code.ui-color-emphasis tags[$nin]: manual, textbook
+            td The 
+              code.ui-color-emphasis tags
+              |  field holds an array with no elements matching 
+              code.ui-color-emphasis manual
+              |  or 
+              code.ui-color-emphasis textbook
+              | .
+          tr
+            td: code.ui-color-emphasis $or[journal]: null $or[doi]: null
+            td The 
+              code.ui-color-emphasis journal
+              |  field value is 
+              code.ui-color-emphasis null
+              |  or the 
+              code.ui-color-emphasis doi
+              |  field value is 
+              code.ui-color-emphasis null
+              | .
+          tr
+            td: code.ui-color-emphasis categories[$size]: 5
+            td The 
+              code.ui-color-emphasis categories
+              |  field is an array with 
+              code.ui-color-emphasis 5
+              |  elements.
+          tr
+            td: code.ui-color-emphasis $where: "this.title.length &lt; 20"
+            td Matches eprints that satisfy the JavaScript expression.
+    section.ui-skip-large
+      h5.ui-header-compact Full-text search
+      p
+        a(href='http://docs.mongodb.org/manual/reference/operator/query/text/' rel='external' target='_blank') Full-text search
+        |  ignores stop words such as 
+        code.ui-color-emphasis the
+        | , 
+        code.ui-color-emphasis and
+        |, 
+        code.ui-color-emphasis is
+        | , etc., and matches on the complete stemmed word. The 
+        code.ui-color-emphasis $text
+        |  operator performs a text search on the content of the indexed fields. It treats most punctuation in the string as delimiters, except a hyphen - that negates term or a double quotes  that specifies a phrase.
+      p We have indexed all fields with string content. The text search returns results sorted in terms of the results’ score, which is calculated based on their relevance and the weights of indexed fileds.

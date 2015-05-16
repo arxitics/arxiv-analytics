@@ -9,7 +9,7 @@ each edit in edits
   - var edited = edit.edited.toISOString().slice(0, 10)
   li.ui-skip-medium
     div
-      - var primary = id.match(/^\d{4}/) ? ' [' + primaryCategory + ']' : ''
+      - var primary = /^\d{4}/.test(id) ? ' [' + primaryCategory + ']' : ''
       - var published = eprint.published.toISOString().slice(0, 10)
       a(href='/articles/#{id}')= 'arXiv:' + id + primary
       |  (Published #{published}, edited #{edited})

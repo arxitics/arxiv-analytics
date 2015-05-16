@@ -1,8 +1,9 @@
 
 h3.ui-header-primary Toolset
-.ui-content-panel
-  .ui-panel-body
-    mixin link(page, text)
-      a(class=(pageID === page ? 'ui-state-active' : '') href='/#{page}')= text
-    .ui-list-group.ui-zoom-large
-      +link('terminal', 'Terminal Emulator')
+ul.ui-list-group.ui-block-fluid.ui-zoom-large.ui-text-capitalize
+  mixin link(page, text)
+    li(class=(pageID === page ? 'ui-state-active' : ''))
+      a(href='/#{page}')= text
+  +link('terminal', 'Terminal Emulator')
+  +link('tools/parser', 'Expression Parser')
+  +link('tools/editor', 'Markdown Editor')

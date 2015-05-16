@@ -13,12 +13,22 @@ exports.generate = function (req) {
   var requests = req.session.stats.requests;
   var userAgent = req.get('User-Agent');
   var pattern = regexp.browser;
+  var device = 'desktop';
+  if (pattern.tablet.test(userAgent)) {
+    device = 'tablet';
+  } else if (pattern.mobile.test(userAgent)) {
+    device = 'phone';
+  }
+
   var report = {
     result: 'accepted',
     browser: {
+      device: device,
       isBot: pattern.bot.test(userAgent),
-      isDesktop: pattern.desktop.test(userAgent),
-      isMobile: pattern.mobile.test(userAgent)
+      isDesktop: device === 'desktop',
+      isMobile: device !== 'desktop',
+      isTablet: device === 'tablet',
+      isPhone: device === 'phone'
     }
   };
   report.isHuman = !(report.browser.isBot || requests > settings.threshold);
@@ -38,6 +48,9 @@ exports.generate = function (req) {
 
 // Blacklist certain IP addresses
 exports.blockIP = function (ip) {
+  if (/^\:\:f{4}\:/.test(ip)) {
+    ip = ip.replace('::ffff:', '');
+  }
   return [
     '183.136.190.36',
     '183.136.190.41',
@@ -77,10 +90,10 @@ exports.censor = function (body) {
       var value = body[key];
       var type = Object.prototype.toString.call(value).slice(8, -1);
       if (type === 'String') {
-        object[key] = value.match(ascii) ? value.replace(xss, '&lt;') : '';
+        object[key] = ascii.test(value) ? value.replace(xss, '&lt;') : '';
       } else if (type === 'Array') {
         object[key] = value.filter(function (item) {
-          return item.match(ascii);
+          return ascii.test(item);
         });
       } else if (type === 'Object') {
         for (var subkey in value) {
@@ -118,13 +131,14 @@ exports.serialize = function (query, options) {
 
 // Normalize url
 exports.normalize = function (url) {
-  var repeat = regexp.url.repeat;
-  url = url.replace(regexp.url.empty, '').replace(/\+/g, ' ');
-  while (url.match(repeat)) {
+  var pattern = regexp.url;
+  var repeat = pattern.repeat;
+  url = url.replace(pattern.empty, '').replace(/\+/g, ' ');
+  while (repeat.test(url)) {
     url = url.replace(repeat, '$1$2$3');
   }
-  url = url.replace(/[?&]+$/, '');
-  return url.replace(regexp.url.unsafe, function (x) {
+  url = url.replace(/\?\&+/, '?').replace(/[?&]+$/, '');
+  return url.replace(pattern.unsafe, function (x) {
     return {
       ' ': '+',
       '<': '%3C',

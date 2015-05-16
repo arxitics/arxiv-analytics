@@ -1,5 +1,5 @@
 
-- var baseURL = location.replace(/(^|&)page=\d*/, '')
+- var baseURL = location.replace(/(^|\&|(\?))page=\d*/, '$2')
 - var authorURL = baseURL + '&author='
 - var categoryURL = baseURL + '&category='
 - var subjectURL = baseURL + '&subject='
@@ -40,7 +40,7 @@ aside.ui-grid-30.ui-mobile-expand.ui-phone-hidden
           label
             input(type='radio' name='date-range' value='custom' checked=enabled)
             |  Custom range
-          .ui-grid-fluid.ui-skip-small.ui-offset-medium
+          .ui-container-grid.ui-skip-small.ui-offset-medium
             - var datePattern = /\d{4}(-\d{2})?(-\d{2})?/.toString().slice(1, -1)
             input.ui-fluid-30(type='text' name='date-from' pattern=datePattern value=query['date-from'] placeholder='1991-08-14' title='The start date should be less than the end date' disabled=!enabled required)
             span.ui-offset-medium.ui-text-center to
@@ -88,10 +88,10 @@ article.ui-grid-70.ui-mobile-expand
         label(for='published-date') Published Date
         input(id='updated-date' type='radio' name='sort' value='updated' checked=(sort === 'updated'))
         label(for='updated-date') Updated Date
-        input(id='reader-counts' type='radio' name='sort' value='readers' checked=(sort === 'readers' ))
-        label(for='reader-counts') Reader Counts
-        input(id='rating-score' type='radio' name='sort' value='rating' checked=(sort === 'rating'))
-        label(for='rating-score') Rating Score
+        input(id='article-views' type='radio' name='sort' value='views' checked=(sort === 'views' ))
+        label(for='article-views') Article Views
+        input(id='citation-counts' type='radio' name='sort' value='citations' checked=(sort === 'citations'))
+        label(for='citation-counts') Citation Counts
     .ui-button-switch.ui-block-inline
       - var order = query.order
       input(id='sort-order' type='checkbox' name='order' value='ascending' checked=(order === 'ascending'))
@@ -133,7 +133,7 @@ article.ui-grid-70.ui-mobile-expand
           if comment
             div
               strong Comments: 
-              span= comment
+              span(data-schema-extract='url')= comment
           if journal
             div
               strong Journal: 
@@ -141,7 +141,12 @@ article.ui-grid-70.ui-mobile-expand
           if doi
             div
               strong DOI: 
-              a(href='http://dx.doi.org/#{doi}' rel='external' target='_blank')= doi
+              - var entries = doi.split(/[\,\;]?\s+/)
+              - var last = entries.length - 1
+              each entry, index in entries
+                a(href='http://dx.doi.org/#{entry}' rel='external' target='_blank')= entry
+                if index !== last
+                  | , 
           div
             strong Categories: 
             - var categories = eprint.categories
@@ -173,7 +178,7 @@ article.ui-grid-70.ui-mobile-expand
                   if topicIndex !== lastTopic
                     | , 
                 if themeIndex !== lastTheme
-                  | ;  
+                  | ; 
           if analyses.keywords.length
             div
               strong Keywords: 

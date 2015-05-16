@@ -1,20 +1,17 @@
 
-extends ../../layout
+extends ../account
 
-block variables
+block prepend variables
   - var pageID = 'messages'
-  - var pageTitle = __('messages.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include ../account
-    .ui-grid-70.ui-offset-15.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate action='/users/#{uid}/messages/submit' method='post' role='form')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        fieldset
-          legend Compose New Message
-          input(type='text' name='receiver' pattern=pattern.receiver placeholder='Receiver: uid <username>' title='Please specify both UID and username' required autofocus)
-          textarea(name='content' rows='12' placeholder='Content: to be constructive and concise. Markdown and LaTeX are supported.' title='Please mind your manners and watch your tone' required)
-        .ui-text-center.ui-skip-large
-          button(type='submit' formaction='/users/#{uid}/messages/preview') Preview
-          button.ui-button-primary.ui-offset-medium(type='submit') Submit
+block content
+  .ui-grid-70.ui-offset-15.ui-mobile-expand
+    form.ui-form-horizontal(data-schema-validate action='/users/#{uid}/messages/submit' method='post' role='form')
+      input(type='hidden' name='_csrf' value=csrfToken)
+      fieldset
+        legend Compose New Message
+        input(type='text' name='receiver' pattern=pattern.receiver placeholder='Receiver: uid <username>' title='Please specify both UID and username' required autofocus)
+        textarea(name='content' rows='12' placeholder='Content: to be constructive and concise. Markdown and LaTeX are supported.' title='Please mind your manners and watch your tone' required)
+      .ui-text-center.ui-skip-large
+        button(type='submit' formaction='/users/#{uid}/messages/preview') Preview
+        button.ui-button-primary.ui-offset-medium(type='submit') Submit

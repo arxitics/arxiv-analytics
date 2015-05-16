@@ -1,59 +1,54 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-subscription'
-  - var pageTitle = 'To Subscrible to arXiv Eprints'
+  - var pageHeading = 'To Subscrible to arXiv Eprints'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact To Subscrible to arXiv Eprints
-        div
-          p In the 
-            strong "Preferences"
-            |  page of your account, you can configure eprint subscriptions:
-          ul
-            li
-              strong Categories: 
-              |  Specifies the categories of eprints classified by arXiv.org. This field is not allowed to be left as blank.
-            li
-              strong Subjects:
-              |  Refers to codes for the 
-              a(href='http://www.aip.org/pacs' rel='external' target='_blank')
-                abbr(title='Physics and Astronomy Classification Scheme') PACS
-              | , the 
-              a(href='http://www.ams.org/mathscinet/msc/pdfs/classifications2010.pdf' rel='external' target='_blank')
-                abbr(title='Mathematics Subject Classification') MSC-class
-              | , the 
-              a(href='http://www.acm.org/about/class/ccs98-html' rel='external' target='_blank')
-                abbr(title='ACM Computing Classification System') ACM-class
-              | , or the 
-              a(href='https://www.aeaweb.org/jel/guide/jel.php' rel='external' target='_blank')
-                abbr(title=' Journal of Economic Literature Classification System') JEL-class
-              | . However, these codes are not specified for all eprints.
-            li
-              strong Themes:
-              |  Specifies the themes of eprints in the form 
-              code category: topic
-              | . Topics are sub-classifications of categories.
-            li
-              strong Keywords:
-              |  Specifies the keywords of eprints which are extracted from the title and abstact or added by users.
-            li
-              strong Tags:
-              |  Specifies the tags of eprints classified in a non-hierarchical manner.
-            li
-              strong Authors:
-              |  Specifies the authors of eprints. For Latin characters like 
-              code &aacute;
-              | , 
-              code &ntilde;
-              | , and 
-              code &ouml;
-              | , you should remove their diacritics.
-          p Then your subscriptions will appear in the 
-            code /browse
-            |  page, where you can also change filters temporarily.
+block content
+  div
+    p In the 
+      strong "Preferences"
+      |  page of your account, you can configure eprint subscriptions:
+    ul
+      li
+        strong Categories: 
+        |  Specifies the categories of eprints classified by arXiv.org. This field is not allowed to be left as blank.
+      li
+        strong Subjects:
+        |  Refers to codes for the 
+        a(href='http://www.aip.org/pacs' rel='external' target='_blank')
+          abbr(title='Physics and Astronomy Classification Scheme') PACS
+        | , the 
+        a(href='http://www.ams.org/mathscinet/msc/pdfs/classifications2010.pdf' rel='external' target='_blank')
+          abbr(title='Mathematics Subject Classification') MSC-class
+        | , the 
+        a(href='http://www.acm.org/about/class/ccs98-html' rel='external' target='_blank')
+          abbr(title='ACM Computing Classification System') ACM-class
+        | , or the 
+        a(href='https://www.aeaweb.org/jel/guide/jel.php' rel='external' target='_blank')
+          abbr(title=' Journal of Economic Literature Classification System') JEL-class
+        | . However, these codes are not specified for all eprints.
+      li
+        strong Themes:
+        |  Specifies the themes of eprints in the form 
+        code.ui-color-emphasis category: topic
+        | . Topics are sub-classifications of categories.
+      li
+        strong Keywords:
+        |  Specifies the keywords of eprints which are extracted from the title and abstact or added by users.
+      li
+        strong Tags:
+        |  Specifies the tags of eprints classified in a non-hierarchical manner.
+      li
+        strong Authors:
+        |  Specifies the authors of eprints. For Latin characters like 
+        code.ui-color-emphasis &aacute;
+        | , 
+        code.ui-color-emphasis &ntilde;
+        | , and 
+        code.ui-color-emphasis &ouml;
+        | , you should remove their diacritics.
+    p Then your subscriptions will appear in the 
+      code /browse
+      |  page, where you can also change filters temporarily.

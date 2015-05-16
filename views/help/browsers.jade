@@ -1,26 +1,22 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-browsers'
-  - var pageTitle = 'Supported Browsers'
+  - var pageHeading = 'Supported Browsers'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Supported Browsers
-        div
-          p We use HTML5 and CSS3 to build our user interface. If you are still using IE 8 or blow, please upgrade your browser to IE 10+. IE 9 also works, but it lacks of some new features of HTML5 forms, such as 
-            code placeholder
-            |  and 
-            code formaction.
-          p Latest versions of modern browsers are strongly recommended, since they will create a better user experience. To fully support the cutting edge technologies used in our website, you may would like to choose from the following list:
-          ul
-            li Firefox 24+
-            li Chrome 28+
-            li Opera 15+
-            li Safari 6+
-            li IE 10+
-          p Even though the mobile-first web design has become more and more popular, we still adopt the desktop-first approach. Not only because it is easier to conceptualize and more well-understood, but also due to the fact that screen resolutions keep on growing both for smartphones and laptops.
+block content
+  div
+    p We use HTML5 and CSS3 to build our user interface. If you are still using IE 8 or blow, please upgrade your browser to IE 10+. IE 9 also works, but it lacks of some new features of HTML5 forms, such as 
+      code.ui-color-emphasis placeholder
+      |  and 
+      code.ui-color-emphasis formaction
+      | .
+    p Latest versions of modern browsers are strongly recommended, since they will create a better user experience. To fully support the cutting edge technologies used in our website, you may would like to choose from the following list:
+    ul
+      li Firefox 24+
+      li Chrome 28+
+      li Opera 15+
+      li Safari 6+
+      li IE 10+
+    p Even though the mobile-first web design has become more and more popular, we still adopt the desktop-first approach. Not only because it is easier to conceptualize and more well-understood, but also due to the fact that screen resolutions keep on growing both for smartphones and laptops.

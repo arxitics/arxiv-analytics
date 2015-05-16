@@ -4,6 +4,7 @@
 
 var express = require('express');
 var oss = require('../models/oss');
+var email = require('../models/email');
 var account = require('../models/account');
 var article = require('../models/article');
 var review = require('../models/review');
@@ -114,20 +115,20 @@ users.post('/:uid/preferences', function (req, res) {
   var user = req.user;
   var uid = user.uid;
   var body = req.body;
-  var modifier = {};
+  var changes = {};
   var entries = Object.keys(account.template.resume);
   ['name', 'locale'].forEach(function (key) {
     if (body.hasOwnProperty(key)) {
       var value = String(body[key]).trim();
-      if (value.match(regexp.account[key])) {
-        modifier[key] = value;
+      if (regexp.account[key].test(value)) {
+        changes[key] = value;
       }
     }
   });
   entries.forEach(function (entry) {
     entry = 'resume.' + entry;
     if (body.hasOwnProperty(entry) && body[entry]) {
-      modifier[entry] = String(body[entry]).trim();
+      changes[entry] = String(body[entry]).trim();
     }
   });
   account.subscriptions.forEach(function (key) {
@@ -146,7 +147,7 @@ users.post('/:uid/preferences', function (req, res) {
       } else if (key === 'subscription.subjects') {
         values = values.filter(function (value) {
           return ['pacs', 'msc', 'ccs', 'jel'].some(function (code) {
-            return value.match(regexp.arxiv[code]);
+            return regexp.arxiv[code].test(value);
           });
         });
       } else if (key === 'subscription.themes') {
@@ -159,7 +160,7 @@ users.post('/:uid/preferences', function (req, res) {
           }
         }
         values = scheme.parse(values.filter(function (value) {
-          return value.match(regexp.account.theme);
+          return regexp.account.theme.test(value);
         }));
       } else if (key === 'subscription.tags') {
         var tags = scheme.tags;
@@ -170,15 +171,34 @@ users.post('/:uid/preferences', function (req, res) {
         });
       } else if (key === 'subscription.authors') {
         values = values.filter(function (value) {
-          return value.match(regexp.account.author);
+          return regexp.account.author.test(value);
         });
       }
-      modifier[key] = values;
+      changes[key] = values;
     } else {
-      modifier[key] = [];
+      changes[key] = [];
     }
   });
-  account.update({'uid': uid}, {'$set': modifier}, function () {
+  if (body.hasOwnProperty('auth.key')) {
+    var key = body['auth.key'];
+    if (key === user.auth.key) {
+      if (body.hasOwnProperty('email')) {
+        var receiver = body.email.trim();
+        if (receiver !== user.email && email.validate(receiver)) {
+          var hash = security.md5Hash(receiver + key);
+          changes['note.email'] = receiver;
+          changes['note.hash'] = hash;
+          email.reset(receiver, {
+            uid: uid,
+            hash: hash
+          }, function () {
+            console.log('user ' + uid + ' would like to reset the email');
+          });
+        }
+      }
+    }
+  }
+  account.update({'uid': uid}, {'$set': changes}, function () {
     res.redirect('/users/' + uid);
   });
 });
@@ -208,12 +228,12 @@ users.get('/:uid/bookmarks', function (req, res) {
     review.find({'pid': {'$in': list}}, function (docs) {
       bookmarks.forEach(function (bookmark) {
         var pid = bookmark.pid;
-        docs.every(function (post) {
+        docs.some(function (post) {
           if (post.pid === pid) {
             bookmark.post = post;
-            return false;
+            return true;
           }
-          return true;
+          return false;
         });
       });
       var pagination = article.paginate(query, bookmarks);
@@ -235,12 +255,12 @@ users.get('/:uid/bookmarks', function (req, res) {
     article.find({'id': {'$in': list}}, function (docs) {
       bookmarks.forEach(function (bookmark) {
         var id = bookmark.id;
-        docs.every(function (eprint) {
+        docs.some(function (eprint) {
           if (eprint.id === id) {
             bookmark.eprint = eprint;
-            return false;
+            return true;
           }
-          return true;
+          return false;
         });
       });
       var pagination = article.paginate(query, bookmarks);
@@ -264,7 +284,7 @@ users.post('/:uid/articles/bookmark', function (req, res) {
     res.render('403', {
       message: 'You have already bookmarked eprint ' + id + '.'
     });
-  } else if (id.match(regexp.arxiv.identifier)) {
+  } else if (regexp.arxiv.identifier.test(id)) {
     var modifier = {
       '$push': {
         'activity.articles': {
@@ -624,12 +644,12 @@ users.get('/:uid/publications', function (req, res) {
   article.find({'id': {'$in': list}}, function (docs) {
     publications.forEach(function (publication) {
       var id = publication.id;
-      docs.every(function (eprint) {
+      docs.some(function (eprint) {
         if (eprint.id === id) {
           publication.eprint = eprint;
-          return false;
+          return true;
         }
-        return true;
+        return false;
       });
     });
     publications.sort(function (a, b) {
@@ -668,7 +688,7 @@ users.post('/:uid/publications/submit', function (req, res) {
       var published = publications.every(function (publication) {
         return publication.id !== identifier;
       });
-      return identifier.match(pattern) && published;
+      return pattern.test(identifier) && published;
     }).forEach(function (identifier) {
       preprints.push({
         'id': identifier.replace(/v\d+$/, ''),
@@ -717,13 +737,13 @@ users.get('/:uid/documents', function (req, res) {
       var pattern = new RegExp('\\\/tex\\\/(.+)\\' + extension + '$');
       var link = href.replace(pattern, '/pdf/$1.pdf');
       if (link !== href) {
-        documents.every(function (entry) {
+        documents.some(function (entry) {
           if (entry.href === link) {
             doc.standalone = false;
             entry.tex = href;
-            return false;
+            return true;
           }
-          return true;
+          return false;
         });
       }
     }
@@ -754,9 +774,8 @@ users.post('/:uid/documents/submit', function (req, res) {
   var user = req.user;
   var uid = user.uid;
   var body = req.body;
-  var file = req.files && req.files.file;
-  var certified = body.certified;
-  if (certified === 'true') {
+  if (body.certified === 'true') {
+    var file = req.files && req.files.file;
     var documents = user.documents;
     var href = String(body.href).trim().toLowerCase();
     var uploaded = documents.some(function (doc) {
@@ -766,46 +785,52 @@ users.post('/:uid/documents/submit', function (req, res) {
       res.render('403', {
         message: 'This document has already been uploaded.'
       });
-    } else if (href.match(regexp.account.doc.href)) {
-      var doc = {
-        'type': String(body.type).trim() || 'general',
-        'source': 'Arxitics OSS',
-        'language': String(body.language).trim() || 'en',
-        'title': String(body.title).trim(),
-        'href': href,
-        'uploaded': new Date(),
-        'status': 'public'
-      };
-      account.update({'uid': uid}, {
-        '$push': {
-          'documents': {
-            '$each': [doc],
-            '$position': 0
+    } else if (file && file.path) {
+      if (regexp.account.doc.href.test(href)) {
+        var doc = {
+          'type': String(body.type).trim() || 'general',
+          'source': 'Arxitics OSS',
+          'language': String(body.language).trim() || 'en',
+          'title': String(body.title).trim(),
+          'href': href,
+          'uploaded': new Date(),
+          'status': 'public'
+        };
+        account.update({'uid': uid}, {
+          '$push': {
+            'documents': {
+              '$each': [doc],
+              '$position': 0
+            }
+          },
+          '$inc': {
+            'stats.reputation': settings.user.reputation.doc.upload
           }
-        },
-        '$inc': {
-          'stats.reputation': settings.user.reputation.doc.upload
-        }
-      }, function (user) {
-        if (user) {
-          console.log('user ' + uid + ' uploaded new documents');
-        }
-        oss.putObject({
-          resource: href.replace(/^https?\:\/\/[^\/]+/, ''),
-          origin: './' + file.path
-        }, function (success) {
-          if (success) {
-            res.redirect('/users/' + uid + '/documents');
-          } else {
-            res.render('500', {
-              message: 'The server failed to upload your document to Arxitics OSS.'
-            });
+        }, function (user) {
+          if (user) {
+            console.log('user ' + uid + ' uploaded new documents');
           }
+          oss.putObject({
+            resource: href.replace(/^https?\:\/\/[^\/]+/, ''),
+            origin: './' + file.path
+          }, function (success) {
+            if (success) {
+              res.redirect('/users/' + uid + '/documents');
+            } else {
+              res.render('500', {
+                message: 'The server failed to upload your document to Arxitics OSS.'
+              });
+            }
+          });
         });
-      });
+      } else {
+        res.render('403', {
+          message: 'You should provide a valid hyperlink reference to your document.'
+        });
+      }
     } else {
-      res.render('403', {
-        message: 'You should provide a valid hyperlink reference to your document.'
+      res.render('500', {
+        message: 'You should submit a valid document.'
       });
     }
   } else {
@@ -877,7 +902,7 @@ users.post('/:uid/messages/submit', function (req, res) {
   var receiver = String(body.receiver).trim();
   var content = String(body.content).trim();
   var matches = receiver.match(pattern.receiver);
-  if (matches && content.match(pattern.content)) {
+  if (matches && pattern.content.test(content)) {
     var recipient = parseInt(matches[1]);
     account.lookup({'uid': recipient}, function (profile) {
       if (profile && profile.name === matches[2].trim()) {
@@ -991,7 +1016,7 @@ users.post('/:uid/messages/preview', function (req, res) {
   var receiver = String(body.receiver).trim();
   var content = String(body.content).trim();
   var pattern = regexp.message;
-  if (receiver.match(pattern.receiver) && content.match(pattern.content)) {
+  if (pattern.receiver.test(receiver) && pattern.content.test(content)) {
     res.render('users/messages/preview', {
       preview: {
         receiver: receiver,
@@ -1004,6 +1029,25 @@ users.post('/:uid/messages/preview', function (req, res) {
       message: 'We only accept constructive messages written in English.'
     });
   }
+});
+
+// Reset email
+users.get('/:uid/reset/email/:hash', function (req, res) {
+  var uid = res.uid;
+  var user = res.user;
+  var hash = req.params.hash;
+  account.update({'uid': uid, 'note.hash': hash}, {
+    '$set': {'email': user.note.email, 'auth.requests': 0},
+    '$unset': {'note.email': '', 'note.hash': ''}
+  }, function (profile) {
+    if (profile) {
+      res.redirect('/users/' + uid);
+    } else {
+      res.render('403', {
+        message: 'Your signature hash is not valid.'
+      });
+    }
+  });
 });
 
 // Export variable

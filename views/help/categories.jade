@@ -1,23 +1,20 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-categories'
-  - var pageTitle = 'List of Categories'
+  - var pageHeading = 'List of Categories'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact List of Categories
-        .ui-skip-large
-          ul.ui-nav-stacked.ui-nav-justified(role='tablist')
-            li(class=(group === 'Physics'? 'ui-state-active' : false) role='tab'): a(href='/help/categories') Physics
-            each value, key in abbrev.group
-              li(class=(group === value ? 'ui-state-active' : false) role='tab'): a(href='/help/categories?group=' + key)= value
-          ul
-            each theme in themes
-              li
-                strong= theme.category
-                span : #{theme.description}
+block content
+  .ui-skip-large
+    ul.ui-nav-stacked.ui-nav-justified.ui-text-capitalize(role='tablist')
+      each entry in groups
+        - var label = entry.label
+        - var link = '/help/categories' + (label === 'physics' ? '' : '?group=' + label)
+        li(class=(tab === label ? 'ui-state-active' : '') role='tab')
+          a(href=link)= entry.group
+    ul
+      each theme in themes
+        li
+          strong= theme.category
+          span : #{theme.description}

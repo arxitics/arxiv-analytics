@@ -18,22 +18,22 @@ block main
           a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
     .ui-text-center.ui-skip-huge
       .ui-grid-80.ui-offset-10.ui-mobile-expand
-        .ui-grid-50.ui-mobile-expand
+        .ui-grid-50.ui-phone-expand
           .ui-content-link
             a(href='/articles')
               h4 Collaborative Filtering 
-        .ui-grid-50.ui-mobile-expand
+        .ui-grid-50.ui-phone-expand
           .ui-content-link
             a(href='/search')
               h4 Advanced Search
       .ui-grid-80.ui-offset-10.ui-skip-huge.ui-mobile-expand
-        .ui-grid-50.ui-mobile-expand
+        .ui-grid-50.ui-phone-expand
           .ui-content-link
             - var categories = user.subscription.categories.join(',')
             - var filter = (categories ? '?categories[$in]=' + categories : '')
             a(href=normalize('/articles/random' + filter))
               h4 Random Article
-        .ui-grid-50.ui-mobile-expand
+        .ui-grid-50.ui-phone-expand
           .ui-content-link
             a(href='/visual')
               h4 Data Visualization

@@ -1,14 +1,14 @@
 
 extends review
 
-block content
+block review
   section
     h4.ui-header-compact!= parse(preview.title).replace(/<\/?p>|\n/g, '')
     .ui-content-post!= parse(preview.content)
     if review
       - var pid = review.pid
-      form.ui-form-fluid(data-schema-validate action='/reviews/#{pid}/submit' method='post' role='form')
-        .ui-grid-fluid
+      form.ui-form-horizontal(data-schema-validate action='/reviews/#{pid}/submit' method='post' role='form')
+        .ui-container-grid
           input(type='hidden' name='_csrf' value=csrfToken)
           input(type='text' name='title' pattern=pattern.title value=preview.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)
           textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 200 characters' required)!= preview.content
@@ -21,8 +21,8 @@ block content
           button(type='submit' formaction='/reviews/#{pid}/preview') Preview
           button.ui-button-primary.ui-offset-medium(type='submit') Submit
     else
-      form.ui-form-fluid(data-schema-validate action='/articles/#{id}/reviews/submit' method='post' role='form')
-        .ui-grid-fluid
+      form.ui-form-horizontal(data-schema-validate action='/articles/#{id}/reviews/submit' method='post' role='form')
+        .ui-container-grid
           input(type='hidden' name='_csrf' value=csrfToken)
           input(type='text' name='title' pattern=pattern.title value=preview.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)
           textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 200 characters' required)!= preview.content

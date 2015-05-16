@@ -1,110 +1,105 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-keyboard'
-  - var pageTitle = 'Keyboard Navigation'
+  - var pageHeading = 'Keyboard Navigation'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Keyboard Navigation
-        div
-          p The attribute 
-            code accesskey
-            |  provides a hint for generating a keyboard shortcut for the HTML element. For example, if you are using Firefox on Linux or Windows, the combination 
-            kbd
-              kbd Alt
-              | +
-              kbd Shift
-              | +
-              kbd H
-            |  will jump to our help center. However, the operation to activate the access key depends on your browser and its platform. Please refer to the Wikipedia page about 
-            a(href='https://en.wikipedia.org/wiki/Access_key' rel='external' target='_blank') access keys
-            |  to see which modifier keys should be used. The following is a list of access keys for our website:
-          table.ui-table-fluid.ui-table-striped
-            thead
-              tr
-                th Access key
-                th Mapping
-            tbody
-              tr
-                td 0-9
-                td Navigation links in the header and footer, eg. 0 maps to the home page and 9 maps to 
-                  code /donate
-                  | .
-              tr
-                td S
-                td The 
-                  strong "Search or type a command"
-                  |  input field in the header.
-              tr
-                td H
-                td The table of contents for our help pages.
-              tr
-                td Z
-                td The 
-                  strong "Back to Table of Contents"
-                  |  link for our help pages.
-              tr
-                td U
-                td The user's profile page. Only availble for regersted users.
-              tr
-                td B
-                td The user's bookmarks. Only availble for regersted users.
-              tr
-                td M
-                td The user's messages. Only availble for regersted users.
-              tr
-                td C
-                td The chat room. Only availble for regersted users.
-              tr
-                td P
-                td The previous page link in a pagination for the 
-                  code /browse
-                  |  and 
-                  code /search
-                  |  pages.
-              tr
-                td N
-                td The next page link in a pagination for the 
-                  code /browse
-                  |  and 
-                  code /search
-                  |  pages.
-              tr
-                td A
-                td The 
-                  strong "Abstract on arXiv.org"
-                  |  link in the abstract page for an article.
-              tr
-                td D
-                td The 
-                  strong "View preprint PDF"
-                  |  link in the abstract page for an article.
-              tr
-                td T
-                td The 
-                  strong "Download TeX source"
-                  |  link in the abstract page for an article.
-              tr
-                td X
-                td The 
-                    strong "Export citation in BibTeX"
-                    |  link in the abstract page for an article.
-              tr
-                td E
-                td The 
-                  strong "Edit our extended metata"
-                  |  link for an article or the 
-                  strong "Edit"
-                  |  link for a review.
-          p Besides, you can also use the 
-            kbd Tab
-            |  key for focus management and your browser's keyboard shortcuts to perform common tasks quickly. Please refer to the corresponding guides for 
-            a(href='https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly'  rel='external' target='_blank') Firefox
-            | , 
-            a(href='https://support.google.com/chrome/topic/25799' rel='external' target='_blank') Chrome
-            | , and other browsers.
+block content
+  div
+    p The attribute 
+      code.ui-color-emphasis accesskey
+      |  provides a hint for generating a keyboard shortcut for the HTML element. For example, if you are using Firefox on Linux or Windows, the combination 
+      kbd.ui-color-emphasis
+        kbd Alt
+        | +
+        kbd Shift
+        | +
+        kbd H
+      |  will jump to our help center. However, the operation to activate the access key depends on your browser and its platform. Please refer to the Wikipedia page about 
+      a(href='https://en.wikipedia.org/wiki/Access_key' rel='external' target='_blank') access keys
+      |  to see which modifier keys should be used. The following is a list of access keys for our website:
+    table.ui-table-fluid.ui-table-striped
+      thead
+        tr
+          th Access key
+          th Mapping
+      tbody
+        tr
+          td 0-9
+          td Navigation links in the header and footer, eg. 0 maps to the home page and 9 maps to 
+            code.ui-color-emphasis /donate
+            | .
+        tr
+          td S
+          td The 
+            strong "Search or type a command"
+            |  input field in the header.
+        tr
+          td H
+          td The table of contents for our help pages.
+        tr
+          td Z
+          td The 
+            strong "Back to Table of Contents"
+            |  link for our help pages.
+        tr
+          td U
+          td The user's profile page. Only availble for regersted users.
+        tr
+          td B
+          td The user's bookmarks. Only availble for regersted users.
+        tr
+          td M
+          td The user's messages. Only availble for regersted users.
+        tr
+          td C
+          td The chat room. Only availble for regersted users.
+        tr
+          td P
+          td The previous page link in a pagination for the 
+            code.ui-color-emphasis /browse
+            |  and 
+            code.ui-color-emphasis /search
+            |  pages.
+        tr
+          td N
+          td The next page link in a pagination for the 
+            code /browse
+            |  and 
+            code /search
+            |  pages.
+        tr
+          td A
+          td The 
+            strong "Abstract on arXiv.org"
+            |  link in the abstract page for an article.
+        tr
+          td D
+          td The 
+            strong "View preprint PDF"
+            |  link in the abstract page for an article.
+        tr
+          td T
+          td The 
+            strong "Download TeX source"
+            |  link in the abstract page for an article.
+        tr
+          td X
+          td The 
+              strong "Export citation in BibTeX"
+              |  link in the abstract page for an article.
+        tr
+          td E
+          td The 
+            strong "Edit our extended metata"
+            |  link for an article or the 
+            strong "Edit"
+            |  link for a review.
+    p Besides, you can also use the 
+      kbd Tab
+      |  key for focus management and your browser's keyboard shortcuts to perform common tasks quickly. Please refer to the corresponding guides for 
+      a(href='https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly'  rel='external' target='_blank') Firefox
+      | , 
+      a(href='https://support.google.com/chrome/topic/25799' rel='external' target='_blank') Chrome
+      | , and other browsers.

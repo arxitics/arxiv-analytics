@@ -28,7 +28,7 @@ exports.parse = function (sequence) {
   for (var i = 1; i < length; i++) {
     var parameter = parameters[i];
     var optionSyntax = terminal.option;
-    if (parameter.match(optionSyntax)) {
+    if (optionSyntax.test(parameter)) {
       var argument = (i < length - 1) ? parameters[i + 1] : null;
       var option = parameter.replace(/^\-{1,2}/, '');
       var index = option.indexOf('=');
@@ -36,7 +36,7 @@ exports.parse = function (sequence) {
         var flag = option.slice(0, index);
         options[flag] = option.slice(index + 1);
       } else {
-        if (argument && argument.match(/^[^\-]/)) {
+        if (argument && /^[^\-]/.test(argument)) {
           if (argument.indexOf(',') !== -1)  {
             options[option] = argument.split(',');
           } else {
@@ -47,12 +47,12 @@ exports.parse = function (sequence) {
           options[option] = true;
         }
       }
-    } else if (parameter.match(/^\-[a-z]{2,}$/i)) {
+    } else if (/^\-[a-z]{2,}$/i.test(parameter)) {
       var flags = parameter.slice(1).split('');
       flags.forEach(function (flag) {
         options[flag] = true;
       });
-    } else if (parameter.match(/^\-{2}$/)) {
+    } else if (/^\-{2}$/.test(parameter)) {
       break;
     } else {
       if (parameter.indexOf(',') !== -1)  {
@@ -127,23 +127,23 @@ exports.references = [
     options: [
       {
         option: '-g',
-        description: 'Redirect to <code>/help/general</code>'
+        description: 'Redirect to <code class="ui-color-emphasis">/help/general</code>'
       },
       {
         option: '-u',
-        description: 'Redirect to <code>/help/accounts</code>'
+        description: 'Redirect to <code class="ui-color-emphasis">/help/accounts</code>'
       },
       {
         option: '-s',
-        description: 'Redirect to <code>/help/search</code>'
+        description: 'Redirect to <code class="ui-color-emphasis">/help/search</code>'
       },
       {
         option: '-v',
-        description: 'Redirect to <code>/help/reviews</code>'
+        description: 'Redirect to <code class="ui-color-emphasis">/help/reviews</code>'
       },
       {
         option: '-r',
-        description: 'Redirect to <code>/help/references</code>'
+        description: 'Redirect to <code class="ui-color-emphasis">/help/references</code>'
       }
     ]
   },
@@ -152,7 +152,7 @@ exports.references = [
     description: 'a shortcut for viewing articles in PDF',
     evaluate: function (query, callback) {
       var id = query['id'] || query['view-pdf'] || 'N/A';
-      if (String(id).match(regexp.arxiv.identifier)) {
+      if (regexp.arxiv.identifier.test(String(id))) {
         var result = {
           status: 200,
           url: arxiv.services.pdf.replace('${identifier}', id)
@@ -195,7 +195,7 @@ exports.references = [
     description: 'a shortcut for the redirection of user account pages',
     evaluate: function (query, callback) {
       var uid = query['uid'] || query['view-user'] || 'N/A';
-      if (String(uid).match(regexp.account.uid)) {
+      if (regexp.account.uid.test(String(uid))) {
         var page = '';
         if (query.hasOwnProperty('c')) {
           page = '/preferences';

@@ -195,6 +195,8 @@ reviews.post('/:pid/comments/submit', function (req, res) {
   if (content.match(regexp.review.comment)) {
     var pid = req.pid;
     var post = req.review;
+    var user = req.user;
+    var uid = user.uid;
     var comment = {
       'pid': pid + '.' + (post.comments.length + 1),
       'user': {
@@ -208,7 +210,6 @@ reviews.post('/:pid/comments/submit', function (req, res) {
       '$push': {'comments': {'$each': [comment], '$position': 0}}
     }, function (post) {
       if (post) {
-        var uid = req.user.uid;
         var id = req.eprint.id;
         console.log('user ' + uid + ' made a comment on eprint ' + id);
         analysis.update({'id': id}, {

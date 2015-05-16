@@ -1,20 +1,15 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-posts'
-  - var pageTitle = 'Guidelines for Preparing Your Posts'
+  - var pageHeading = 'Guidelines for Preparing Your Posts'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Guidelines for Preparing Your Posts
-        div
-          p We only accept reviews and comments written in English, which means that non-ASCII characters should be avoided.
-          ul
-            li References should always be typeset in the last section. Please number the citations in text consecutively, starting with [1]. It is your responsibility to check the accuracy of your references.
-            li Links to external resources are encouraged, but please add context around the link or quote the most relevant part so that your fellow users will have some idea what it is and why it is there.
-            li Since user contributions are licensed under a CC BY-SA 4.0 license, please do not use copyrighted material without permission.
-            li Don't forget that you can always edit the review to improve the clarity and focus. By default, we also encourage other users to revise your review.
+block content
+  div
+    p We only accept reviews and comments written in English, which means that non-ASCII characters should be avoided.
+    ul
+      li References should always be typeset in the last section. Please number the citations in text consecutively, starting with [1]. It is your responsibility to check the accuracy of your references.
+      li Links to external resources are encouraged, but please add context around the link or quote the most relevant part so that your fellow users will have some idea what it is and why it is there.
+      li Since user contributions are licensed under a CC BY-SA 4.0 license, please do not use copyrighted material without permission.
+      li Don't forget that you can always edit the review to improve the clarity and focus. By default, we also encourage other users to revise your review.

@@ -6,7 +6,7 @@
 .ui-caret-left,
 .ui-caret-right,
 .ui-caret-up {
-  border: 0.4em solid transparent;
+  border: .5rem solid transparent;
   display: inline-block;
   height: 0;
   width: 0;
@@ -58,3 +58,53 @@
   content: "|\00a0";
 }
 
+.ui-shape-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.ui-shape-container {
+  color: #fff;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+.ui-shape-container > img {
+  height: 100%;
+}
+
+.ui-shape-container > .ui-image-reveal {
+  background-color: rgba(0, 0, 0, .65);
+  bottom: 100%;
+  padding: 50% 0;
+  position: absolute;
+  width: 100%;
+  -webkit-transition: top .2s ease-out, bottom .2s ease-out, .2s padding .2s ease-out;
+  -moz-transition: top .2s ease-out, bottom .2s ease-out, .2s padding .2s ease-out;
+  transition: top .2s ease-out, bottom .2s ease-out, .2s padding .2s ease-out;
+}
+
+.ui-shape-container:hover > .ui-image-reveal {
+  bottom: -25%;
+  top: -25%;
+}
+
+.ui-shape-hexagon {
+  padding-bottom: 115.47%;
+  -moz-transform: rotate(-60deg) skewY(30deg);
+  -ms-transform: rotate(-60deg) skewY(30deg);
+  -webkit-transform: rotate(-60deg) skewY(30deg);
+  transform: rotate(-60deg) skewY(30deg);
+}
+
+.ui-shape-hexagon > .ui-shape-container {
+  -moz-transform: skewY(-30deg) rotate(60deg);
+  -ms-transform: skewY(-30deg) rotate(60deg);
+  -webkit-transform: skewY(-30deg) rotate(60deg);
+  transform: skewY(-30deg) rotate(60deg);
+}

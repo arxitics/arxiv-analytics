@@ -1,157 +1,159 @@
 
-extends ../layout
+extends eprint
 
-block variables
+block prepend variables
   - var pageID = 'abstract'
-  - var pageTitle = __('abstract.heading')
 
 block append head
   link(rel='prerender' href='/articles/#{id}/reviews')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include eprint
-    - var baseSearch = '/search?category=' + eprint.categories[0]
-    - var authorSearch = baseSearch + '&author='
-    - var subjectSearch = baseSearch + '&subject='
-    - var keywordSearch = baseSearch + '&keyword='
-    - var tagSearch = baseSearch + '&tag='
-    - var analyses = eprint.analyses
-    .ui-grid-fluid
-      .ui-grid-70.ui-phone-expand
-        section
-          h4.ui-header-compact= eprint.title
-          p
-            - var authors = eprint.authors
-            - var last = authors.length - 1
-            each author, index in authors
-              a(href=normalize(authorSearch + author))= author 
-              if index !== last
-                | , 
-          p.ui-text-muted
-            - var published = eprint.published.toISOString().slice(0, 10)
-            - var updated = eprint.updated.toISOString().slice(0, 10)
-            | Published 
-            span= published
-            if updated !== published
-              | , updated 
-              span= updated
-            - var version = eprint.version.replace(/^v/i, '')
-            span.ui-offset-large Version #{version}
-          p= eprint.abstract
-          .ui-skip-large
-            - var comment = eprint.comment
-            - var journal = eprint.journal
-            - var doi = eprint.doi || analyses.publication.doi
-            if comment
-              div
-                strong Comments: 
-                span= comment
-            if journal
-              div
-                strong Journal: 
-                span= journal
-            if doi
-              div
-                strong DOI: 
-                a(href='http://dx.doi.org/#{doi}' rel='external' target='_blank')= doi
+block content
+  - var baseSearch = '/search?category=' + eprint.categories[0]
+  - var authorSearch = baseSearch + '&author='
+  - var subjectSearch = baseSearch + '&subject='
+  - var keywordSearch = baseSearch + '&keyword='
+  - var tagSearch = baseSearch + '&tag='
+  - var analyses = eprint.analyses
+  .ui-container-grid
+    .ui-grid-70.ui-phone-expand
+      section
+        h4.ui-header-compact= eprint.title
+        p
+          - var authors = eprint.authors
+          - var last = authors.length - 1
+          each author, index in authors
+            a(href=normalize(authorSearch + author))= author 
+            if index !== last
+              | , 
+        p.ui-text-muted
+          - var published = eprint.published.toISOString().slice(0, 10)
+          - var updated = eprint.updated.toISOString().slice(0, 10)
+          | Published 
+          span= published
+          if updated !== published
+            | , updated 
+            span= updated
+          - var version = eprint.version.replace(/^v/i, '')
+          span.ui-offset-large Version #{version}
+        p= eprint.abstract
+        .ui-skip-large
+          - var comment = eprint.comment
+          - var journal = eprint.journal
+          - var doi = eprint.doi || analyses.publication.doi
+          if comment
             div
-              strong Categories: 
-              - var categories = eprint.categories
-              - var last = categories.length - 1
-              each category, index in categories
-                a(href='/search?category=#{category}')= category
+              strong Comments: 
+              span(data-schema-extract='url')= comment
+          if journal
+            div
+              strong Journal: 
+              span= journal
+          if doi
+            div
+              strong DOI: 
+              - var entries = doi.split(/[\,\;]?\s+/)
+              - var last = entries.length - 1
+              each entry, index in entries
+                a(href='http://dx.doi.org/#{entry}' rel='external' target='_blank')= entry
                 if index !== last
                   | , 
-            if analyses.subjects.length
-              div
-                strong Subjects: 
-                - var subjects = analyses.subjects
-                - var last = subjects.length - 1
-                each subject, index in subjects
-                  a(href=normalize(subjectSearch + subject))= subject
-                  if index !== last
+          div
+            strong Categories: 
+            - var categories = eprint.categories
+            - var last = categories.length - 1
+            each category, index in categories
+              a(href='/search?category=#{category}')= category
+              if index !== last
+                | , 
+          if analyses.subjects.length
+            div
+              strong Subjects: 
+              - var subjects = analyses.subjects
+              - var last = subjects.length - 1
+              each subject, index in subjects
+                a(href=normalize(subjectSearch + subject))= subject
+                if index !== last
+                  | , 
+          if analyses.themes.length
+            div
+              strong Topics: 
+              - var themes = analyses.themes
+              - var lastTheme = themes.length - 1
+              each theme, themeIndex in themes
+                - var topicSearch = '/search?themes.category=' + theme.category + '&themes.topics='
+                - var topics = theme.topics
+                - var lastTopic = topics.length - 1
+                each topic, topicIndex in topics
+                  a(href=normalize(topicSearch + topic))= topic
+                  if topicIndex !== lastTopic
                     | , 
-            if analyses.themes.length
-              div
-                strong Topics: 
-                - var themes = analyses.themes
-                - var lastTheme = themes.length - 1
-                each theme, themeIndex in themes
-                  - var topicSearch = '/search?themes.category=' + theme.category + '&themes.topics='
-                  - var topics = theme.topics
-                  - var lastTopic = topics.length - 1
-                  each topic, topicIndex in topics
-                    a(href=normalize(topicSearch + topic))= topic
-                    if topicIndex !== lastTopic
-                      | , 
-                  if themeIndex !== lastTheme
-                    | ; 
-            if analyses.keywords.length
-              div
-                strong Keywords: 
-                - var keywords = analyses.keywords
-                - var last = keywords.length - 1
-                each keyword, index in keywords
-                  a(href=normalize(keywordSearch + keyword))= keyword
-                  if index !== last
-                    | , 
-            if analyses.tags.length
-              div
-                strong Tags: 
-                - var tags = analyses.tags
-                - var last = tags.length - 1
-                each tag, index in tags
-                  a(href=normalize(tagSearch + tag))= tag
-                  if index !== last
-                    | , 
-      .ui-grid-30.ui-phone-expand
+                if themeIndex !== lastTheme
+                  | ; 
+          if analyses.keywords.length
+            div
+              strong Keywords: 
+              - var keywords = analyses.keywords
+              - var last = keywords.length - 1
+              each keyword, index in keywords
+                a(href=normalize(keywordSearch + keyword))= keyword
+                if index !== last
+                  | , 
+          if analyses.tags.length
+            div
+              strong Tags: 
+              - var tags = analyses.tags
+              - var last = tags.length - 1
+              each tag, index in tags
+                a(href=normalize(tagSearch + tag))= tag
+                if index !== last
+                  | , 
+    .ui-grid-30.ui-phone-expand
+      .ui-content-panel
+        .ui-panel-header
+          h4 Links
+        .ui-panel-body
+          ul.ui-list-group
+            li: a(href='http://arxiv.org/abs/#{id}' rel='external' target='_blank' accesskey='a') Abstract on arXiv.org
+            li: a(href='http://arxiv.org/pdf/#{id}' rel='external' target='_blank' accesskey='d' tabindex='2') View preprint PDF
+            li: a(href='http://arxiv.org/e-print/#{id}' rel='external' accesskey='t') Download TeX source
+            li: a(href='/articles/#{id}/bibtex' download='#{id}.bib' accesskey='x') Export citation in BibTeX
+      if logged
         .ui-content-panel
           .ui-panel-header
-            h4 Links
+            h4 Toolbox
           .ui-panel-body
             ul.ui-list-group
-              li: a(href='http://arxiv.org/abs/#{id}' rel='external' target='_blank' accesskey='a') Abstract on arXiv.org
-              li: a(href='http://arxiv.org/pdf/#{id}' rel='external' target='_blank' accesskey='d' tabindex='2') View preprint PDF
-              li: a(href='http://arxiv.org/e-print/#{id}' rel='external' accesskey='t') Download TeX source
-              li: a(href='/articles/#{id}/bibtex' download='#{id}.bib' accesskey='x') Export citation in BibTeX
-        if logged
-          .ui-content-panel
-            .ui-panel-header
-              h4 Toolbox
-            .ui-panel-body
-              ul.ui-list-group
-                - var uid = user.uid
-                if bookmarked === false
-                  li
-                    form(action='/users/#{uid}/articles/bookmark' method='post' role='form')
-                      input(type='hidden' name='_csrf' value=csrfToken)
-                      input(type='hidden' name='id' value=id)
-                      button.ui-button-link(type='submit' tabindex='3') Add to my bookmarks
-                if bookmarked && read === false
-                  li
-                    form(action='/users/#{uid}/articles/read' method='post' role='form')
-                      input(type='hidden' name='_csrf' value=csrfToken)
-                      input(type='hidden' name='id' value=id)
-                      button.ui-button-link(type='submit' tabindex='3') Mark this article as read
-                if read && rated === false
-                  li
-                    form(data-schema-rating action='/users/#{uid}/articles/rating' method='post' role='form')
-                      input(type='hidden' name='_csrf' value=csrfToken)
-                      input(type='hidden' name='id' value=id)
-                      input(type='hidden' name='score')
-                      span.ui-text-primary
-                        | Rate this article 
-                      a(role='button')
-                        i(data-schema-icon='star-o')
-                        i(data-schema-icon='star-o')
-                        i(data-schema-icon='star-o')
-                        i(data-schema-icon='star-o')
-                        i(data-schema-icon='star-o')
-                li: a(href='/articles/#{id}/reviews/post') Post your review for this article
-                li: a(href='/articles/#{id}/resources/attach') Attach supplementary resources
-                if editable
-                  li: a(href='/articles/#{id}/edit' accesskey='e') Edit our extended metadata
+              - var uid = user.uid
+              if bookmarked === false
+                li
+                  form(action='/users/#{uid}/articles/bookmark' method='post' role='form')
+                    input(type='hidden' name='_csrf' value=csrfToken)
+                    input(type='hidden' name='id' value=id)
+                    button.ui-button-link(type='submit' tabindex='3') Add to my bookmarks
+              if bookmarked && read === false
+                li
+                  form(action='/users/#{uid}/articles/read' method='post' role='form')
+                    input(type='hidden' name='_csrf' value=csrfToken)
+                    input(type='hidden' name='id' value=id)
+                    button.ui-button-link(type='submit' tabindex='3') Mark this article as read
+              if read && rated === false
+                li
+                  form(data-schema-rating action='/users/#{uid}/articles/rating' method='post' role='form')
+                    input(type='hidden' name='_csrf' value=csrfToken)
+                    input(type='hidden' name='id' value=id)
+                    input(type='hidden' name='score')
+                    span.ui-text-primary
+                      | Rate this article 
+                    a(role='button')
+                      i(data-schema-icon='star-o')
+                      i(data-schema-icon='star-o')
+                      i(data-schema-icon='star-o')
+                      i(data-schema-icon='star-o')
+                      i(data-schema-icon='star-o')
+              li: a(href='/articles/#{id}/reviews/post') Post your review for this article
+              li: a(href='/articles/#{id}/resources/attach') Attach supplementary resources
+              if editable
+                li: a(href='/articles/#{id}/edit' accesskey='e') Edit our extended metadata
 
 block append foot
   include ../mathjax
@@ -165,11 +167,11 @@ block append foot
             $_icon.on('mouseenter', function () {
               $_icon.prevAll().andSelf().data('schema-icon', 'star');
               $_icon.nextAll().data('schema-icon', 'star-o');
-              $(document).trigger('generate.icons');
+              $(document).trigger('create.icons');
             });
             $_icon.parent().on('mouseleave', function () {
               $(this).children().data('schema-icon', 'star-o');
-              $(document).trigger('generate.icons');
+              $(document).trigger('create.icons');
             });
             $_icon.on('click', function () {
               $_form.find('[name="score"]').val(index + 1);

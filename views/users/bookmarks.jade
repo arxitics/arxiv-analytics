@@ -1,38 +1,35 @@
 
-extends ../layout
+extends account
 
-block variables
+block prepend variables
   - var pageID = 'bookmarks'
-  - var pageTitle = __('bookmarks.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include account
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      - var perpage = query.perpage
-      - var baseURL = '/users/' + uid + '/bookmarks'
-      - var paginationURL = baseURL + '?type=' + type + (perpage ? '&perpage=' + perpage : '') + '&page='
-      ul.ui-nav-stacked.ui-nav-justified(role='tablist')
-        - var tabs = ['articles', 'readings', 'ratings', 'edits', 'reviews', 'votes']
-        each tab in tabs
-          - var link = baseURL + (tab === 'articles' ? '' : '?type=' + tab)
-          li(class=(tab === type ? 'ui-state-active' : false) role='tab')
-            a(href=link)= tab.charAt(0).toUpperCase() + tab.slice(1)
-      ol(start=startIndex + 1)
-        - var activity = profile.activity
-        if type === 'articles'
-          include bookmarks/articles
-        else if type === 'readings'
-          include bookmarks/readings
-        else if type === 'ratings'
-          include bookmarks/ratings
-        else if type === 'edits'
-          include bookmarks/edits
-        else if type === 'reviews'
-          include bookmarks/reviews
-        else if type === 'votes'
-          include bookmarks/votes
-      include ../pagination
+block content
+  .ui-grid-80.ui-offset-10.ui-mobile-expand
+    - var perpage = query.perpage
+    - var baseURL = '/users/' + uid + '/bookmarks'
+    - var paginationURL = baseURL + '?type=' + type + (perpage ? '&perpage=' + perpage : '') + '&page='
+    ul.ui-nav-stacked.ui-nav-justified.ui-text-capitalize(role='tablist')
+      - var tabs = ['articles', 'readings', 'ratings', 'edits', 'reviews', 'votes']
+      each tab in tabs
+        - var link = baseURL + (tab === 'articles' ? '' : '?type=' + tab)
+        li(class=(tab === type ? 'ui-state-active' : '') role='tab')
+          a(href=link)= tab.charAt(0).toUpperCase() + tab.slice(1)
+    ol(start=startIndex + 1)
+      - var activity = profile.activity
+      if type === 'articles'
+        include bookmarks/articles
+      else if type === 'readings'
+        include bookmarks/readings
+      else if type === 'ratings'
+        include bookmarks/ratings
+      else if type === 'edits'
+        include bookmarks/edits
+      else if type === 'reviews'
+        include bookmarks/reviews
+      else if type === 'votes'
+        include bookmarks/votes
+    include ../pagination
 
 block append foot
   if authorized
@@ -46,11 +43,11 @@ block append foot
               $_icon.on('mouseenter', function () {
                 $_icon.prevAll().andSelf().data('schema-icon', 'star');
                 $_icon.nextAll().data('schema-icon', 'star-o');
-                $(document).trigger('generate.icons');
+                $(document).trigger('create.icons');
               });
               $_icon.parent().on('mouseleave', function () {
                 $(this).children().data('schema-icon', 'star-o');
-                $(document).trigger('generate.icons');
+                $(document).trigger('create.icons');
               });
               $_icon.on('click', function () {
                 $_form.find('[name="score"]').val(index + 1);
@@ -70,14 +67,14 @@ block append foot
               $_icon.on('mouseenter', function () {
                 $_icon.prevAll().andSelf().data('schema-icon', 'star');
                 $_icon.nextAll().data('schema-icon', 'star-o');
-                $(document).trigger('generate.icons');
+                $(document).trigger('create.icons');
               });
               $_parent.on('mouseleave', function () {
                 var $_children = $_parent.children();
                 var score = $_parent.data('schema-score');
                 $_children.data('schema-icon', 'star');
                 $_children.slice(score).data('schema-icon', 'star-o');
-                $(document).trigger('generate.icons');
+                $(document).trigger('create.icons');
               });
               $_icon.on('click', function () {
                 $_form.find('[name="score"]').val(index + 1);

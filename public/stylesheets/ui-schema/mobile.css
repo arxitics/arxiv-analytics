@@ -7,18 +7,41 @@
     display: none;
   }
   .ui-mobile-expand {
-    display: block;
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
     -moz-column-count: 1;
     -webkit-column-count: 1;
     column-count: 1;
+    float: left;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
   }
   .ui-mobile-expand + .ui-mobile-expand:not(ul) {
-    margin-top: 2em;
+    margin-top: 1em;
+  }
+  .ui-mobile-doubling > .ui-grid-17,
+  .ui-mobile-doubling > .ui-fluid-17 {
+    width: 33.3333%;
+  }
+  .ui-mobile-doubling > .ui-grid-25,
+  .ui-mobile-doubling > .ui-fluid-25 {
+    width: 50%;
+  }
+  .ui-mobile-halving > .ui-box-tiny {
+    width: 2em;
+  }
+  .ui-mobile-halving > .ui-box-small {
+    width: 4em;
+  }
+  .ui-mobile-halving > .ui-box-medium {
+    width: 8em;
+  }
+  .ui-mobile-halving > .ui-box-large {
+    width: 16em;
+  }
+  .ui-mobile-halving > .ui-box-huge {
+    width: 24em;
   }
   .ui-mobile-auto,
   .ui-mobile-collapse {
@@ -34,35 +57,10 @@
     display: block;
   }
   .ui-mobile-reverse {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -moz-flex-direction: column-reverse;
-    -ms-flex-direction: column-reverse;
-    -webkit-flex-direction: column-reverse;
-    flex-direction: column-reverse;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .ui-tablet-hidden {
-    display: none;
-  }
-  .ui-tablet-expand {
-    display: block;
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
-    -moz-column-count: 1;
-    -webkit-column-count: 1;
-    column-count: 1;
-  }
-  .ui-tablet-expand + .ui-tablet-expand:not(ul) {
-    margin-top: 2em;
+    -moz-flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
   }
 }
 
@@ -71,17 +69,40 @@
     display: none;
   }
   .ui-phone-expand {
-    display: block;
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
     -moz-column-count: 1;
     -webkit-column-count: 1;
     column-count: 1;
+    float: left;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
   }
   .ui-phone-expand + .ui-phone-expand:not(ul) {
-    margin-top: 2em;
+    margin-top: 1em;
+  }
+  .ui-phone-doubling > .ui-grid-17,
+  .ui-phone-doubling > .ui-fluid-17 {
+    width: 33.3333%;
+  }
+  .ui-phone-doubling > .ui-grid-25,
+  .ui-phone-doubling > .ui-fluid-25 {
+    width: 50%;
+  }
+  .ui-phone-halving > .ui-box-tiny {
+    width: 2em;
+  }
+  .ui-phone-halving > .ui-box-small {
+    width: 4em;
+  }
+  .ui-phone-halving > .ui-box-medium {
+    width: 8em;
+  }
+  .ui-phone-halving > .ui-box-large {
+    width: 16em;
+  }
+  .ui-phone-halving > .ui-box-huge {
+    width: 24em;
   }
 }

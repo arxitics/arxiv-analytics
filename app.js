@@ -50,7 +50,7 @@ app.use(i18n.init);
 
 // Add expires headers for static resources
 app.use(function (req, res, next) {
-  if (req.url.match(/\/(images|javascripts|stylesheets)\//)) {
+  if (/\/(images|javascripts|stylesheets)\//.test(req.url)) {
     var cache = settings.cache;
     res.setHeader('Cache-Control', 'public, max-age=' + cache.maxAge);
     res.setHeader('Expires', new Date(cache.expires).toUTCString());

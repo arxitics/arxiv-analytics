@@ -1,23 +1,19 @@
 
-extends ../layout
+extends site
 
-block variables
+block prepend variables
   - var pageID = 'privacy'
-  - var pageTitle = __('privacy.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    h3.ui-header-primary= __('privacy.heading')
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact What this is
-        div
-          p This privacy policy describes what information we collect when you visit this website, how we use that information, and what choices we offer you to access, update, and control it.
-          p We take the private nature of your personal information very seriously, and are committed to protecting it. To do that, we’ve set up procedures to ensure that your information is handled responsibly and in accordance with applicable data protection. We’re grateful for your trust, and we’ll act that way.
-       section.ui-skip-large
-         h4.ui-header-compact How we collect information
-         div
-          p We collect information in two ways: Information we get from your use of the website, and information you provide to us directly.
-          p Information we get from your use of the website is primarily non-personally &ndash; identifying information of the sort that web browsers, servers, and services like Google Analytics typically make available, such as the browser type, language preference, and the time of each visit. We use this information to make your experience with our site safer and better, to gain a greater understanding of user preferences and to generally improve our services. Other non-identifying information that we might have access to includes how you use the service, e.g. search queries. We also collect potentially personally identifying information in the form of IP addresses, but we don’t use that information to identify you.
-          p If you register an account, you may need to give us your email and other personal information. The amount and type of information that is provided depends on the nature of the interaction. We encourage the users to use real names so that you can claim eprint authorship.
-          p A cookie is a string of information that a website stores on a visitor’s computer, and that the visitor’s browser provides to the website each time the visitor returns. We use signed cookies to allow the users to auto login and help us track visitors’ use of the website. If you really hate cookies, you can always clear them manully at any time or visit our website using the private browsing or the incognito mode.
+block content
+  section
+    h4.ui-header-compact What this is
+    div
+      p This privacy policy describes what information we collect when you visit this website, how we use that information, and what choices we offer you to access, update, and control it.
+      p We take the private nature of your personal information very seriously, and are committed to protecting it. To do that, we’ve set up procedures to ensure that your information is handled responsibly and in accordance with applicable data protection. We’re grateful for your trust, and we’ll act that way.
+   section.ui-skip-large
+     h4.ui-header-compact How we collect information
+     div
+      p We collect information in two ways: Information we get from your use of the website, and information you provide to us directly.
+      p Information we get from your use of the website is primarily non-personally &ndash; identifying information of the sort that web browsers, servers, and services like Google Analytics typically make available, such as the browser type, language preference, and the time of each visit. We use this information to make your experience with our site safer and better, to gain a greater understanding of user preferences and to generally improve our services. Other non-identifying information that we might have access to includes how you use the service, e.g. search queries. We also collect potentially personally identifying information in the form of IP addresses, but we don’t use that information to identify you.
+      p If you register an account, you may need to give us your email and other personal information. The amount and type of information that is provided depends on the nature of the interaction. We encourage the users to use real names so that you can claim eprint authorship.
+      p A cookie is a string of information that a website stores on a visitor’s computer, and that the visitor’s browser provides to the website each time the visitor returns. We use signed cookies to allow the users to auto login and help us track visitors’ use of the website. If you really hate cookies, you can always clear them manully at any time or visit our website using the private browsing or the incognito mode.

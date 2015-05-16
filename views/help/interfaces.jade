@@ -1,34 +1,29 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-interfaces'
-  - var pageTitle = 'Search User Interfaces'
+  - var pageHeading = 'Search User Interfaces'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Search User Interfaces
-        div
-          p We have provided three user interfaces for searching or filtering eprints.
-          section.ui-skip-large
-            h5.ui-header-compact Universal search
-            p In the top of every page, you can see a 
-              strong "Search or type a command"
-              |  box, that is our universal search interface. It supports the most complex and powerful expressions, for example
-            pre: code "dark matter phenomenology" category: astro-ph.CO, hep-ph authors[$size]: 2 title: (W|Z|Higgs).*boson
-            p We will explain this syntax later. If you input the 
-              a(href='http://arxiv.org/help/arxiv_identifier' rel='external' target='_blank') arXiv identifier
-              |  of an article, you will be directed to the abstract page.
-          section.ui-skip-large
-            h5.ui-header-compact Advanced search
-            p If you enter no words into the search box for universal searching, you will be redirected to the 
-              a(href='/search') advanced search
-              |  interface. You can also visit the page by entering the URL in your browser's address bar directly. It gives some examples and provides an overview for the syntax. When hovering on the input fields, you can get more hints.
-          section.ui-skip-large
-            h5.ui-header-compact Simple search
-            p As mentioned before, you can 
-              a(href='/browse') browse
-              |  your subscription of eprints based on filters like categories, subjects, topics, keywords, etc. In fact, this is also a simple search interface.
+block content
+  div
+    p We have provided three user interfaces for searching or filtering eprints.
+    section.ui-skip-large
+      h5.ui-header-compact Universal search
+      p In the top of every page, you can see a 
+        strong "Search or type a command"
+        |  box, that is our universal search interface. It supports the most complex and powerful expressions, for example
+      pre: code "dark matter phenomenology" category: astro-ph.CO, hep-ph authors[$size]: 2 title: (W|Z|Higgs).*boson
+      p We will explain this syntax later. If you input the 
+        a(href='http://arxiv.org/help/arxiv_identifier' rel='external' target='_blank') arXiv identifier
+        |  of an article, you will be directed to the abstract page.
+    section.ui-skip-large
+      h5.ui-header-compact Advanced search
+      p If you enter no words into the search box for universal searching, you will be redirected to the 
+        a(href='/search') advanced search
+        |  interface. You can also visit the page by entering the URL in your browser's address bar directly. It gives some examples and provides an overview for the syntax. When hovering on the input fields, you can get more hints.
+    section.ui-skip-large
+      h5.ui-header-compact Simple search
+      p As mentioned before, you can 
+        a(href='/browse') browse
+        |  your subscription of eprints based on filters like categories, subjects, topics, keywords, etc. In fact, this is also a simple search interface.

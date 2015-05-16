@@ -5,11 +5,13 @@
 (function ($) {
   'use strict';
 
+  // Create a new schema object
   schema.create = function (options) {
     this.setup = $.extend({}, schema.setup, options);
     return Object.create(schema);
   };
 
+  // Bind and trigger schema events
   schema.load = function (setup, events) {
     var schemaSetup = $.extend({}, schema.setup, setup);
     var schemaEvents = $.extend({}, schema.events, events);
@@ -37,6 +39,7 @@
     }
   };
 
+  // Assign an integer as the delegation of an event
   schema.delegate = function (event) {
     var schemaSetup = schema.setup;
     var eventsBind = schemaSetup.autoBind.split(' ');
@@ -60,6 +63,7 @@
     return eventDelegation;
   };
 
+  // Retrieve schema event options and store as event data
   schema.retrieve = function (event, options) {
     var eventSelector = schema.events.retrieve.selector;
     var optionalSelector = options && options.selector;
@@ -76,6 +80,7 @@
     });
   };
 
+  // Parse and normalize schema data
   schema.parseData = function (data) {
     var dataObject = {};
     var schemaDataPrefix = schema.setup.dataPrefix;
@@ -93,6 +98,7 @@
     return dataObject;
   };
 
+  // Parse and normalize schema options
   schema.parseOptions = function (options) {
     var optionsObject = {};
     var parsedOptionsObject = {};

@@ -1,0 +1,11 @@
+
+extends ../layout
+
+block variables
+  - var pageTitle = __(pageID + '.heading')
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary= pageTitle
+    .ui-grid-80.ui-offset-10.ui-mobile-expand
+      block content

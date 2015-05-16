@@ -1,7 +1,7 @@
 
 extends review
 
-block content
+block review
   - var paginationURL = '/articles/' + id + '/reviews?page='
   each review, index in reviews
     - var last = reviews.length - 1

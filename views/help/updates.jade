@@ -1,18 +1,19 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-updates'
-  - var pageTitle = 'Project Updates'
+  - var pageHeading = 'Project Updates'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Project Updates
-        div.ui-skip-small
-          ul
-            li
-              strong 2014-07-13
-              | : Public beta begins
+block content
+  .ui-skip-small
+    ul
+      li
+        strong 2014-11-14
+        | : Real-time chat built with WebSocket
+      li
+        strong 2014-10-06
+        | : Open Storage Service powered by Arxitics OSS
+      li
+        strong 2014-07-13
+        | : Public beta begins

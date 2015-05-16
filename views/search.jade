@@ -3,7 +3,8 @@ extends layout
 
 block variables
   - var pageID = 'search'
-  - var pageTitle = __('search.heading')
+  - var queryString = searched ? location.replace(/^\/search\?/, '') : ''
+  - var pageTitle = __('search.heading') + (queryString ? ' ' + queryString : '')
 
 block main
   if searched
@@ -14,4 +15,4 @@ block main
 block append foot
   if searched
     //- Options for displaying search results
-    script(src='#{appStorage}/javascripts/search-#{appVersion}.min.js')
+    script(src='#{appStorage}/javascripts/search-1.0.1.min.js')

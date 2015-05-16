@@ -1,11 +1,11 @@
 
 extends comment
 
-block content
+block comment
   div
     .ui-content-post!= parse(preview.content)
-    form.ui-form-fluid(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
-      .ui-grid-fluid
+    form.ui-form-horizontal(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
+      .ui-container-grid
         input(type='hidden' name='_csrf' value=csrfToken)
         textarea(name='content' rows='12' placeholder='Content: to be specific and constructive. Markdown and LaTeX are supported.' title='At least 40 characters' required)!= preview.content
       .ui-skip-small

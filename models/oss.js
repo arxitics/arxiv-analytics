@@ -16,7 +16,7 @@ var settings = require('../settings').oss;
 // Handle `multipart/form-data`
 exports.upload = function () {
   return multer({
-    dest: settings.uploads,
+    dest: settings.directory,
     limits: settings.limits,
     rename: function (fieldname, filename) {
       return filename + '-' + Date.now()

@@ -1,27 +1,25 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-topics'
-  - var pageTitle = 'List of Themes and Topics'
+  - var pageHeading = 'List of Themes and Topics'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact List of Themes and Topics
-        .ui-skip-large
-          ul.ui-nav-stacked.ui-nav-justified(role='tablist')
-            li(class=(group === 'Physics'? 'ui-state-active' : false) role='tab'): a(href='/help/topics') Physics
-            each value, key in abbrev.group
-              li(class=(group === value ? 'ui-state-active' : false) role='tab'): a(href='/help/topics?group=' + key)= value
-          ul.ui-columns-2
-            each theme in themes
-              li
-                - var topics = theme.topics
-                strong= theme.category
-                if topics.length
-                  ul
-                    each topic in topics
-                      li= topic
+block content
+  .ui-skip-large
+    ul.ui-nav-stacked.ui-nav-justified.ui-text-capitalize(role='tablist')
+      each entry in groups
+        - var label = entry.label
+        - var link = '/help/topics' + (label === 'physics' ? '' : '?group=' + label)
+        li(class=(tab === label ? 'ui-state-active' : '') role='tab')
+          a(href=link)= entry.group
+    .ui-columns-2
+      ul
+        each theme in themes
+          li
+            - var topics = theme.topics
+            strong= theme.category
+            if topics.length
+              ul
+                each topic in topics
+                  li= topic

@@ -29,23 +29,25 @@ search.get('/', function (req, res) {
       redirected = true;
     } else {
       sequence = sequence.replace(/arXiv\:\s*/i, '');
-      if (sequence.match(regexp.identifier)) {
-        res.redirect('/articles/' + sequence);
+      if (regexp.identifier.test(sequence)) {
+        res.redirect('/articles/' + sequence.toLowerCase());
         redirected = true;
+      } else if (regexp.doi.test(sequence)) {
+        query = {'doi': sequence};
       } else {
-        if (sequence.match(/^\{.+\}$/)) {
+        if (/^\{.+\}$/.test(sequence)) {
           try {
-            sequence = security.serialize(JSON.parse(sequence));
+            sequence = security.serialize(JSON.parse(sequence)); console.log(sequence);
             res.redirect(security.normalize('/search?' + sequence));
             redirected = true;
           } catch (error) {
-            console.log(error);
+            console.error(error);
           }
         }
         if (!redirected) {
           sequence = sequence.replace(/\s*\:\s*/g, '=');
           if (sequence.indexOf('=') !== -1) {
-            if (sequence.match(/^[^=]+\s/)) {
+            if (/^[^=]+\s/.test(sequence)) {
               sequence = 'q=' + sequence;
             }
             sequence = sequence.replace(/\s([^\s]+)=/g, '&$1=');
@@ -59,8 +61,10 @@ search.get('/', function (req, res) {
     }
   }
   if (!redirected) {
-    var keys = Object.keys(query);
-    if (keys.length && query[keys[0]] !== '') {
+    var keys = Object.keys(query).filter(function (key) {
+      return query[key] !== '';
+    });
+    if (keys.length) {
       var query = article.preprocess(query);
       article.find(query, function (docs) {
         var length = docs.length;

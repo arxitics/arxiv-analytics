@@ -21,17 +21,22 @@
   chat.load = function (start, end) {
     var contents = [];
     chat.messages.slice(start || 0, end).forEach(function (message, index) {
-      var sender = message.sender;
-      var user = '<span>' + sender.uid + ' &lt;' + sender.name + '&gt;</span>';
-      var date = '<span>' + message.sent.slice(0, 19).replace('T', ' ') + '</span>';
-      var messageID = 'message-' + (index + 1);
-      var content = '<div id="' + messageID + '" class="ui-offset-large">' + message.content + '</div>';
-      contents.push('<li><div class="ui-color-success">' + date + ' &ensp;|&ensp; ' + user + '</div>' + content + '</li>');
+      contents.push(chat.parse(message, index + 1));
     });
     $('#chat-room').html(contents.join('')).scrollTop($('#chat-room').height());
     if (window.MathJax) {
       MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'chat-room']);
     }
+  };
+  
+  // Parse message
+  chat.parse = function (message, index) {
+    var sender = message.sender;
+    var user = '<span>' + sender.uid + ' &lt;' + sender.name + '&gt;</span>';
+    var date = '<span>' + message.sent.slice(0, 19).replace('T', ' ') + '</span>';
+    var messageID = 'message-' + index;
+    var content = '<div id="' + messageID + '" class="ui-offset-large">' + message.markup + '</div>';
+    return '<li><div class="ui-color-success">' + date + ' &ensp;|&ensp; ' + user + '</div>' + content + '</li>';
   };
 
   // Save chat data
@@ -43,7 +48,7 @@
 
   // Export chat data
   chat.export = function () {
-    var json = JSON.stringify(this, null, '  ');
+    var json = JSON.stringify(this, null, 2);
     window.open('data:application/json;charset=utf-8,' + encodeURIComponent(json));
   };
 
@@ -58,16 +63,24 @@
     return decodeURIComponent(escape(window.atob(data.slice(2))));
   };
 
+  // Notifications
+  chat.notify = function (title, options) {
+    if (window.Notification) {
+      if (Notification.permission === 'granted') {
+        var notification = new Notification(title, options);
+        notification.onshow = function () {
+          setTimeout(notification.close.bind(notification), 4000);
+        }
+      }
+    }
+  };
+
   // Display new message
   chat.display = function (message) {
-    var sender = message.sender || {};
-    var profile = '<span>' + sender.uid + ' &lt;' + sender.name + '&gt;</span>';
-    var date = '<span>' + message.sent.slice(0, 19).replace('T', ' ') + '</span>';
-    var messageID = 'message-' + ($('#chat-room > li').size() + 1);
-    var content = '<div id="' + messageID + '" class="ui-offset-large">' + message.markup + '</div>';
-    $('#chat-room').append('<li><div class="ui-color-success">' + date + ' &ensp;|&ensp; ' + profile + '</div>' + content + '</li>').scrollTop($('#chat-room').height());
+    var index = $('#chat-room > li').size() + 1;
+    $('#chat-room').append(chat.parse(message, index)).scrollTop($('#chat-room').height());
     if (window.MathJax) {
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub, messageID]);
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'message-' + index]);
     }
   };
 
@@ -102,11 +115,17 @@
         'joined': new Date().toISOString()
       })));
       chat.load(-10);
+      if (window.Notification && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
     };
     socket.onmessage = function (event) {
       var message = JSON.parse(chat.decode(event.data));
       var state = message.state || 'connected';
       if (state === 'connected') {
+        if (document.hidden) {
+          chat.notify('You have a new chat message from arxitics!');
+        }
         chat.display(message);
         chat.save(message);
       } else {

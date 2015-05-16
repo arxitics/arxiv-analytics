@@ -9,10 +9,10 @@ var article = require('./article');
 var security = require('./security');
 var statistics = require('./statistics');
 var regexp = require('./regexp').arxiv;
-var settings = require('../settings').admin;
+var settings = require('../settings').arxiv;
 
 // Directory for eprint XML files
-exports.directory = path.join(__dirname, '..', 'data', 'xml');
+exports.directory = settings.directory;
 
 // Generate arXiv API query string
 exports.generate = function (query) {
@@ -41,7 +41,7 @@ exports.generate = function (query) {
 // Retrieve eprint metadata
 exports.retrieve = function (identifier, callback) {
   callback = (typeof callback === 'function') ? callback : function () {};
-  if (identifier.match(regexp.identifier)) {
+  if (regexp.identifier.test(identifier)) {
     var query = {list: identifier};
     exports.update(query, function () {
       console.log('retrieved eprint ' + identifier + ' successfully');
@@ -55,19 +55,19 @@ exports.retrieve = function (identifier, callback) {
 
 // Fetch all eprints in a category
 exports.fetch = function (query, callback) {
-  var limit = settings.eprints.limit || 1000;
-  var interval = settings.eprints.interval;
+  var limit = settings.limit || 1000;
+  var interval = settings.interval;
   var category = query.category || 'hep-th';
-  var count = 0;
-  statistics.categories.every(function (item) {
+  var length = 0;
+  statistics.categories.some(function (item) {
     if (item.category === category) {
-      count = Math.ceil(item.count / limit);
-      return false;
+      length = Math.ceil(item.count / limit);
+      return true;
     }
-    return true;
+    return false;
   });
   // Use closures inside loop
-  Array.apply(null, {length: count}).forEach(function(value, index) {
+  Array.apply(null, {length: length}).forEach(function(value, index) {
     setTimeout(function () {
       var criteria = {
         category: category,
@@ -101,8 +101,8 @@ exports.update = function (query, callback) {
   var subdirectory = '';
   var queryTarget = '';
   if (query.hasOwnProperty('list') && !query.hasOwnProperty('search')) {
-    var archive = query.list.match(regexp.archive);
-    subdirectory = path.join('id_list', (archive && archive[0]) || 'all');
+    var matches = query.list.match(regexp.archive);
+    subdirectory = path.join('id_list', (matches && matches[0]) || 'all');
     queryTarget = query.list;
   } else {
     subdirectory = path.join('search_query', query.category || 'all');
@@ -118,7 +118,7 @@ exports.update = function (query, callback) {
   var fileName = security.sanitize(queryTarget) + '.xml';
   var filePath = path.join(directory, fileName);
   file.exists(filePath, function (exists) {
-    var parse = settings.eprints.parse;
+    var parse = settings.parse;
     if (exists) {
       if (parse) {
         crawler.parseXML(filePath, function (result) {
@@ -179,7 +179,7 @@ exports.check = function (query, callback) {
     var archive = query.archive;
     var from = query.from || today;
     var to = query.to;
-    if (!archive.match(regexp.group)) {
+    if (!(regexp.group.test(archive))) {
       archive = 'physics:' + archive;
     }
     queryString += '&' + oai.archive + '=' + archive +
@@ -276,8 +276,11 @@ exports.output = function (result, callback) {
   var base = exports.services.abs.replace('${identifier}', '');
   var entries = result && result.feed && result.feed.entry;
   if (entries) {
-    entries = [].concat(entries);
-  } else {
+    entries = [].concat(entries).filter(function (entry) {
+      return entry.hasOwnProperty('id');
+    });
+  }
+  if (!(Array.isArray(entries) && entries.length)) {
     return callback(false);
   }
   var last = entries.length - 1;
@@ -301,22 +304,27 @@ exports.output = function (result, callback) {
       authors: [],
       subjects: []
     };
-    var authors = [].concat(entry.author);
+    var authors = [].concat(entry.author).filter(function (author) {
+      return /^([\.\:\;]|\d+)$/.test(author) === false;
+    });
     authors.forEach(function (author) {
       var pattern = regexp.author;
       var fullName = security.latinize(author['name']);
       var western = fullName.replace(pattern.eastern, '$2 $1');
       var variant = western.replace(pattern.surname, ' $1');
       var segments = variant.replace(/\'/g, '').split(/[\s\.\-,]+/);
-      var last = segments.length - 1;
+      var lastIndex = segments.length - 1;
       var profile = {
         'name': fullName,
         'identifier': segments.map(function (segment, index) {
-          return (index !== last) ? segment.charAt(0).toUpperCase() : segment;
+          return (index !== lastIndex) ? segment.charAt(0).toUpperCase() : segment;
         }).join('.')
       };
       if (author.hasOwnProperty('arxiv:affiliation')) {
-        profile['affiliation'] = author['arxiv:affiliation']._;
+        var affiliations = [].concat(author['arxiv:affiliation']);
+        profile['affiliations'] = affiliations.map(function (affiliation) {
+          return affiliation._;
+        });
       }
       eprint.authors.push(author['name']);
       analyses.authors.push(profile);
@@ -328,7 +336,15 @@ exports.output = function (result, callback) {
       eprint.journal = entry['arxiv:journal_ref']._;
     }
     if (entry.hasOwnProperty('arxiv:doi')) {
-      eprint.doi = entry['arxiv:doi']._;
+      var doi = entry['arxiv:doi']._.replace(/[\,\;]/g, ' ').trim();
+      if (/\s/.test(doi)) {
+        doi = doi.split(/\s+/).filter(function (value, index, array) {
+          return regexp.doi.test(value) && array.indexOf(value) === index;
+        }).map(function (value) {
+          return value.replace(/\.$/, '');
+        }).join(' ');
+      }
+      eprint.doi = doi.replace(/\.$/, '');
     }
 
     var primaryCategory = entry['arxiv:primary_category'].$.term;
@@ -338,13 +354,13 @@ exports.output = function (result, callback) {
         var term = category.$.term;
         if (term !== primaryCategory) {
           // Ensure that only valid categories are pushed
-          if (term.match(regexp.category)) {
+          if (regexp.category.test(term)) {
             eprint.categories.push(term);
           } else {
             var subjects = term.split(/[^a-zA-Z0-9\-\+\.]+|\.\s+/);
             subjects = subjects.filter(function (subject) {
               return ['pacs', 'msc', 'ccs', 'jel'].some(function (code) {
-                return subject.match(regexp[code]);
+                return regexp[code].test(subject);
               });
             });
             analyses.subjects = analyses.subjects.concat(subjects);

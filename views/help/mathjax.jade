@@ -1,72 +1,67 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-mathjax'
-  - var pageTitle = 'Typesetting Math Using MathJax'
+  - var pageHeading = 'Typesetting Math Using MathJax'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Typesetting Math Using MathJax
-        div
-          p
-            a(href='http://www.mathjax.org/' rel='external' target='_blank') MathJax
-            |  is an open source JavaScript engine for mathematics in web browsers. We use the 
-            code TeX-AMS-MML_HTMLorMML
-            |  configuration, which allows math to be specified in 
-            a(href='https://en.wikipedia.org/wiki/TeX' rel='external' target='_blank') TeX
-            | , 
-            a(href='https://en.wikipedia.org/wiki/LaTeX' rel='external' target='_blank') LaTeX
-            | , or 
-            a(href='https://en.wikipedia.org/wiki/MathML' rel='external' target='_blank') MathML
-            |  notation, with the AMSmath and AMSsymbols packages included. For Firefox, the NativeMML output processor is used by default, which renders mathematics in native MathML and thus is much faster than using the HTML-CSS output. You can employ the MathJax contextual menu to select the other renderer as you like.
-          p To use the shorthands 
-            code \(...\)
-            |  and 
-            code \[...\]
-            |  as delimiters for mathematics in LaTeX, you should esacpe the backslash as 
-            code \\
-            | . So, it is better to use 
-            code $...$
-            |  and 
-            code $$...$$
-            |  or the corresponding environments defined by 
-            code \begin{}...\end{}
-            |  instead. Please have a look at the MathJax 
-            a(href='http://www.mathjax.org/demos/' rel='external' target='_blank') demos
-            |  to get some practical examples. We also have some tips for typesetting math in LaTeX using MathJax:
-          ul
-            li Don't use too many small spaces like 
-              code \;
-              |  and 
-              code \:
-              |  for fine tuning. In most cases, they are abused.
-            li Don't waste space if two short expressions can be put on the same line. You should use 
-              code \quad
-              |  to seperate them.
-            li Don’t use 
-              code \frac
-              |  in-line. Use that only if you are setting aside the equation.
-            li To get a dollar sign in text, you can use 
-              code \\$
-              |  or something like 
-              code &lt;span&gt;\$&lt;/span&gt;
-              |  to isolate it.
-            li You can use 
-              code \slashed
-              |  to produce the Feynman slashed-character notation.
-            li Always put spaces around symbols for better readability and try your best to arrange math in a presentable way.
-          p If you are looking for an online LaTeX formula editor with live preview, 
-            a(href='http://www.hostmath.com/' rel='external' target='_blank') HostMath
-            | , 
-            a(href='http://jaxedit.com/' rel='external' target='_blank') JaxEdit
-            | , and 
-            a(href='https://www.sharelatex.com/' rel='external' target='_blank') ShareLaTeX
-            |  are good choices. If you would like to try out MathML, 
-            a(href='http://rypress.com/tutorials/mathml/' rel='external' target='_blank') RyPress’s tutorial
-            |  and 
-            a(href='http://danielscully.co.uk/projects/mathml-guide/' rel='external' target='_blank') Daniel I. Scully's guide 
-            |  both provide a gentle introduction.
+block content
+  div
+    p
+      a(href='http://www.mathjax.org/' rel='external' target='_blank') MathJax
+      |  is an open source JavaScript engine for mathematics in web browsers. We use the 
+      code.ui-color-emphasis TeX-AMS-MML_HTMLorMML
+      |  configuration, which allows math to be specified in 
+      a(href='https://en.wikipedia.org/wiki/TeX' rel='external' target='_blank') TeX
+      | , 
+      a(href='https://en.wikipedia.org/wiki/LaTeX' rel='external' target='_blank') LaTeX
+      | , or 
+      a(href='https://en.wikipedia.org/wiki/MathML' rel='external' target='_blank') MathML
+      |  notation, with the AMSmath and AMSsymbols packages included. For Firefox, the NativeMML output processor is used by default, which renders mathematics in native MathML and thus is much faster than using the HTML-CSS output. You can employ the MathJax contextual menu to select the other renderer as you like.
+    p To use the shorthands 
+      code.ui-color-emphasis \(...\)
+      |  and 
+      code.ui-color-emphasis \[...\]
+      |  as delimiters for mathematics in LaTeX, you should esacpe the backslash as 
+      code.ui-color-emphasis \\
+      | . So, it is better to use 
+      code.ui-color-emphasis $...$
+      |  and 
+      code.ui-color-emphasis $$...$$
+      |  or the corresponding environments defined by 
+      code.ui-color-emphasis \begin{}...\end{}
+      |  instead. Please have a look at the MathJax 
+      a(href='http://www.mathjax.org/demos/' rel='external' target='_blank') demos
+      |  to get some practical examples. We also have some tips for typesetting math in LaTeX using MathJax:
+    ul
+      li Don't use too many small spaces like 
+        code.ui-color-emphasis \;
+        |  and 
+        code.ui-color-emphasis \:
+        |  for fine tuning. In most cases, they are abused.
+      li Don't waste space if two short expressions can be put on the same line. You should use 
+        code.ui-color-emphasis \quad
+        |  to seperate them.
+      li Don’t use 
+        code.ui-color-emphasis \frac
+        |  in-line. Use that only if you are setting aside the equation.
+      li To get a dollar sign in text, you can use 
+        code.ui-color-emphasis \\$
+        |  or something like 
+        code.ui-color-emphasis &lt;span&gt;\$&lt;/span&gt;
+        |  to isolate it.
+      li You can use 
+        code.ui-color-emphasis \slashed
+        |  to produce the Feynman slashed-character notation.
+      li Always put spaces around symbols for better readability and try your best to arrange math in a presentable way.
+    p If you are looking for an online LaTeX formula editor with live preview, 
+      a(href='http://www.hostmath.com/' rel='external' target='_blank') HostMath
+      | , 
+      a(href='http://jaxedit.com/' rel='external' target='_blank') JaxEdit
+      | , and 
+      a(href='https://www.sharelatex.com/' rel='external' target='_blank') ShareLaTeX
+      |  are good choices. If you would like to try out MathML, 
+      a(href='http://rypress.com/tutorials/mathml/' rel='external' target='_blank') RyPress’s tutorial
+      |  and 
+      a(href='http://danielscully.co.uk/projects/mathml-guide/' rel='external' target='_blank') Daniel I. Scully's guide 
+      |  both provide a gentle introduction.

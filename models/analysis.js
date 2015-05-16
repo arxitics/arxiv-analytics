@@ -4,6 +4,7 @@
 
 var db = require('./db');
 var regexp = require('./regexp');
+var resource = require('./resource');
 var glossary = require('./glossary');
 
 // Update analyses data
@@ -14,7 +15,7 @@ exports.update = function (criteria, modifier, callback) {
       var type = Object.prototype.toString.call(object).slice(8, -1);
       if (type === 'Object') {
         for (var field in object) {
-          if (object.hasOwnProperty(field) && !field.match(/^analyses\./)) {
+          if (object.hasOwnProperty(field) && !(/^analyses\./.test(field))) {
             object['analyses.' + field] = object[field];
             delete object[field];
           }
@@ -57,7 +58,7 @@ exports.parse = function (eprint, callback) {
   var clue = title + ' ' + comment;
   regexp.tags.forEach(function (tag) {
     var label = tag.label;
-    if (clue.match(tag.pattern) && tags.indexOf(label) === -1) {
+    if (tag.pattern.test(clue) && tags.indexOf(label) === -1) {
       tags.push(label);
     }
   });
@@ -96,10 +97,12 @@ exports.parse = function (eprint, callback) {
   // Comments
   if (comment) {
     // Typesetting system
-    regexp.systems.forEach(function (system) {
-      if (comment.match(system.pattern)) {
+    regexp.systems.some(function (system) {
+      if (system.pattern.test(comment)) {
         analyses['note.typesetting'] = system.label;
+        return true;
       }
+      return false;
     });
 
     // Page number
@@ -108,12 +111,23 @@ exports.parse = function (eprint, callback) {
       analyses['note.pages'] = parseInt(pages[0]);
     }
 
-    // License
-    regexp.licenses.forEach(function (license) {
-      var url = license.url.replace(/\/$/, '');
-      if (comment.match(license.pattern) || comment.search(url) !== -1) {
-        analyses['note.license'] = license.label;
+    // Languages
+    regexp.languages.some(function (language) {
+      if (language.pattern.test(comment)) {
+        analyses['note.language'] = language.label;
+        return true;
       }
+      return false;
+    });
+
+    // License
+    regexp.licenses.some(function (license) {
+      var url = license.url.replace(/\/$/, '');
+      if (license.pattern.test(comment) || comment.search(url) !== -1) {
+        analyses['note.license'] = license.label;
+        return true;
+      }
+      return false;
     });
   }
 
@@ -124,16 +138,14 @@ exports.parse = function (eprint, callback) {
 
 // Parse journal metadata
 exports.parseJournal = function (journal, doi) {
-  var journals = regexp.journals;
+  var journals = resource.journals;
   var length = journals.length;
+  var publication = {};
   for (var i = 0; i < length; i++) {
-    var matched = false;
     var object = journals[i];
-    var pattern = object.pattern;
+    var matched = object.pattern.test(journal);
     if (object.hasOwnProperty('doi') ) {
-      matched = doi.match(object.doi) || !doi && journal.match(pattern);
-    } else {
-      matched = journal.match(pattern);
+      matched = object.doi.test(doi) || !doi && matched;
     }
     if (matched) {
       return {
@@ -142,4 +154,15 @@ exports.parseJournal = function (journal, doi) {
       };
     }
   }
+  if (doi) {
+    var registrant = doi.split('/')[0];
+    resource.publishers.some(function (publisher) {
+      if (publisher.doi === registrant) {
+        publication.publisher = publisher.label;
+        return true;
+      }
+      return false;
+    });
+  }
+  return publication;
 };

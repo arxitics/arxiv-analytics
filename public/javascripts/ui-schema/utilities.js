@@ -5,6 +5,7 @@
 (function ($) {
   'use strict';
 
+  // Trim white spaces between inline blocks
   schema.trim = function (event, options) {
     var eventSelector = schema.events.trim.selector;
     var optionalSelector = options && options.selector;
@@ -14,6 +15,25 @@
     }).remove();
   };
 
+  // Extract data from text contents
+  schema.extract = function (event, options) {
+    var eventSelector = schema.events.extract.selector;
+    var optionalSelector = options && options.selector;
+    var $_elements = $(eventSelector).add(optionalSelector);
+    $_elements.each(function () {
+      var $_this = $(this);
+      var $_data = schema.parseData($_this.data());
+      var extractOption = $_data.schemaExtract;
+      if (extractOption === 'url') {
+        var urlPattern = /\b(https?|ftp)\:\/\/[^\s\"]+(\/|\b)/g;
+        $_this.html($_this.html().replace(urlPattern, function (url) {
+          return '<a href="' + url + '">' + url + '</a>';
+        }));
+      }
+    });
+  };
+
+  // Parse a URL into an object
   schema.parseURL = function (url) {
     var anchor =  document.createElement('a');
     anchor.href = url.replace(/([^:])\/{2,}/g, '$1/').replace(/\+/g, ' ');
@@ -33,7 +53,7 @@
       query: (function () {
         var queryObject = {};
         var queryString = anchor.search.replace(/(^\?&?)|(&$)/g, '');
-        if(queryString.indexOf('=') === -1) {
+        if (queryString.indexOf('=') === -1) {
           return queryString;
         }
         queryString.split(/&+/).forEach(function (keyValuePair) {

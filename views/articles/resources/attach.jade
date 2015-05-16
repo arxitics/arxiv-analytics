@@ -1,30 +1,27 @@
 
-extends ../../layout
+extends ../eprint
 
-block variables
+block prepend variables
   - var pageID = 'resources'
-  - var pageTitle = __('resources.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include ../eprint
-    .ui-grid-70.ui-offset-15.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate action='/articles/#{id}/resources/attach' method='post' role='form')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        fieldset
-          legend New Supplementary Resource
-          label.ui-grid-15(for='type') Type
-          .ui-grid-85
-            input(id='type' type='text' name='type' placeholder='questions' pattern=pattern.type title='You should choose from predefined resource types. See a list of resource types in the help center' required)
-          label.ui-grid-15(for='source') Source
-          .ui-grid-85
-            input(id='source' type='text' name='source' placeholder='MathOverflow' pattern=pattern.source title='Please specify the source for the supplementary resource' required)
-          label.ui-grid-15(for='source') Title
-          .ui-grid-85
-            input(id='title' type='text' name='title' placeholder='The amplituhedron minus the physics' pattern=pattern.title title='Please specify the title for the supplementary resource' required) 
-          label.ui-grid-15(for='href') Reference
-          .ui-grid-85
-            input(id='href' type='url' name='href' placeholder='http://mathoverflow.net/questions/142841' title='Please input the hyperlink reference to the resource' required)
-        .ui-text-center.ui-skip-large
-          button.ui-button-primary(type='submit') Submit
-          button.ui-offset-medium(type='reset') Reset
+block content
+  .ui-grid-70.ui-offset-15.ui-mobile-expand
+    form.ui-form-horizontal(data-schema-validate action='/articles/#{id}/resources/attach' method='post' role='form')
+      input(type='hidden' name='_csrf' value=csrfToken)
+      fieldset
+        legend New Supplementary Resource
+        label.ui-grid-15(for='type') Type
+        .ui-grid-85
+          input(id='type' type='text' name='type' placeholder='questions' pattern=pattern.type title='You should choose from predefined resource types. See a list of resource types in the help center' required)
+        label.ui-grid-15(for='source') Source
+        .ui-grid-85
+          input(id='source' type='text' name='source' placeholder='MathOverflow' pattern=pattern.source title='Please specify the source for the supplementary resource' required)
+        label.ui-grid-15(for='title') Title
+        .ui-grid-85
+          input(id='title' type='text' name='title' placeholder='The amplituhedron minus the physics' pattern=pattern.title title='Please specify the title for the supplementary resource' required) 
+        label.ui-grid-15(for='href') Reference
+        .ui-grid-85
+          input(id='href' type='url' name='href' placeholder='http://mathoverflow.net/questions/142841' title='Please input the hyperlink reference to the resource' required)
+      .ui-text-center.ui-skip-large
+        button.ui-button-primary(type='submit') Submit
+        button.ui-offset-medium(type='reset') Reset

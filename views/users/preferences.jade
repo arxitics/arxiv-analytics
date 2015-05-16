@@ -1,64 +1,79 @@
 
-extends ../layout
+extends account
 
-block variables
+block prepend variables
   - var pageID = 'preferences'
-  - var pageTitle = __('preferences.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include account
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate='changed' action='/users/#{uid}/preferences' method='post' role='form')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        fieldset
-          legend Personal Information
-          - var resume = profile.resume
-          label.ui-grid-15(for='name') Name
-          .ui-grid-85
-            input(id='name' type='text' name='name' value=profile.name pattern=pattern.name title='Please input your real name' required autofocus)
-          label.ui-grid-15(for='email') Email
-          .ui-grid-85
-            input(id='email' type='email' name='email' value=profile.email disabled)
-          label.ui-grid-15(for='locale') Locale
-          .ui-grid-85
-            input(id='locale' type='text' name='locale' value=(profile.locale || locale) pattern=pattern.locale title='Please specify the two-letter language codes defined in ISO 639-1' required)
-          label.ui-grid-15(for='career-status') Career status
-          .ui-grid-85
-            input(id='career-status' type='text' name='resume.career' value=(resume.career || false) placeholder='Graduate Student' title='Please input your career status or professional title')
-          label.ui-grid-15(for='affiliation') Affiliation
-          .ui-grid-85
-            input(id='affiliation' type='text' name='resume.affiliation' value=(resume.affiliation || false) title='Please input your institutional affiliation')
-          label.ui-grid-15(for='location') Location
-          .ui-grid-85
-            input(id='location' type='text' name='resume.location' value=(resume.location || false) title='Please specity the city you live in')
-          label.ui-grid-15(for='research') Research
-          .ui-grid-85
-            input(id='research' type='text' name='resume.research' value=(resume.research || false) title='Please specify your research interests')
-          label.ui-grid-15(for='website') Website
-          .ui-grid-85
-            input(id='website' type='url' name='resume.website' value=(resume.website || false) title='A link to your personal web page or social profile')
-        fieldset
-          legend Eprint Subscriptions
-          - var subscription = profile.subscription
-          label.ui-grid-15(for='categories') Categories
-          .ui-grid-85
-            input(id='categories' type='text' name='subscription.categories' value=(subscription.categories.join(', ') || false) placeholder='math-ph, math.MP, cs.CC' title='Multiple categories are separated by commas' required)
-          label.ui-grid-15(for='subjects') Subjects
-          .ui-grid-85
-            input(id='subjects' type='text' name='subscription.subjects' value=(subscription.subjects.join(', ') || false) placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class')
-          label.ui-grid-15(for='themes') Themes
-          .ui-grid-85
-            textarea(id='themes' name='subscription.themes' rows='3' placeholder='nlin.SI: exactly solvable system, Painleve analysis; math.AP: soliton theory' title='You should choose from predefined themes. See a list of themes in the help center')= output(subscription.themes)
-          label.ui-grid-15(for='keywords') Keywords
-          .ui-grid-85
-            textarea(id='keywords' name='subscription.keywords' rows='3' placeholder='perturbative gauge theory, twistor space, string theory, scattering amplitudes, super Yang-Mills theory' title='Multiple keywords are separated by commas')= subscription.keywords.join(', ')
-          label.ui-grid-15(for='tags') Tags
-          .ui-grid-85
-            textarea(id='tags' name='subscription.tags' rows='3' placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')= subscription.tags.join(', ')
-          label.ui-grid-15(for='authors') Authors
-          .ui-grid-85
-            textarea(id='authors' name='subscription.authors' rows='3' placeholder='Albert Einstein, John von Neumann, Emmy Noether' title='Multiple authors are separated by commas')= subscription.authors.join(', ')
-        .ui-text-center.ui-skip-large
-          button.ui-button-primary(type='submit') Submit
-          button.ui-offset-medium(type='reset') Reset
+block content
+  .ui-grid-80.ui-offset-10.ui-mobile-expand
+    form.ui-form-horizontal(data-schema-validate='changed' action='/users/#{uid}/preferences' method='post' role='form')
+      input(type='hidden' name='_csrf' value=csrfToken)
+      fieldset
+        legend Basic Information
+        - var resume = profile.resume
+        label.ui-grid-15(for='name') Name
+        .ui-grid-85
+          input(id='name' type='text' name='name' value=profile.name pattern=pattern.name title='Please input your real name' required autofocus)
+        label.ui-grid-15(for='locale') Locale
+        .ui-grid-85
+          input(id='locale' type='text' name='locale' value=(profile.locale || locale) pattern=pattern.locale title='Please specify the two-letter language codes defined in ISO 639-1' required)
+        label.ui-grid-15(for='career-status') Career status
+        .ui-grid-85
+          input(id='career-status' type='text' name='resume.career' value=(resume.career || false) placeholder='Graduate Student' title='Please input your career status or professional title')
+        label.ui-grid-15(for='affiliation') Affiliation
+        .ui-grid-85
+          input(id='affiliation' type='text' name='resume.affiliation' value=(resume.affiliation || false) title='Please input your institutional affiliation')
+        label.ui-grid-15(for='location') Location
+        .ui-grid-85
+          input(id='location' type='text' name='resume.location' value=(resume.location || false) title='Please specity the city you live in')
+        label.ui-grid-15(for='research') Research
+        .ui-grid-85
+          input(id='research' type='text' name='resume.research' value=(resume.research || false) title='Please specify your research interests')
+        label.ui-grid-15(for='website') Website
+        .ui-grid-85
+          input(id='website' type='url' name='resume.website' value=(resume.website || false) title='A link to your personal web page or social profile')
+        label.ui-grid-15(for='orcid') ORCID
+        .ui-grid-85
+          input(id='orcid' type='text' name='resume.orcid' value=(resume.orcid || false) pattern=pattern.orcid placeholder='0000-0001-5000-0007' title='Please input your ORCID (Open Researcher and Contributor ID)')
+      fieldset
+        legend Eprint Subscriptions
+        - var subscription = profile.subscription
+        label.ui-grid-15(for='categories') Categories
+        .ui-grid-85
+          input(id='categories' type='text' name='subscription.categories' value=(subscription.categories.join(', ') || false) placeholder='math-ph, math.MP, cs.CC' title='Multiple categories are separated by commas' required)
+        label.ui-grid-15(for='subjects') Subjects
+        .ui-grid-85
+          input(id='subjects' type='text' name='subscription.subjects' value=(subscription.subjects.join(', ') || false) placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class')
+        label.ui-grid-15(for='themes') Themes
+        .ui-grid-85
+          textarea(id='themes' name='subscription.themes' rows='3' placeholder='nlin.SI: exactly solvable system, Painleve analysis; math.AP: soliton theory' title='You should choose from predefined themes. See a list of themes in the help center')= output(subscription.themes)
+        label.ui-grid-15(for='keywords') Keywords
+        .ui-grid-85
+          textarea(id='keywords' name='subscription.keywords' rows='3' placeholder='perturbative gauge theory, twistor space, string theory, scattering amplitudes, super Yang-Mills theory' title='Multiple keywords are separated by commas')= subscription.keywords.join(', ')
+        label.ui-grid-15(for='tags') Tags
+        .ui-grid-85
+          textarea(id='tags' name='subscription.tags' rows='3' placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')= subscription.tags.join(', ')
+        label.ui-grid-15(for='authors') Authors
+        .ui-grid-85
+          textarea(id='authors' name='subscription.authors' rows='3' placeholder='Albert Einstein, John von Neumann, Emmy Noether' title='Multiple authors are separated by commas')= subscription.authors.join(', ')
+      fieldset
+        legend Authentication
+        label.ui-grid-15(for='email') Email
+        .ui-grid-85
+          input(id='email' type='email' name='email' value=profile.email)
+        label.ui-grid-15(for='key') Private Key
+        .ui-grid-85
+          input(id='key' type='text' name='auth.key' inputmode='verbatim' pattern=pattern.auth.key placeholder='Required if you would like to change the email' required disabled)
+      .ui-text-center.ui-skip-large
+        button.ui-button-primary(type='submit') Submit
+        button.ui-offset-medium(type='reset') Reset
+
+block append foot
+  script.
+    $(document).ready(function () {
+      var $_input = $('#email');
+      var email = $_input.val();
+      $_input.on('change', function () {
+        $('#key').prop('disabled', $_input.val().trim() === email);
+      });
+    });

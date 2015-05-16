@@ -317,6 +317,7 @@ exports.tags = [
 // arXiv eprint groups
 exports.groups = [
   {
+    label: 'physics',
     group: 'Physics',
     archives: [
       {
@@ -989,6 +990,7 @@ exports.groups = [
     ]
   },
   {
+    label: 'math',
     group: 'Mathematics',
     archives: [
       {
@@ -1413,6 +1415,7 @@ exports.groups = [
     ]
   },
   {
+    label: 'cs',
     group: 'Computer Science',
     archives: [
       {
@@ -1947,6 +1950,7 @@ exports.groups = [
     ]
   },
   {
+    label: 'q-bio',
     group: 'Quantitative Biology',
     archives: [
       {
@@ -2072,6 +2076,7 @@ exports.groups = [
     ]
   },
   {
+    label: 'q-fin',
     group: 'Quantitative Finance',
     archives: [
       {
@@ -2177,6 +2182,7 @@ exports.groups = [
     ]
   },
   {
+    label: 'stats',
     group: 'Statistics',
     archives: [
       {

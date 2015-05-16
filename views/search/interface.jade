@@ -2,8 +2,8 @@
 article.ui-grid-70.ui-mobile-expand
   h3.ui-header-primary= __('search.heading')
   div
-    form.ui-form-fluid(data-schema-validate action='/search' method='get' role='form')
-      .ui-grid-fluid
+    form.ui-form-horizontal(data-schema-validate action='/search' method='get' role='form')
+      .ui-container-grid
         label.ui-grid-20(for='title') Title
         .ui-grid-80
           input(id='title' type='text' name='title' placeholder='Bayesian probabilistic matrix factorization' title='Pattern matching for the "title" field is case-insensitive' autofocus)
@@ -41,9 +41,9 @@ article.ui-grid-70.ui-mobile-expand
             |  Published date
             input.ui-offset-small(type='radio' name='sort' value='updated')
             |  Updated date
-            input.ui-offset-small(type='radio' name='sort' value='views')
-            |  Article views
-            input.ui-offset-small(type='radio' name='sort' value='rating')
+            input.ui-offset-small(type='radio' name='sort' value='readers')
+            |  Reader counts
+            input.ui-offset-small(type='radio' name='sort' value='score')
             |  Rating score
         div
           label.ui-grid-20(for='order') Sort order

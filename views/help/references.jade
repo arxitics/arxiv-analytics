@@ -1,68 +1,63 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-references'
-  - var pageTitle = 'References'
+  - var pageHeading = 'References'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact References
-        div
-          p This section provides several lists of resources widely used on our website. Please note that some of them are far from complete and accurate. If you would like to help us improve  it, please do not hesitate to contact us by email 
-            strong help
-              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-              | @arxitics.com
-            |  or sending messages to 
-            code 999 &lt;service&gt;
-            | .
-          p Our website is built upon many online services and open-source projects. We should owe a great part of the credit to them:
-          ul
-            li
-              a(href='http://arxiv.org/' rel='external' target='_blank') arXiv
-              | : an eprint archive for Physics, Mathematics, Computer Science, Quantitative Biology, Quantitative Finance and Statistics
-            li
-              a(href='http://adsabs.harvard.edu/' rel='external' target='_blank') NASA ADS
-              | : a database covering astronomy references, physics references, and preprints from arXiv
-            li
-              a(href='http://inspirehep.net/' rel='external' target='_blank') INSPIRE-HEP
-              | : a digital library specified for the field of High Energy Physics
-            li
-              a(href='http://paperscape.org/' rel='external' target='_blank') Paperscape
-              | : an interactive map of scientific papers from the arXiv database
-            li
-              a(href='http://physicsoverflow.org/' rel='external' target='_blank') PhysicsOverflow
-              | : a question and answer site for physics at the graduate-level and above
-            li
-              a(href='http://mathoverflow.net/' rel='external' target='_blank') MathOverflow
-              | : a question and answer site for professional mathematicians
-            li
-              a(href='http://stackexchange.com/' rel='external' target='_blank') Stack Exchange
-              | : a network of question and answer websites on diverse topics
-            li
-              a(href='http://ncatlab.org/' rel='external' target='_blank') nLab
-              | : a wiki-lab for collaborative work on mathematics, physics and philosophy
-            li
-              a(href='http://nodejs.org/' rel='external' target='_blank') Node.js
-              | : an asynchronous event driven framework for scalable network applications
-            li
-              a(href='https://www.mongodb.org/' rel='external' target='_blank') MongoDB
-              | : a NoSQL database in favor of JSON-like documents with dynamic schemas
-            li
-              a(href='http://expressjs.com/' rel='external' target='_blank') Express
-              | : a minimal and flexible node.js web application framework
-            li
-              a(href='http://jquery.com/' rel='external' target='_blank') jQuery
-              | : a fast, small, and feature-rich JavaScript library
-            li
-              a(href='http://daringfireball.net/projects/markdown/' rel='external' target='_blank') Markdown
-              | : a text-to-HTML conversion tool for web writers
-            li
-              a(href='http://www.mathjax.org/' rel='external' target='_blank') MathJax
-              | : an open source JavaScript engine for mathematics in web browsers
-            li
-              a(href='http://d3js.org/' rel='external' target='_blank') D3.js
-              | : a JavaScript library for manipulating documents based on data
+block content
+  div
+    p This section provides several lists of resources widely used on our website. Please note that some of them are far from complete and accurate. If you would like to help us improve  it, please do not hesitate to contact us by email 
+      strong help
+        span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+        | @arxitics.com
+      |  or sending messages to 
+      code.ui-color-emphasis 999 &lt;service&gt;
+      | .
+    p Our website is built upon many online services and open-source projects. We should owe a great part of the credit to them:
+    ul
+      li
+        a(href='http://arxiv.org/' rel='external' target='_blank') arXiv
+        | : an eprint archive for Physics, Mathematics, Computer Science, Quantitative Biology, Quantitative Finance and Statistics
+      li
+        a(href='http://adsabs.harvard.edu/' rel='external' target='_blank') NASA ADS
+        | : a database covering astronomy references, physics references, and preprints from arXiv
+      li
+        a(href='http://inspirehep.net/' rel='external' target='_blank') INSPIRE-HEP
+        | : a digital library specified for the field of High Energy Physics
+      li
+        a(href='http://paperscape.org/' rel='external' target='_blank') Paperscape
+        | : an interactive map of scientific papers from the arXiv database
+      li
+        a(href='http://physicsoverflow.org/' rel='external' target='_blank') PhysicsOverflow
+        | : a question and answer site for physics at the graduate-level and above
+      li
+        a(href='http://mathoverflow.net/' rel='external' target='_blank') MathOverflow
+        | : a question and answer site for professional mathematicians
+      li
+        a(href='http://stackexchange.com/' rel='external' target='_blank') Stack Exchange
+        | : a network of question and answer websites on diverse topics
+      li
+        a(href='http://ncatlab.org/' rel='external' target='_blank') nLab
+        | : a wiki-lab for collaborative work on mathematics, physics and philosophy
+      li
+        a(href='http://nodejs.org/' rel='external' target='_blank') Node.js
+        | : an asynchronous event driven framework for scalable network applications
+      li
+        a(href='https://www.mongodb.org/' rel='external' target='_blank') MongoDB
+        | : a NoSQL database in favor of JSON-like documents with dynamic schemas
+      li
+        a(href='http://expressjs.com/' rel='external' target='_blank') Express
+        | : a minimal and flexible node.js web application framework
+      li
+        a(href='http://jquery.com/' rel='external' target='_blank') jQuery
+        | : a fast, small, and feature-rich JavaScript library
+      li
+        a(href='http://daringfireball.net/projects/markdown/' rel='external' target='_blank') Markdown
+        | : a text-to-HTML conversion tool for web writers
+      li
+        a(href='http://www.mathjax.org/' rel='external' target='_blank') MathJax
+        | : an open source JavaScript engine for mathematics in web browsers
+      li
+        a(href='http://d3js.org/' rel='external' target='_blank') D3.js
+        | : a JavaScript library for manipulating documents based on data

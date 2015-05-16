@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  version: '0.2.5',
+  version: '0.3.0',
   title: 'arXiv Analytics',
   keywords: [
     'arXiv',
@@ -13,7 +13,7 @@ module.exports = {
     'open access'
   ],
   description: 'Specified web portal dedicated to reading and discussing arXiv eprints',
-  environment: 'production',
+  environment: 'development',
   development: {
     host: 'localhost:3000',
     hostname: 'localhost',
@@ -79,7 +79,7 @@ module.exports = {
         admin: {
           uid: 0,
           name: 'admin',
-          email: 'panzan89@gmail.com',
+          email: 'admin-email',
           role: 'administrator'
         },
         guest: {
@@ -97,7 +97,7 @@ module.exports = {
         service: {
           uid: 999,
           name: 'service',
-          email: 'help@arxitics.com',
+          email: 'service-email',
           role: 'service'
         }
       }
@@ -190,13 +190,31 @@ module.exports = {
       minute: 10
     }
   },
-  admin: {
-    eprints: {
-      fetch: false,
-      parse: true,
-      limit: 1000,
-      interval: 60 * 1000
-    }
+  arxiv: {
+    patch: true,
+    fetch: true,
+    parse: true,
+    count: 1012588,
+    limit: 1000,
+    interval: 60 * 1000,
+    directory: '/data/arxiv/xml'
+  },
+  inspire: {
+    fetch: true,
+    parse: true,
+    count: 448624,
+    limit: 250,
+    interval: 60 * 1000,
+    directory: '/data/arxiv/inspire'
+  },
+  adsabs: {
+    key: 'developer-key',
+    fetch: true,
+    parse: true,
+    count: 767366,
+    limit: 200,
+    interval: 60 * 1000,
+    directory: '/data/arxiv/adsabs'
   },
   oss: {
     host: 'oss.arxitics.com',
@@ -204,7 +222,7 @@ module.exports = {
     bucket: 'arxitics',
     id: 'access-id',
     key: 'access-key',
-    uploads: './data/uploads',
+    directory: '/data/arxiv/uploads',
     limits: {
       fieldNameSize: 1000,
       fieldSize: 1000,

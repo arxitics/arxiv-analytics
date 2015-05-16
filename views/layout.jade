@@ -18,6 +18,7 @@ html(id=pageID lang=locale)
       link(rel='icon' sizes='128x128' href='/images/favicon@2x.png')
       link(rel='icon' sizes='256x256' href='/images/favicon@4x.png')
       link(rel='icon' type='image/svg+xml' sizes='any' href='/images/favicon.svg')
+      meta(name='theme-color' content='#428bca')
       meta(name='apple-mobile-web-app-title' content='Arxitics')
       meta(name='apple-mobile-web-app-capable' content='yes')
       meta(name='format-detection' content='telephone=no')
@@ -37,22 +38,22 @@ html(id=pageID lang=locale)
       ga('create', 'UA-52769098-1', 'auto');
       ga('send', 'pageview');
   body
-    header.ui-header-navbar.ui-container-fluid.ui-grid-fluid(role='banner')
+    header.ui-header-navbar.ui-container-fluid.ui-container-grid(role='banner')
       block header
         .ui-header-brand
           h2: a(rel='index' href='/' accesskey='0')= appTitle
-        nav.ui-grid-33.ui-mobile-auto(role='navigation')
+        nav.ui-fluid-33.ui-mobile-auto(role='navigation')
           ul
             li: a(href='/browse' accesskey='1')= __('browse.heading')
             li: a(href='/explore' accesskey='2')= __('explore.heading')
             li: a(href='/tools' accesskey='3')= __('tools.heading')
         if logged
-          .ui-header-account.ui-float-right.ui-menu-dropdown.ui-pull-right(role='menu')
+          .ui-header-account.ui-float-right.ui-menu-dropdown(role='menu')
             - var length = user.notifications.length
-            div.ui-skip-tiny(class=(length === 0 ? 'ui-text-success' : 'ui-text-danger'))
+            .ui-skip-tiny(class=(length === 0 ? 'ui-text-success' : 'ui-text-danger'))
               i.ui-fixed-height(data-schema-icon=(privilege.isModerator ? 'user-md' : 'user'))
               span.ui-offset-tiny= user.name
-            ul.ui-text-left
+            ul.ui-pull-right.ui-text-left
               li: a(href='/users/#{user.uid}' accesskey='u')
                 i.ui-fixed-wdith(data-schema-icon='home')
                 |  
@@ -79,13 +80,13 @@ html(id=pageID lang=locale)
         else
           .ui-header-account.ui-float-right
             a.ui-text-button.ui-button-primary(href='/auth/login' role='button')= __('login.button')
-        form.ui-grid-40.ui-mobile-expand(data-schema-validate action='/search' method='get' role='form')
+        form.ui-fluid-40.ui-mobile-expand.ui-phone-hidden(data-schema-validate action='/search' method='get' role='form')
           .ui-input-addon
             input.ui-grid-80(type='search' name='q' placeholder=__('search.placeholder') title=__('search.title') accesskey='s' tabindex='1')
             button(type='submit' tabindex='-1')
               i(data-schema-icon='search') Go!
 
-    main.ui-container-fluid.ui-grid-fluid(role='main')
+    main.ui-container-fluid.ui-container-grid(role='main')
       block main
     footer.ui-container-fluid(role='contentinfo')
       block footer

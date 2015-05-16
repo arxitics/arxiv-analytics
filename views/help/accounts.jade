@@ -1,19 +1,14 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-accounts'
-  - var pageTitle = 'User Accounts'
+  - var pageHeading = 'User Accounts'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact User Accounts
-        div
-          p Please read our 
-            a(href='/site/terms') terms of service
-            |  and  
-            a(href='/site/privacy') privacy policy
-            |  first before using this website. An email is required to create a user account. You can also visit our site as a guest, but a guest is not allowed to customize and to post any content.
+block content
+  div
+    p Please read our 
+      a(href='/site/terms') terms of service
+      |  and  
+      a(href='/site/privacy') privacy policy
+      |  first before using this website. An email is required to create a user account. You can also visit our site as a guest, but a guest is not allowed to customize and to post any content.

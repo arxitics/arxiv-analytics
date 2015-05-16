@@ -2,3 +2,8 @@
  * Print
  */
 
+@media print {
+  .ui-content-jumbotron {
+    border: 1px solid #ccc;
+  }
+}

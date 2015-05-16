@@ -12,6 +12,7 @@
   font-size: 1.5em;
   font-weight: normal;
   margin: 0;
+  white-space: nowrap;
 }
 
 .ui-header-navbar a {
@@ -20,6 +21,7 @@
 
 .ui-header-navbar > .ui-header-brand {
   float: left;
+  margin-right: 1.2em;
   padding-bottom: .5em;
   padding-top: .5em;
 }
@@ -51,9 +53,9 @@
 }
 
 .ui-nav-collapse {
+  cursor: pointer;
   display: none;
   padding: 1em .6em;
-  cursor: pointer;
 }
 
 .ui-nav-tabs,
@@ -97,14 +99,15 @@
 }
 
 .ui-nav-tabs:not(.ui-nav-justified) {
-  width: 100%;
   border-bottom: 1px solid #ddd;
+  width: 100%;
 }
 
 .ui-nav-tabs > li {
-  margin-bottom: -1px;
   border: 1px solid transparent;
+  border-bottom-color: #ddd;
   border-radius: .4rem .4rem 0 0;
+  margin-bottom: -1px;
 }
 
 .ui-nav-tabs > li.ui-state-active {
@@ -112,16 +115,12 @@
   border-color: #ccc #ccc #fff;
 }
 
-.ui-nav-tabs.ui-nav-justified > li:not(.ui-state-active) {
-  border-bottom: 1px solid #ddd;
-}
-
 .ui-nav-justified {
   width: 100%;
 }
 
 /**
- * 1. 
+ * 1.
  * 2. Ensure that `float` will not modify the computed value of `display`.
  */
 
@@ -161,8 +160,8 @@
 }
 
 .ui-nav-breadcrumb {
-  border-radius: .4rem;
   background-color: #f5f5f5;
+  border-radius: .4rem;
   list-style: none;
   margin-bottom: 2rem;
   padding: .4em .8em;
@@ -190,25 +189,8 @@
   padding: .4em .8em;
 }
 
-.ui-nav-pagination > li > :only-child:hover,
-.ui-nav-pagination > li > :only-child:focus {
+.ui-nav-pagination > li > :only-child:focus,
+.ui-nav-pagination > li > :only-child:hover {
   background-color: #eee;
   border-color: #ddd;
 }
-
-.ui-nav-pagination.ui-space-collapse > li > :only-child {
-  border-left-width: 0;
-  border-radius: 0;
-}
-
-.ui-nav-pagination.ui-space-collapse > li:first-child > :only-child {
-  border-left-width: 1px;
-  border-top-left-radius: 0.4rem;
-  border-bottom-left-radius: 0.4rem;
-}
-
-.ui-nav-pagination.ui-space-collapse > li:last-child > :only-child {
-  border-top-right-radius: 0.4rem;
-  border-bottom-right-radius: 0.4rem;
-}
-

@@ -5,6 +5,7 @@
 (function ($) {
   'use strict';
 
+  // Validate user input
   schema.validate = function (event, options) {
     var eventSelector = schema.events.validate.selector;
     var optionalSelector = options && options.selector;
@@ -12,7 +13,8 @@
     $_elements.each(function () {
       var $_this = $(this);
       var $_data = schema.parseData($_this.data());
-      var requireChanged = ($_data.schemaValidate === 'changed');
+      var validateOption = $_data.schemaValidate;
+      var requireChanged = (validateOption === 'changed');
       $_this.find(':input').one('change', function () {
         $_this.data('changed', true);
       });
@@ -27,7 +29,7 @@
               $_input.prop('disabled', true).data('disabled', true);
             }
           });
-          if ($_data.schemaValidate === 'once') {
+          if (validateOption === 'once') {
             $_this.find(':submit').prop('disabled', true);
           }
           $_form.submit();

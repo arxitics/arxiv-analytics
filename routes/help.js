@@ -4,10 +4,8 @@
 
 var express = require('express');
 var article = require('../models/article');
-var resource = require('../models/resource');
-var regexp = require('../models/regexp');
 var scheme = require('../models/scheme');
-var abbrev = require('../models/abbrev');
+var resource = require('../models/resource');
 var interpreter = require('../models/interpreter');
 
 var help = express.Router();
@@ -49,14 +47,11 @@ help.get('/', function (req, res) {
 
 // GET `help/categories` page
 help.get('/categories', function (req, res) {
-  var tab = req.query.group;
-  var group = 'Physics';
+  var tab = req.query.group || 'physics';
+  var groups = scheme.groups;
   var themes = [];
-  if (tab && abbrev.group.hasOwnProperty(tab)) {
-    group = abbrev.group[tab];
-  }
-  scheme.groups.every(function (entry) {
-    if (entry.group === group) {
+  groups.some(function (entry) {
+    if (entry.label === tab) {
       entry.archives.forEach(function (archive) {
         if (archive.hasOwnProperty('themes')) {
           archive.themes.forEach(function (theme) {
@@ -72,27 +67,24 @@ help.get('/categories', function (req, res) {
           });
         }
       });
-      return false;
+      return true;
     }
-    return true;
+    return false;
   });
   res.render('help/categories', {
-    abbrev: abbrev,
-    group: group,
+    tab: tab,
+    groups: groups,
     themes: themes
   });
 });
 
 // GET `help/topics` page
 help.get('/topics', function (req, res) {
-  var tab = req.query.group;
-  var group = 'Physics';
+  var tab = req.query.group || 'physics';
+  var groups = scheme.groups;
   var themes = [];
-  if (tab && abbrev.group.hasOwnProperty(tab)) {
-    group = abbrev.group[tab];
-  }
-  scheme.groups.every(function (entry) {
-    if (entry.group === group) {
+  groups.some(function (entry) {
+    if (entry.label === tab) {
       entry.archives.forEach(function (archive) {
         if (archive.hasOwnProperty('themes')) {
           archive.themes.forEach(function (theme) {
@@ -108,30 +100,35 @@ help.get('/topics', function (req, res) {
           });
         }
       });
-      return false;
+      return true;
     }
-    return true;
+    return false;
   });
   res.render('help/topics', {
-    abbrev: abbrev,
-    group: group,
+    tab: tab,
+    groups: groups,
     themes: themes
   });
 });
 
 // GET `help/journals` page
 help.get('/journals', function (req, res) {
-  var tab = req.query.group;
-  var themes = [];
-  var group = 'Physics';
-  if (tab && abbrev.group.hasOwnProperty(tab)) {
-    group = abbrev.group[tab];
-  }
+  var tab = req.query.group || 'physics';
+  var publishers = resource.publishers;
   res.render('help/journals', {
-    abbrev: abbrev,
-    group: group,
-    journals: regexp.journals.filter(function (journal) {
-      return journal.group === group;
+    tab: tab,
+    groups: scheme.groups,
+    journals: resource.journals.filter(function (journal) {
+      return journal.group === tab;
+    }).map(function (journal) {
+      publishers.some(function (publisher) {
+        if (publisher.label === journal.publisher) {
+          journal.publisher = publisher.entity;
+          return true;
+        }
+        return false;
+      });
+      return journal;
     })
   });
 });

@@ -51,8 +51,10 @@ function sunburst (data) {
       }).on('click', function (d) {
         path.transition().duration(750).attrTween('d', arcTween(d));
       }).on('mouseover', function (d) {
+        var parent = d.parent || data;
+        var percent = (100 * d.size / parent.size).toPrecision(3) + '%';
         tooltip.transition().duration(200).style('opacity', 0.8);
-        tooltip.html(d.category + ': ' + d.size)
+        tooltip.html(d.category + ': ' + d.size + ' (' + percent + ')')
            .style('left', (d3.event.pageX + 20) + 'px')
            .style('top', (d3.event.pageY - 20) + 'px');
       }).on('mousemove', function (d) {

@@ -10,7 +10,7 @@ exports.track = function (sess, req) {
   var views = sess.views || [];
   var maxViews = settings.maxViews;
   var path = req.path;
-  if (path.match(/^\/(articles|reviews|users)\/([\w\.\/]*\d+)\/?$/)) {
+  if (/^\/(articles|reviews|users)\/([\w\.\/]*\d+)\/?$/.test(path)) {
     var visited = views.some(function (view) {
       if (view[0] === path) {
         view[1] += 1;

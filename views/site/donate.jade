@@ -1,49 +1,45 @@
 
-extends ../layout
+extends site
 
-block variables
+block prepend variables
   - var pageID = 'donate'
-  - var pageTitle = __('donate.heading')
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    h3.ui-header-primary= __('donate.heading')
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Why we need your support
-        div
-          p Thank you for your interest in donating to Arxitics! The current project is running on a Ubuntu server with 2 CPU cores, 8GB RAM, and 2Mbps bandwith. It becomes quite slow to respond if more than 10 users send requests at the same time. With your support, we can scale up our services with more servers, bandwidth, and advanced technical support so that you can enjoy better user experience. Besides, your donations are also used to support our new projects in the future.
-      section.ui-skip-large
-        h4.ui-header-compact How to donate
-        div
-          p You can make a donation in three ways:
+block content
+  section
+    h4.ui-header-compact Why we need your support
+    div
+      p Thank you for your interest in donating to Arxitics! The current project is running on a Ubuntu server with 2 CPU cores, 8GB RAM, and 2Mbps bandwith. It becomes quite slow to respond if more than 20 users send requests at the same time. With your support, we can scale up our services with more servers, bandwidth, and advanced technical support so that you can enjoy better user experience. Besides, your donations are also used to support our new projects in the future.
+  section.ui-skip-large
+    h4.ui-header-compact How to donate
+    div
+      p You can make a donation in three ways:
+      ul
+        li For 
+          a(href='https://www.alipay.com/' rel='external' target='_blank') Alipay
+          |  users, please send your donation to 
+          strong support
+            span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+            | @arxitics.com
+          | .
+        li For 
+          a(href='https://www.paypal.com/' rel='external' target='_blank') PayPal
+          |  users, please send your donation to 
+          strong support
+            span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+            | @arxitics.com
+          | .
+        li We can also receive two types of cryptocurrencies:
           ul
-            li For 
-              a(href='https://www.alipay.com/' rel='external' target='_blank') Alipay
-              |  users, please send your donation to 
-              strong support
-                span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-                | @arxitics.com
-              | .
-            li For 
-              a(href='https://www.paypal.com/' rel='external' target='_blank') PayPal
-              |  users, please send your donation to 
-              strong support
-                span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-                | @arxitics.com
-              | .
-            li We can also receive two types of cryptocurrencies:
-              ul
-                li
-                  a(href='https://bitcoin.org/' rel='external' target='_blank') Bitcoin
-                  |  &mdash; 
-                  strong 1CdeHP3DuX5k44SCei3KjizoJGFWXaMo6g
-                li
-                  a(href='https://www.rippletrade.com/' rel='external' target='_blank') Ripple
-                  |  &mdash; 
-                  strong rDWgLL1voPyRy2r98MB9vCpqB4jtcreUkY
-          p Thanks again. If you have any concerns, please contact us directly at 
-            strong support
-              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-              | @arxitics.com
-            | .
+            li
+              a(href='https://bitcoin.org/' rel='external' target='_blank') Bitcoin
+              |  &mdash; 
+              strong 1CdeHP3DuX5k44SCei3KjizoJGFWXaMo6g
+            li
+              a(href='https://www.rippletrade.com/' rel='external' target='_blank') Ripple
+              |  &mdash; 
+              strong rDWgLL1voPyRy2r98MB9vCpqB4jtcreUkY
+      p Thanks again. If you have any concerns, please contact us directly at 
+        strong support
+          span(aria-hidden='true')= Math.random().toString().slice(1, 8)
+          | @arxitics.com
+        | .

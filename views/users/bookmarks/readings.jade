@@ -9,7 +9,7 @@ each reading in readings
   - var read = reading.read.toISOString().slice(0, 10)
   li.ui-skip-medium
     div
-      - var primary = id.match(/^\d{4}/) ? ' [' + primaryCategory + ']' : ''
+      - var primary = /^\d{4}/.test(id) ? ' [' + primaryCategory + ']' : ''
       - var published = eprint.published.toISOString().slice(0, 10)
       a(href='/articles/#{id}')= 'arXiv:' + id + primary
       |  (Published #{published}, read #{read})

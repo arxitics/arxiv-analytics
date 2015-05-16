@@ -24,7 +24,7 @@ exports.extract = function (eprint) {
   });
   var sequence = keywords.join('|');
   return keywords.filter(function (keyword) {
-    return (keyword.indexOf(' ') !== -1 || keyword.length > 9) && 
+    return (keyword.indexOf(' ') !== -1 || keyword.length > 9) &&
       sequence.match(new RegExp(keyword, 'gi')).length === 1;
   }).slice(0, maxLength);
 };
@@ -106,9 +106,8 @@ exports.combine = function (segments) {
 
 // Nominate a word candidate
 exports.nominate = function (word) {
-  var qualified = word.match(/^\w.*\w$/);
   var nontrivial = exports.stopWords.indexOf(word.toLowerCase()) === -1;
-  return qualified && nontrivial ? word : null;
+  return nontrivial && /^\w.*\w$/.test(word) ? word : null;
 };
 
 // Disrate a phrase that contains adjectives
@@ -117,7 +116,7 @@ exports.disrate = function (phrase) {
   var last = words.length - 1;
   var demotion = 0;
   words.forEach(function (word, index) {
-    if (word.match(exports.nonterminalSuffixes)) {
+    if (exports.nonterminalSuffixes.test(word)) {
       demotion += (index !== last) ? 1 : 2;
     }
   })
@@ -140,58 +139,58 @@ exports.conflate = function (phrase) {
   var synonyms = [];
 
   // Plurals
-  if (phrase.match(/s$/)) {
+  if (/s$/.test(phrase)) {
     synonyms.push(phrase.replace(/s$/, ''));
-    if (phrase.match(/ies$/)) {
+    if (/es$/.test(phrase)) {
       synonyms.push(phrase.replace(/es$/, ''));
-      if (phrase.match(/ies$/)) {
+      if (/ies$/.test(phrase)) {
         synonyms.push(phrase.replace(/ies$/, 'y'));
-      } else if (phrases.match(/[^i]ves$/)) {
+      } else if (/[^i]ves$/.test(phrase)) {
         synonyms.push(phrase.replace(/ves$/, 'f'));
-      } else if (phrases.match(/ives$/)) {
+      } else if (/ives$/.test(phrase)) {
         synonyms.push(phrase.replace(/ves$/, 'fe'));
-      } else if (phrases.match(/[aei]([rsx]|st)es$/)) {
+      } else if (/[aei]([rsx]|st)es$/.test(phrase)) {
         synonyms.push(phrase.replace(/es$/, 'is'));
-      } else if (phrases.match(/ices$/)) {
+      } else if (/ices$/.test(phrase)) {
         synonyms.push(phrase.replace(/ices$/, 'ix'));
-        if (phrases.match(/[dt]ices$/)) {
+        if (/[dt]ices$/.test(phrase)) {
           synonyms.push(phrase.replace(/ices$/, 'ex'));
         }
       }
     }
   }
-  if (phrase.match(/a$/)) {
+  if (/a$/.test(phrase)) {
     synonyms.push(phrase.replace(/a$/, 'um'));
-    if (phrase.match(/[inrt]a$/)) {
+    if (/[inrt]a$/.test(phrase)) {
       synonyms.push(phrase.replace(/a$/, 'on'));
     }
   }
-  if (phrase.match(/i$/)) {
+  if (/i$/.test(phrase)) {
     synonyms.push(phrase.replace(/i$/, 'us'));
   }
-  if (phrase.match(/ae$/)) {
+  if (/ae$/.test(phrase)) {
     synonyms.push(phrase.replace(/e$/, ''));
   }
 
   // Participles
-  if (phrase.match(/ed$/)) {
+  if (/ed$/.test(phrase)) {
     synonyms.push(phrase.replace(/ed$/, ''));
-    if (phrase.match(/ied$/)) {
+    if (/ied$/.test(phrase)) {
       synonyms.push(phrase.replace(/ied$/, 'y'));
-    } else if (phrase.match(/[^aeiou]ed$/)) {
+    } else if (/[^aeiou]ed$/.test(phrase)) {
       synonyms.push(phrase.replace(/d$/, ''));
-      if (phrase.match(/[^aeiou]{2}ed$/)) {
+      if (/[^aeiou]{2}ed$/.test(phrase)) {
         synonyms.push(phrase.replace(/.ed$/, ''));
       }
     }
   }
-  if (phrase.match(/ing$/)) {
+  if (/ing$/.test(phrase)) {
     synonyms.push(phrase.replace(/ing$/, ''));
-    if (phrase.match(/ying$/)) {
+    if (/ying$/.test(phrase)) {
       synonyms.push(phrase.replace(/ying$/, 'ie'));
-    } else if (phrase.match(/[^aeiou]ing$/)) {
+    } else if (/[^aeiou]ing$/.test(phrase)) {
       synonyms.push(phrase.replace(/.ing$/, 'e'));
-      if (phrase.match(/[^aeiou]{2}ing$/)) {
+      if (/[^aeiou]{2}ing$/.test(phrase)) {
         synonyms.push(phrase.replace(/.ing$/, ''));
       }
     }

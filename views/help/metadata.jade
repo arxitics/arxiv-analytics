@@ -1,144 +1,139 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-metadata'
-  - var pageTitle = 'Understanding the Metadata'
+  - var pageHeading = 'Understanding the Metadata'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Understanding the Metadata
-        div
-          p We have extended the 
-            a(href='http://arxiv.org/help/prep' rel='external' target='_blank') metadata fields
-            |  provided by arXiv.org.
-          table.ui-table-fluid.ui-table-striped
-            thead
-              tr
-                th Field
-                th Type
-                th Description
-            tbody
-              tr
-                td id
-                td String
-                td ArXiv identifer of the form 
-                  code yymm.nnnn
-                  |  or 
-                  code arch-ive/yymmnnn
-                  | .
-              tr
-                td version
-                td String
-                td A literal 
-                  code v
-                  |  followed by a version number of 1 or more digits starting at 
-                  code v1
-                  | .
-              tr
-                td published
-                td ISODate
-                td Published date in the form 
-                  code yyyy-mm-ddThh:mm:ssZ
-                  | .
-              tr
-                td updated
-                td ISODate
-                td Last updated date in the form 
-                  code yyyy-mm-ddThh:mm:ssZ
-                  | .
-              tr
-                td title
-                td String
-                td Queries for the 
-                    code title
-                    |  field are converted to regular expressions by default.
-              tr
-                td authors
-                td Array :: String
-                td You should use the exact match for the author name.
-              tr
-                td comment
-                td String
-                td Queries for the 
-                    code comment
-                    |  field are converted to regular expressions by default.
-              tr
-                td journal
-                td String
-                td Queries for the 
-                    code journal
-                    |  field are converted to regular expressions by default.
-              tr
-                td doi
-                td String
-                td Only available for the article that has been published on a journal.
-              tr
-                td categories
-                td Array :: String
-                td You should use the exact match for the category provided by arXiv.
-              tr
-                td abstract
-                td String
-                td Queries for the 
-                  code abstract
-                  |  field are converted to regular expressions by default.
-              tr
-                td subjects
-                td Array :: String
-                td Codes for the PACS, the MSC-class, the ACM-class, or the JEL-class.
-              tr
-                td themes
-                td Array :: Object
-                td A theme consits of a 
-                  code category
-                  |  and an array of 
-                  code topics
-                  | .
-              tr
-                td keywords
-                td Array :: String
-                td Keywords summarize the key points of the article.
-              tr
-                td tags
-                td Array :: String
-                td Labels that classify eprints in a non-hierarchical manner.
-              tr
-                td feedback
-                td Object
-                td Contains the statistics of  
-                  code reviews
-                  | , 
-                  code bookmarks
-                  | , 
-                  code readers
-                  | , 
-                  code ratings
-                  | , etc.
-              tr
-                td publication
-                td Object
-                td Contains the information on  
-                  code publisher
-                  | , 
-                  code journal
-                  | , 
-                  code volume
-                  | , 
-                  code number
-                  | , etc.
-              tr
-                td note
-                td Object
-                td Contains the information on  
-                  code typesetting
-                  | , 
-                  code language
-                  | , 
-                  code license
-                  | , 
-                  code status
-                  | , etc.
+block content
+  div
+    p We have extended the 
+      a(href='http://arxiv.org/help/prep' rel='external' target='_blank') metadata fields
+      |  provided by arXiv.org.
+    table.ui-table-fluid.ui-table-striped
+      thead
+        tr
+          th Field
+          th Type
+          th Description
+      tbody
+        tr
+          td id
+          td String
+          td ArXiv identifer of the form 
+            code.ui-color-emphasis yymm.nnnn
+            |  or 
+            code.ui-color-emphasis arch-ive/yymmnnn
+            | .
+        tr
+          td version
+          td String
+          td A literal 
+            code v
+            |  followed by a version number of 1 or more digits starting at 
+            code.ui-color-emphasis v1
+            | .
+        tr
+          td published
+          td ISODate
+          td Published date in the form 
+            code.ui-color-emphasis yyyy-mm-ddThh:mm:ssZ
+            | .
+        tr
+          td updated
+          td ISODate
+          td Last updated date in the form 
+            code.ui-color-emphasis yyyy-mm-ddThh:mm:ssZ
+            | .
+        tr
+          td title
+          td String
+          td Queries for the 
+              code.ui-color-emphasis title
+              |  field are converted to regular expressions by default.
+        tr
+          td authors
+          td Array::String
+          td You should use the exact match for the author name.
+        tr
+          td comment
+          td String
+          td Queries for the 
+              code.ui-color-emphasis comment
+              |  field are converted to regular expressions by default.
+        tr
+          td journal
+          td String
+          td Queries for the 
+              code.ui-color-emphasis journal
+              |  field are converted to regular expressions by default.
+        tr
+          td doi
+          td String
+          td Only available for the article that has been published on a journal.
+        tr
+          td categories
+          td Array::String
+          td You should use the exact match for the category provided by arXiv.
+        tr
+          td abstract
+          td String
+          td Queries for the 
+            code.ui-color-emphasis abstract
+            |  field are converted to regular expressions by default.
+        tr
+          td subjects
+          td Array::String
+          td Codes for the PACS, the MSC-class, the ACM-class, or the JEL-class.
+        tr
+          td themes
+          td Array::Object
+          td A theme consits of a 
+            code.ui-color-emphasis category
+            |  and an array of 
+            code.ui-color-emphasis topics
+            | .
+        tr
+          td keywords
+          td Array::String
+          td Keywords summarize the key points of the article.
+        tr
+          td tags
+          td Array::String
+          td Labels that classify eprints in a non-hierarchical manner.
+        tr
+          td feedback
+          td Object
+          td Contains the statistics of  
+            code.ui-color-emphasis reviews
+            | , 
+            code.ui-color-emphasis bookmarks
+            | , 
+            code.ui-color-emphasis readers
+            | , 
+            code.ui-color-emphasis ratings
+            | , etc.
+        tr
+          td publication
+          td Object
+          td Contains the information on  
+            code.ui-color-emphasis publisher
+            | , 
+            code.ui-color-emphasis journal
+            | , 
+            code.ui-color-emphasis volume
+            | , 
+            code.ui-color-emphasis number
+            | , etc.
+        tr
+          td note
+          td Object
+          td Contains the information on  
+            code.ui-color-emphasis typesetting
+            | , 
+            code.ui-color-emphasis language
+            | , 
+            code.ui-color-emphasis license
+            | , 
+            code.ui-color-emphasis status
+            | , etc.

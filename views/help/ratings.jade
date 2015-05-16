@@ -1,20 +1,15 @@
 
-extends ../layout
+extends help
 
-block variables
+block prepend variables
   - var pageID = 'help-ratings'
-  - var pageTitle = 'Guidelines for Rating Articles'
+  - var pageHeading = 'Guidelines for Rating Articles'
 
-block main
-  article.ui-container-fluid.ui-mobile-expand
-    include navigation
-    .ui-grid-80.ui-offset-10.ui-mobile-expand
-      section
-        h4.ui-header-compact Guidelines for Rating Articles
-        div
-          p To help assess the quality of eprints, a registered user can rate an article which has been marked as read. The rating should be based on 
-            strong originality
-            |  and 
-            strong trustworthiness
-            | . The highest score of each criteria is 5 and you take their average as the final score. If you do not understand the article very well, please do not rate it. Also note you will lose 1 reputation for each rating.
-          p To avoid the overbroad interpretation of rating scores, we don't display this information in an accessible way. At present, they are only used in one of the sort options for searching eprints. Since you can't see others' ratings, you should judge the quality of an article based on your own criteria.
+block content
+  div
+    p To help assess the quality of eprints, a registered user can rate an article which has been marked as read. The rating should be based on 
+      strong originality
+      |  and 
+      strong trustworthiness
+      | . The highest score of each criteria is 5 and you take their average as the final score. If you do not understand the article very well, please do not rate it. Also note you will lose 1 reputation for each rating.
+    p To avoid the overbroad interpretation of rating scores, we don't display this information in an accessible way. At present, they are only used in one of the sort options for searching eprints. Since you can't see others' ratings, you should judge the quality of an article based on your own criteria.

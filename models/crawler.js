@@ -6,6 +6,7 @@ var url = require('url');
 var http = require('http');
 var path = require('path');
 var xml2js = require('xml2js');
+var cheerio = require('cheerio');
 var file = require('./file');
 
 // Get resources form web
@@ -59,5 +60,31 @@ exports.parseXML = function (xmlFile, callback) {
       }
       return (typeof callback === 'function') ? callback(result) : null;
     });
+  });
+};
+
+// Parse HTML files
+exports.parseHTML = function (htmlFile, callback) {
+  file.read(htmlFile, function (data) {
+    var $ = cheerio.load(data, {
+      normalizeWhitespace: true,
+      xmlMode: false,
+      decodeEntities: true,
+      lowerCaseTags: true
+    });
+    return (typeof callback === 'function') ? callback($) : null;
+  });
+};
+
+// Parse JSON files
+exports.parseJSON = function (jsonFile, callback) {
+  file.read(jsonFile, function (data) {
+    var result = {};
+    try {
+      result = JSON.parse(data);
+    } catch (error) {
+      console.error(error);
+    }
+    return (typeof callback === 'function') ? callback(result) : null;
   });
 };
