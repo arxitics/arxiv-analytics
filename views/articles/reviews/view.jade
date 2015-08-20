@@ -80,7 +80,7 @@ block review
             - var published = comment.published.toISOString().slice(0, 10)
             a(href='/users/#{user.uid}')= user.name
             span.ui-text-muted  (Published #{published})
-          .ui-content-post!= parse(comment.content)
+          .ui-article-body!= parse(comment.content)
           if index !== last
             hr
   if logged

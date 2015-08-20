@@ -43,7 +43,8 @@
   width: 100%;
 }
 
-.ui-form-horizontal input {
+.ui-form-horizontal input,
+.ui-form-horizontal select {
   height: 2.34694em;
 }
 
@@ -183,6 +184,8 @@
   border: none;
   color: #428bca;
   padding: 0;
+  text-align: left;
+  white-space: normal;
 }
 
 .ui-button-link:hover,

@@ -1,0 +1,7 @@
+ul.ui-list-inline.ui-seperator-vbar
+  - var mirror = user.note.mirror
+  - var arxiv = 'http://' + (mirror ? mirror + '.' : '') + 'arxiv.org'
+  li: a(href='#{arxiv}/pdf/#{id}' rel='external' target='_blank') View PDF
+  li: a(href='#{arxiv}/e-print/#{id}' rel='external') Download source
+  li: a(href='/articles/#{id}/bibtex' download='#{id}.bib') Export citation
+  li: a(href='/articles/#{id}/json' download='#{id}.json') Save metadata

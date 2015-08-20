@@ -17,7 +17,7 @@ block content
   .ui-container-grid
     .ui-grid-70.ui-phone-expand
       section
-        h4.ui-header-compact= eprint.title
+        h4#eprint-title.ui-header-compact= eprint.title
         p
           - var authors = eprint.authors
           - var last = authors.length - 1
@@ -35,7 +35,7 @@ block content
             span= updated
           - var version = eprint.version.replace(/^v/i, '')
           span.ui-offset-large Version #{version}
-        p= eprint.abstract
+        p#eprint-abstract= eprint.abstract
         .ui-skip-large
           - var comment = eprint.comment
           - var journal = eprint.journal
@@ -107,23 +107,53 @@ block content
                 a(href=normalize(tagSearch + tag))= tag
                 if index !== last
                   | , 
+        if discoveries.length
+          .ui-skip-large
+            strong Related articles:
+            each doc, index in discoveries
+              .ui-skip-medium
+                - var published = doc.published.toISOString().slice(0, 10)
+                - var updated = doc.updated.toISOString().slice(0, 10)
+                a(href='/articles/#{id}')= citeAs(doc)
+                |  (Published 
+                span= published
+                if updated !== published
+                  | , updated 
+                  span= updated
+                | )
+              div= doc.title
+              div
+                - var authors = doc.authors
+                - var last = authors.length - 1
+                if last < 7
+                  each author, index in authors
+                    a(href=normalize(authorSearch + author))= author 
+                    if index !== last
+                      | , 
+                else
+                  - var author = authors[0]
+                  a(href=normalize(authorSearch + author))= author
+                  em  et al.
     .ui-grid-30.ui-phone-expand
       .ui-content-panel
         .ui-panel-header
           h4 Links
         .ui-panel-body
           ul.ui-list-group
-            li: a(href='http://arxiv.org/abs/#{id}' rel='external' target='_blank' accesskey='a') Abstract on arXiv.org
-            li: a(href='http://arxiv.org/pdf/#{id}' rel='external' target='_blank' accesskey='d' tabindex='2') View preprint PDF
-            li: a(href='http://arxiv.org/e-print/#{id}' rel='external' accesskey='t') Download TeX source
+            - var mirror = user.note.mirror
+            - var arxiv = 'http://' + (mirror ? mirror + '.' : '') + 'arxiv.org'
+            li: a(href='#{arxiv}/abs/#{id}' rel='external' target='_blank' accesskey='a') Abstract on arXiv.org
+            li: a(href='#{arxiv}/pdf/#{id}' rel='external' target='_blank' accesskey='d' tabindex='2') View preprint PDF
+            li: a(href='#{arxiv}/e-print/#{id}' rel='external' accesskey='t') Download TeX source
             li: a(href='/articles/#{id}/bibtex' download='#{id}.bib' accesskey='x') Export citation in BibTeX
-      if logged
-        .ui-content-panel
-          .ui-panel-header
-            h4 Toolbox
-          .ui-panel-body
-            ul.ui-list-group
-              - var uid = user.uid
+            li: a(href='/articles/#{id}/json' download='#{id}.json' accesskey='j') Save eprint metadata as JSON
+      .ui-content-panel
+        .ui-panel-header
+          h4 Toolbox
+        .ui-panel-body
+          ul.ui-list-group
+            - var uid = user.uid
+            if logged
               if bookmarked === false
                 li
                   form(action='/users/#{uid}/articles/bookmark' method='post' role='form')
@@ -142,18 +172,29 @@ block content
                     input(type='hidden' name='_csrf' value=csrfToken)
                     input(type='hidden' name='id' value=id)
                     input(type='hidden' name='score')
-                    span.ui-text-primary
-                      | Rate this article 
+                    span.ui-text-primary Rate this article 
                     a(role='button')
                       i(data-schema-icon='star-o')
                       i(data-schema-icon='star-o')
                       i(data-schema-icon='star-o')
                       i(data-schema-icon='star-o')
                       i(data-schema-icon='star-o')
-              li: a(href='/articles/#{id}/reviews/post') Post your review for this article
-              li: a(href='/articles/#{id}/resources/attach') Attach supplementary resources
-              if editable
-                li: a(href='/articles/#{id}/edit' accesskey='e') Edit our extended metadata
+            li: a(href='/articles/#{id}/reviews/post') Post your review for this article
+            li: a(href='/articles/#{id}/resources/attach') Attach supplementary resources
+            if editable
+              li: a(href='/articles/#{id}/edit' accesskey='e') Edit our extended metadata
+            li#social-media
+              button.ui-button-link Share this article on social media
+              .ui-text-hidden.ui-text-list
+                if locale === 'zh'
+                  a(title='Renren'): i(data-schema-icon='renren') Renren
+                  a(title='Weibo'): i(data-schema-icon='weibo') Weibo
+                a(title='Facebook'): i(data-schema-icon='facebook') Facebook
+                a(title='Google+'): i(data-schema-icon='google-plus') Google+
+                a(title='LinkedIn'): i(data-schema-icon='linkedin') LinkedIn
+                a(title='Reddit'): i(data-schema-icon='reddit') Reddit
+                a(title='Twitter'): i(data-schema-icon='twitter') Twitter
+                a(title='VK'): i(data-schema-icon='vk') VK
 
 block append foot
   include ../mathjax
@@ -180,3 +221,27 @@ block append foot
           });
         });
       });
+  script.
+    $(document).ready(function () {
+      $('#social-media button').on('click', function () {
+        $(this).next().toggleClass('ui-text-hidden');
+      });
+      $('#social-media i[data-schema-icon]').on('click', function () {
+        var sns = $(this).data('schema-icon');
+        var url = document.location.href;
+        var title = $('#eprint-title').text() + ' (' + $('#eprint-id').text() + ')';
+        var abs = $('#eprint-abstract').text();
+        var pic = 'http://arxitics.com/images/arxitics.png';
+        var target = {
+            'renren': 'http://widget.renren.com/dialog/share?resourceUrl=' + url + '&title=' + title + '&description=' + abs + '&pic=' + pic,
+            'weibo': 'http://service.weibo.com/share/share.php?url=' + url + '&title=' + abs + '&pic=' + pic,
+            'facebook': 'https://www.facebook.com/share.php?u=' + url + '&t=' + abs + '&pic=' + pic,
+            'google-plus': 'https://plus.google.com/share?url=' + url,
+            'linkedin': 'https://www.linkedin.com/shareArticle?url=' + url + '&title=' + title + '&summary=' + abs,
+            'reddit': 'https://www.reddit.com/submit?url=' + url + '&title=' + title,
+            'twitter': 'https://twitter.com/intent/tweet?text=' + url + ' ' + abs + '&pic=' + pic,
+            'vk': 'https://vk.com/share.php?url=' + url + '&title=' + title
+          };
+        window.open(target[sns]);
+      });
+    });

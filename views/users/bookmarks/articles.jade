@@ -3,15 +3,13 @@
 each article in articles
   - var id = article.id
   - var eprint = article.eprint
-  - var primaryCategory = eprint.categories[0]
-  - var baseSearch = '/search?category=' + primaryCategory
+  - var baseSearch = '/search?category=' + eprint.categories[0]
   - var authorSearch = baseSearch + '&author='
   - var bookmarked = article.bookmarked.toISOString().slice(0, 10)
   li.ui-skip-medium
     div
-      - var primary = /^\d{4}/.test(id) ? ' [' + primaryCategory + ']' : ''
       - var published = eprint.published.toISOString().slice(0, 10)
-      a(href='/articles/#{id}')= 'arXiv:' + id + primary
+      a(href='/articles/#{id}')= citeAs(eprint)
       |  (Published #{published}, bookmarked #{bookmarked})
       if authorized
         form.ui-offset-medium(action='/users/#{uid}/articles/read' method='post' role='form')
@@ -39,3 +37,4 @@ each article in articles
         - var author = authors[0]
         a(href=normalize(authorSearch + author))= author
         em  et al.
+    include ../../links

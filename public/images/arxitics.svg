@@ -2,26 +2,27 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0" y="0" width="220" height="250" viewBox="0 0 220 250">
   <title>Comunity Promotion Ad for arXiv Analytics</title>
-  <desc>arXiv Analytics: an efficient web portal dedicated to reading &amp; discussing arXiv eprints</desc>
+  <desc>arXiv Analytics: specialized web portal dedicated to reading &amp; discussing arXiv eprints</desc>
   <rect x="1" y="1" width="219" height="249" stroke-width="1" stroke="#888" fill="none"/>
-  <rect x="1" y="1" width="219" height="95" stroke-width="0" fill="#428BCA"/>
-  <g font-family="Droid Sans" text-anchor="middle" stroke-width="0">
-    <text x="110" y="40" font-size="28" fill="#FFF">
+  <rect x="1" y="1" width="219" height="95" stroke-width="0" fill="#428bca"/>
+  <rect x="1" y="96" width="219" height="154" stroke-width="0" fill="#3c763d"/>
+  <g font-family="Droid Sans" text-anchor="middle" stroke-width="0" fill="#fff">
+    <text x="110" y="40" font-size="28">
       <tspan>arXiv Analytics</tspan>
     </text>
-    <text x="110" y="75" font-size="16" fill="#FFF">
+    <text x="110" y="75" font-size="16">
       <tspan>http://arxitics.com</tspan>
     </text>
-    <text x="110" y="135" font-size="20" fill="#000">
+    <text x="110" y="135" font-size="20">
       <tspan>Specialized web portal</tspan>
     </text>
-    <text x="110" y="165" font-size="20" fill="#000">
+    <text x="110" y="165" font-size="20">
       <tspan>dedicated to</tspan>
     </text>
-    <text x="110" y="195" font-size="20" fill="#000">
+    <text x="110" y="195" font-size="20">
       <tspan>reading &amp; discussing</tspan>
     </text>
-    <text x="110" y="225" font-size="20" fill="#000">
+    <text x="110" y="225" font-size="20">
       <tspan>arXiv eprints</tspan>
     </text>
   </g>

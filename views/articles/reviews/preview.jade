@@ -4,7 +4,7 @@ extends review
 block review
   section
     h4.ui-header-compact!= parse(preview.title).replace(/<\/?p>|\n/g, '')
-    .ui-content-post!= parse(preview.content)
+    .ui-article-body!= parse(preview.content)
     if review
       - var pid = review.pid
       form.ui-form-horizontal(data-schema-validate action='/reviews/#{pid}/submit' method='post' role='form')

@@ -199,9 +199,11 @@ article.ui-grid-70.ui-mobile-expand
                   | , 
         - var abstract = id + '/abstract'
         ul.ui-list-inline.ui-seperator-vbar
+          - var mirror = user.note.mirror
+          - var arxiv = 'http://' + (mirror ? mirror + '.' : '') + 'arxiv.org'
           li: a(href='#' + abstract) Show abstract
-          li: a(href='http://arxiv.org/pdf/#{id}' rel='external' target='_blank') View PDF
-          li: a(href='http://arxiv.org/e-print/#{id}' rel='external') Download source
-          li: a(href='/articles/#{id}/bibtex' download='#{id}.bib') Export citation in BibTeX
+          li: a(href='#{arxiv}/pdf/#{id}' rel='external' target='_blank') View PDF
+          li: a(href='#{arxiv}/e-print/#{id}' rel='external') Download source
+          li: a(href='/articles/#{id}/bibtex' download='#{id}.bib') Export citation
         p.ui-toggle-content(id=abstract)= eprint.abstract
   include ../pagination

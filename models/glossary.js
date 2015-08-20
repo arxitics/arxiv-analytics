@@ -16,10 +16,10 @@ exports.extract = function (eprint) {
     settings.weight.abstact
   ];
   var stats = exports.stats(texts, weights);
-  var maxRanking = settings.phrase.maxRanking || 25;
+  var maxRank = settings.phrase.maxRank || 25;
   var maxOutputs = settings.keyword.maxOutputs || 5;
   var maxLength = Math.min(maxOutputs, Math.ceil(stats.length / maxOutputs));
-  var keywords = stats.slice(0, maxRanking).map(function (phrase) {
+  var keywords = stats.slice(0, maxRank).map(function (phrase) {
     return phrase.term;
   });
   var sequence = keywords.join('|');
@@ -95,10 +95,12 @@ exports.combine = function (segments) {
   for (var i = 0; i < length; i++) {
     for (var j = i; j < length; j++) {
       var phrase = segments.slice(i, j + 1).join(' ');
-      candidates.push({
-        'term': phrase,
-        'value': j - i + 1
-      });
+      if (/(ed|[^abi]ly)$/.test(phrase) === false) {
+        candidates.push({
+          'term': phrase,
+          'value': j - i + 1
+        });
+      }
     }
   }
   return candidates;
@@ -240,6 +242,7 @@ exports.stopWords = [
   'afterwards',
   'again',
   'against',
+  'agrees',
   'ago',
   'al',
   'all',
@@ -318,6 +321,9 @@ exports.stopWords = [
   'combine',
   'combined',
   'combines',
+  'compare',
+  'compares',
+  'comparing',
   'completely',
   'compute',
   'computed',
@@ -331,10 +337,14 @@ exports.stopWords = [
   'crucially',
   'de',
   'def',
+  'depend',
+  'depending',
+  'depends',
   'des',
   'describe',
   'described',
   'describes',
+  'describing',
   'detail',
   'details',
   'develop',
@@ -478,6 +488,7 @@ exports.stopWords = [
   'indicate',
   'indicated',
   'indicates',
+  'instead',
   'into',
   'introduce',
   'introduced',

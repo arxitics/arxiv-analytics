@@ -39,6 +39,7 @@ index.use(function (req, res, next) {
     res.locals.user = user;
     res.locals.logged = logged;
     res.locals.privilege = privilege;
+    res.locals.citeAs = article.citeAs;
     res.locals.browser = req.report.browser;
     res.locals.normalize = security.normalize;
     res.cookie('uid', user.uid, settings.cookie);

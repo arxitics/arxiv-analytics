@@ -11,7 +11,7 @@
   } else {
     var today = new Date().toISOString();
     chat = {
-      created: today, 
+      created: today,
       updated: today,
       messages: []
     };
@@ -28,7 +28,7 @@
       MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'chat-room']);
     }
   };
-  
+
   // Parse message
   chat.parse = function (message, index) {
     var sender = message.sender;

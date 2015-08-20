@@ -38,6 +38,18 @@ block content
       fieldset
         legend Eprint Subscriptions
         - var subscription = profile.subscription
+        label.ui-grid-15(for='mirror') Mirror
+        .ui-grid-85
+          - var mirror = profile.note.mirror
+          select(id='mirror' name='note.mirror')
+            option(value='' selected=(!mirror)) arxiv.org (main site at Cornell University)
+            option(value='lanl' selected=(mirror === 'lanl')) lanl.arxiv.org (U.S. mirror at Los Alamos)
+            option(value='cn' selected=(mirror === 'cn')) cn.arxiv.org (China)
+            option(value='fr' selected=(mirror === 'fr')) fr.arxiv.org (France)
+            option(value='de' selected=(mirror === 'de')) de.arxiv.org (Germany)
+            option(value='in' selected=(mirror === 'in')) in.arxiv.org (India)
+            option(value='jp' selected=(mirror === 'jp')) jp.arxiv.org (Japan)
+            option(value='es' selected=(mirror === 'es')) es.arxiv.org (Spain)
         label.ui-grid-15(for='categories') Categories
         .ui-grid-85
           input(id='categories' type='text' name='subscription.categories' value=(subscription.categories.join(', ') || false) placeholder='math-ph, math.MP, cs.CC' title='Multiple categories are separated by commas' required)

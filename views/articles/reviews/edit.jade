@@ -5,7 +5,7 @@ block review
   - var pid = review.pid
   section
     h4.ui-header-compact!= parse(review.title).replace(/<\/?p>|\n/g, '')
-    .ui-content-post!= parse(review.content)
+    .ui-article-body!= parse(review.content)
     form.ui-form-horizontal(data-schema-validate='changed' action='/reviews/#{pid}/submit' method='post' role='form')
       .ui-container-grid
         input(type='hidden' name='_csrf' value=csrfToken)

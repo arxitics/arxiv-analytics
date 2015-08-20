@@ -628,6 +628,16 @@ exports.patch = function (article, callback) {
   });
 };
 
+// Article citation style
+exports.citeAs = function (eprint) {
+  var id = eprint.id;
+  var string = 'arXiv:' + id;
+  if (/^\d{4}|(math|cs|q\-bio|q\-fin|stat)\//.test(id)) {
+    string += ' [' + eprint.categories[0] + ']';
+  }
+  return string;
+};
+
 // Bibliography entries
 exports.bibEntries = [
   'archivePrefix',
@@ -685,6 +695,34 @@ exports.exportBibtex = function (eprint) {
     }
   });
   return content.replace(/,\n$/, '\n') + '}';
+};
+
+// Export metadata as JSON
+exports.exportJSON = function (eprint, options) {
+  var privileged = options.privileged || false;
+  var omissions = ['authors', 'citations', 'feedback'];
+  var template = exports.template;
+  var analyses = eprint.analyses;
+  var metadata = {};
+  var inference = {};
+  for (var key in template) {
+    if (template.hasOwnProperty(key) && key !== 'analyses' && eprint[key]) {
+      var value = eprint[key];
+      if (!Array.isArray(value) || value.length) {
+        metadata[key] = eprint[key];
+      }
+    }
+  }
+  for (var key in analyses) {
+    if (analyses.hasOwnProperty(key) && (privileged || omissions.indexOf(key) === -1)) {
+      var value = analyses[key];
+      if (Array.isArray(value) && value.length || Object.keys(value).length) {
+        inference[key] = analyses[key];
+      }
+    }
+  }
+  metadata.analyses = inference;
+  return JSON.stringify(metadata, null, 2);
 };
 
 // Parse publication information

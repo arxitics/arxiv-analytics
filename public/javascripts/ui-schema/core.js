@@ -88,7 +88,7 @@
     for (var key in data) {
       if (data.hasOwnProperty(key)) {
         var dataKey = 'schema-' + key.slice(dataPrefixLength);
-        var dataValue = data[key].trim();
+        var dataValue = data[key];
         dataKey = dataKey.replace(/\-\w/g, function (matchedSubstr) {
           return matchedSubstr.charAt(1).toUpperCase();
         });

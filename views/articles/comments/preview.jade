@@ -3,7 +3,7 @@ extends comment
 
 block comment
   div
-    .ui-content-post!= parse(preview.content)
+    .ui-article-body!= parse(preview.content)
     form.ui-form-horizontal(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
       .ui-container-grid
         input(type='hidden' name='_csrf' value=csrfToken)

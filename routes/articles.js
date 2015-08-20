@@ -241,6 +241,14 @@ articles.get('*/bibtex', function (req, res) {
   res.send(article.exportBibtex(req.eprint));
 });
 
+// Export metadata as JSON
+articles.get('*/json', function (req, res) {
+  res.set('Content-Type', 'text/plain');
+  res.send(article.exportJSON(req.eprint, {
+    privileged: req.privilege.isModerator
+  }));
+});
+
 // Edit auto-generated metadata
 articles.get('*/edit', function (req, res) {
   res.render('articles/edit', {
@@ -440,7 +448,7 @@ articles.get(route, function (req, res) {
   var articles = user.activity.articles;
   var eprint = req.eprint;
   var id = eprint.id;
-  var status = eprint.analyses.note.status;
+  var analyses = eprint.analyses;
   if (req.logged && req.privilege.isPublic) {
     var path = req.originalUrl;
     var isFirstVisit = req.session.views.some(function (view) {
@@ -457,17 +465,58 @@ articles.get(route, function (req, res) {
       });
     }
   }
-  res.render('articles/abstract', {
-    bookmarked: articles.some(function (article) {
-      return article.id === id;
-    }),
-    read: articles.some(function (reading) {
-      return reading.id === id && reading.status !== 'unread';
-    }),
-    rated: articles.some(function (rating) {
-      return rating.id === id && rating.status === 'rated';
-    }),
-    editable: (req.privilege.editMetadata && status === 'editable')
+
+  var discovery = settings.eprint.discovery;
+  var categories = eprint.categories;
+  var subjects = analyses.subjects;
+  var keywords = analyses.keywords;
+  var query = {
+    'categories.0': categories[0],
+    'limit': discovery.limit
+  };
+  if (subjects.length) {
+    query.subjects = {'$in': subjects};
+  }
+  if (keywords.length) {
+    query.keywords = {'$in': keywords};
+  }
+  article.find(query, function (docs) {
+    docs.forEach(function (doc) {
+      var similarity = 0;
+      doc.categories.forEach(function (category, index) {
+        if (categories.indexOf(category) !== -1) {
+          similarity += 1 / (1 + index);
+        }
+      });
+      doc.analyses.subjects.forEach(function (subject, index) {
+        if (subjects.indexOf(subject) !== -1) {
+          similarity += 2 / (1 + index);
+        }
+      });
+      doc.analyses.keywords.forEach(function (keyword, index) {
+        if (keywords.indexOf(keyword) !== -1) {
+          similarity += 4 / (1 + index);
+        }
+      });
+      doc.similarity = similarity;
+    });
+    res.render('articles/abstract', {
+      discoveries: docs.filter(function (doc) {
+        return doc.id !== id;
+      }).sort(function (a, b) {
+        return b.similarity - a.similarity;
+      }).slice(0, discovery.maxRank),
+      bookmarked: articles.some(function (article) {
+        return article.id === id;
+      }),
+      read: articles.some(function (reading) {
+        return reading.id === id && reading.status !== 'unread';
+      }),
+      rated: articles.some(function (rating) {
+        return rating.id === id && rating.status === 'rated';
+      }),
+      editable: analyses.note.status === 'editable'
+    });
   });
 });
 

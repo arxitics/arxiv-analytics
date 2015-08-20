@@ -131,6 +131,12 @@ users.post('/:uid/preferences', function (req, res) {
       changes[entry] = String(body[entry]).trim();
     }
   });
+  if (body.hasOwnProperty('note.mirror')) {
+    var mirror = body['note.mirror'];
+    if (regexp.arxiv.mirror.test(mirror)) {
+      changes['note.mirror'] = mirror;
+    }
+  }
   account.subscriptions.forEach(function (key) {
     key = 'subscription.' + key;
     if (body.hasOwnProperty(key)) {
@@ -185,17 +191,25 @@ users.post('/:uid/preferences', function (req, res) {
       if (body.hasOwnProperty('email')) {
         var receiver = body.email.trim();
         if (receiver !== user.email && email.validate(receiver)) {
-          var hash = security.md5Hash(receiver + key);
-          changes['note.email'] = receiver;
-          changes['note.hash'] = hash;
-          email.reset(receiver, {
-            uid: uid,
-            hash: hash
-          }, function () {
-            console.log('user ' + uid + ' would like to reset the email');
+          account.lookup({'email': receiver}, function (doc) {
+            if (doc) {
+              console.error('email ' + receiver + ' has been used by someone');
+            } else {
+              var hash = security.md5Hash(receiver + key);
+              changes['note.email'] = receiver;
+              changes['note.hash'] = hash;
+              email.reset(receiver, {
+                uid: uid,
+                hash: hash
+              }, function () {
+                console.log('user ' + uid + ' would like to reset the email');
+              });
+            }
           });
         }
       }
+    } else {
+      console.error('user ' + uid + ' used an invalid key ' + key);
     }
   }
   account.update({'uid': uid}, {'$set': changes}, function () {
@@ -216,7 +230,7 @@ users.get('/:uid/bookmarks', function (req, res) {
   var eprintTypes = [
     'articles',
     'readings',
-    'ratings', 
+    'ratings',
     'edits'
   ];
   var list = [];
@@ -605,7 +619,7 @@ users.post('/:uid/reviews/voting', function (req, res) {
       },
       '$inc': {
         'stats.reputation': settings.user.reputation.review.vote
-      } 
+      }
     };
     account.update({'uid': uid}, modifier, function () {
       var increment = {};

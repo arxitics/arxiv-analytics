@@ -16,8 +16,8 @@ function sunburst (data) {
 
   var PI = Math.PI;
   var chart = d3.select('#chart');
-  var width = Math.max(parseInt(chart.style('width')) || 480, 480);
-  var height = 0.833333 * width || 400;
+  var width = Math.max(parseInt(chart.style('width')) || 300, 300);
+  var height = 0.833333 * width || 250;
   var radius = Math.min(width, height) / 2;
   var x = d3.scale.linear().range([0, 2 * PI]);
   var y = d3.scale.sqrt().range([0, radius]);

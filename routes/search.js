@@ -29,7 +29,7 @@ search.get('/', function (req, res) {
       redirected = true;
     } else {
       sequence = sequence.replace(/arXiv\:\s*/i, '');
-      if (regexp.identifier.test(sequence)) {
+      if (regexp.identifier.test(sequence.replace(/\s+.*$/, ''))) {
         res.redirect('/articles/' + sequence.toLowerCase());
         redirected = true;
       } else if (regexp.doi.test(sequence)) {

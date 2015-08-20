@@ -12,15 +12,13 @@ block content
         each publication in profile.publications
           - var id = publication.id
           - var eprint = publication.eprint
-          - var primaryCategory = eprint.categories[0]
-          - var baseSearch = '/search?category=' + primaryCategory
+          - var baseSearch = '/search?category=' + eprint.categories[0]
           - var authorSearch = baseSearch + '&author='
           - var added = publication.added.toISOString().slice(0, 10)
           li.ui-skip-medium
             div
-              - var primary = id.match(/^\d{4}/) ? ' [' + primaryCategory + ']' : ''
               - var published = eprint.published.toISOString().slice(0, 10)
-              a(href='/articles/#{id}')= 'arXiv:' + id + primary
+              a(href='/articles/#{id}')= citeAs(eprint)
               |  (Published #{published}, added #{added})
             h4.ui-header-compact= eprint.title
             div
@@ -30,6 +28,7 @@ block content
                 a(href=normalize(authorSearch + author))= author 
                 if index !== last
                   | , 
+            include ../../links
       include ../../pagination
       if authorized
         .ui-skip-large

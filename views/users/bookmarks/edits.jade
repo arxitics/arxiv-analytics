@@ -3,15 +3,13 @@
 each edit in edits
   - var id = edit.id
   - var eprint = edit.eprint
-  - var primaryCategory = eprint.categories[0]
-  - var baseSearch = '/search?category=' + primaryCategory
+  - var baseSearch = '/search?category=' + eprint.categories[0]
   - var authorSearch = baseSearch + '&author='
   - var edited = edit.edited.toISOString().slice(0, 10)
   li.ui-skip-medium
     div
-      - var primary = /^\d{4}/.test(id) ? ' [' + primaryCategory + ']' : ''
       - var published = eprint.published.toISOString().slice(0, 10)
-      a(href='/articles/#{id}')= 'arXiv:' + id + primary
+      a(href='/articles/#{id}')= citeAs(eprint)
       |  (Published #{published}, edited #{edited})
     h4.ui-header-compact= eprint.title
     div
@@ -26,3 +24,4 @@ each edit in edits
         - var author = authors[0]
         a(href=normalize(authorSearch + author))= author
         em  et al.
+    include ../../links

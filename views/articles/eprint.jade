@@ -8,9 +8,7 @@ block variables
 block main
   article.ui-container-fluid.ui-mobile-expand
     h3.ui-header-primary.ui-text-left-right
-      span= articleID
-        if id.match(/^\d{4}/)
-          = ' [' + eprint.categories[0] + ']'
+      span#eprint-id= citeAs(eprint)
       span.ui-text-list.ui-font-medium(role='navigation')
         each page in ['abstract', 'references', 'reviews', 'resources']
           - var link = '/articles/' + id + (page === 'abstract' ? '' : '/' + page)

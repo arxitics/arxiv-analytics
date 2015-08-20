@@ -48,7 +48,7 @@ block content
                 a(href='/users/#{receiver.uid}')= receiver.name
                 |  on #{sent}
           hr
-          .ui-content-post!= parse(message.content)
+          .ui-article-body!= parse(message.content)
       include ../../pagination
       if authorized
         div(class=(lastPage > 1 ? 'ui-skip-large': 'ui-skip-huge'))

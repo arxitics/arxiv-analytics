@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  version: '0.3.0',
+  version: '0.3.3',
   title: 'arXiv Analytics',
   keywords: [
     'arXiv',
@@ -24,7 +24,7 @@ module.exports = {
     host: 'arxitics.com',
     hostname: 'arxitics.com',
     port: 80,
-    storage: 'http://oss.arxitics.com'
+    storage: 'http://cdn.arxitics.com'
   },
   db: 'localhost:27017/arxiv',
   collections: [
@@ -67,6 +67,7 @@ module.exports = {
       host: 'smtp.gmail.com',
       user: 'username',
       password: 'password',
+      port: 465,
       ssl: true,
       timeout: 10 * 60 * 1000
     },
@@ -162,10 +163,14 @@ module.exports = {
     },
     phrase: {
       maxWords: 5,
-      maxRanking: 25
+      maxRank: 25
     },
     keyword: {
       maxOutputs: 5
+    },
+    discovery: {
+      limit: 100,
+      maxRank: 3
     }
   },
   search: {

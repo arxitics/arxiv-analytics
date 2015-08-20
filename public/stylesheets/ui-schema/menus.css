@@ -33,9 +33,13 @@
   z-index: 999;
 }
 
+.ui-menu-dropdown > ul,
+.ui-menu-selection > ul > li:not(:first-child) {
+  display: none;
+}
+
 .ui-menu-dropdown > ul {
   box-shadow: 0 .6rem 1.2rem rgba(0, 0, 0, .175);
-  display: none;
   padding-bottom: .4em;
   padding-top: .4em;
 }
@@ -75,6 +79,7 @@
 .ui-menu-selection {
   height: 2.5em;
 }
+
 .ui-menu-selection > ul {
   max-height: 20em;
   overflow: auto;
@@ -84,6 +89,3 @@
   padding: .4em .8em;
 }
 
-.ui-menu-selection > ul > li:not(:first-child) {
-  display: none;
-}

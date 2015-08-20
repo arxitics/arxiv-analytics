@@ -36,12 +36,12 @@ exports.generate = function (req) {
     report.result = 'refused';
     report.reason = 'IP blocked';
     report.message = 'Your IP address has been blocked by the administrator.';
-    console.warn('detected a request from blocked IP ' + ip);
+    console.error('detected a request from blocked IP ' + ip);
   } else if (requests > settings.maxRequests) {
     report.result = 'refused';
     report.reason = 'DDoS attack';
     report.message = 'You have sent too many requests in a short period.';
-    console.warn('detected a potential DDoS attack');
+    console.error('detected a potential DDoS attack');
   }
   return report;
 };

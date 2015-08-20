@@ -31,7 +31,10 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  flex-flow: row wrap;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .ui-grid-10,

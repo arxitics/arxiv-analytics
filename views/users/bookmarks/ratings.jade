@@ -4,15 +4,13 @@ each rating in ratings
   - var id = rating.id
   - var score = rating.score
   - var eprint = rating.eprint
-  - var primaryCategory = eprint.categories[0]
-  - var baseSearch = '/search?category=' + primaryCategory
+  - var baseSearch = '/search?category=' + eprint.categories[0]
   - var authorSearch = baseSearch + '&author='
   - var rated = rating.rated.toISOString().slice(0, 10)
   li.ui-skip-medium
     div
-      - var primary = /^\d{4}/.test(id) ? ' [' + primaryCategory + ']' : ''
       - var published = eprint.published.toISOString().slice(0, 10)
-      a(href='/articles/#{id}')= 'arXiv:' + id + primary
+      a(href='/articles/#{id}')= citeAs(eprint)
       |  (Published #{published}, rated #{rated})
       if authorized
         form.ui-offset-medium(data-schema-rating action='/users/#{uid}/articles/rating' method='post' role='form')
@@ -38,3 +36,4 @@ each rating in ratings
         - var author = authors[0]
         a(href=normalize(authorSearch + author))= author
         em  et al.
+    include ../../links

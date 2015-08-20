@@ -66,7 +66,9 @@ exports.template = {
     'penalty': 0,
     'reputation': 0
   },
-  'note': {}
+  'note': {
+    'mirror': ''
+  }
 };
 
 // Subscription keys
@@ -413,6 +415,6 @@ exports.grant = function (user) {
     isPublic: uid >= exports.range,
     isModerator: /^(moderator|administrator)$/.test(role),
     articlePost: reputation >= article.post,
-    editMetadata: reputation >= article.edit
+    editMetadata: role !== 'guest' && reputation >= article.edit
   };
 };

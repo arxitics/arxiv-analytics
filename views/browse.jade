@@ -153,10 +153,7 @@ block main
                   a(href=normalize(tagSearch + tag))= tag
                   if index !== last
                     | , 
-          ul.ui-list-inline.ui-seperator-vbar
-            li: a(href='http://arxiv.org/pdf/#{id}' rel='external' target='_blank') View PDF
-            li: a(href='http://arxiv.org/e-print/#{id}' rel='external') Download source
-            li: a(href='/articles/#{id}/bibtex' download='#{id}.bib') Export citation in BibTeX
+          include links
           if query.abstract === 'true'
             p= eprint.abstract 
     .ui-skip-large
