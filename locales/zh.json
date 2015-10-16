@@ -111,8 +111,5 @@
   "address": {
     "ICP": "京ICP备14026973号-1",
     "police": "京公网安备11010802015197"
-  },
-  "#{page}": {
-    "heading": "#{page}.heading"
   }
 }

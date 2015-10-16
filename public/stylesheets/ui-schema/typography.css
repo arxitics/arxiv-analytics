@@ -70,7 +70,7 @@
   font-size: 1000%;
 }
 
-.ui-text-normal { 
+.ui-text-normal {
   line-height: 1.42857;
 }
 
@@ -407,16 +407,24 @@
   overflow: hidden;
 }
 
-.ui-content-panel h4,
+.ui-panel-header > h4,
 .ui-panel-body > .ui-table-fluid,
 .ui-panel-footer > p {
   margin: 0;
 }
 
-.ui-panel-header {
+.ui-panel-header,
+.ui-panel-footer {
   background-color: #f5f5f5;
-  border-bottom: inherit;
   padding: .6em .8em;
+}
+
+.ui-panel-header {
+  border-bottom: inherit;
+}
+
+.ui-panel-footer {
+  border-top: inherit;
 }
 
 .ui-panel-body > p {
@@ -425,14 +433,8 @@
 
 .ui-panel-body > .ui-list-group {
   border: none;
-  margin: 0;
+  margin-bottom: 0;
   width: 100%;
-}
-
-.ui-panel-footer {
-  background-color: #f5f5f5;
-  border-top: inherit;
-  padding: .6em .8em;
 }
 
 .ui-content-media {

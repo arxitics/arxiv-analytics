@@ -2,9 +2,9 @@
  * Search router instance.
  */
 
-
 var util = require('util');
 var express = require('express');
+var cache = require('../models/cache');
 var article = require('../models/article');
 var statistics = require('../models/statistics');
 var interpreter = require('../models/interpreter');
@@ -37,7 +37,7 @@ search.get('/', function (req, res) {
       } else {
         if (/^\{.+\}$/.test(sequence)) {
           try {
-            sequence = security.serialize(JSON.parse(sequence)); console.log(sequence);
+            sequence = security.serialize(JSON.parse(sequence));
             res.redirect(security.normalize('/search?' + sequence));
             redirected = true;
           } catch (error) {
@@ -65,19 +65,26 @@ search.get('/', function (req, res) {
       return query[key] !== '';
     });
     if (keys.length) {
+      var url = req.originalUrl;
       var query = article.preprocess(query);
-      article.find(query, function (docs) {
+      var start = Date.now();
+      cache.search(url, query, function (docs) {
+        var end = Date.now();
         var length = docs.length;
         if (length === 1) {
           res.redirect('/articles/' + docs[0].id);
         } else {
           var pagination = article.paginate(query, docs);
+          var stats = statistics.summarize(docs, ['categories', 'authors']);
           var local = {
-            stats: statistics.summarize(docs, ['categories', 'authors']),
+            stats: stats,
             searched: true,
             eprints: pagination.docs,
-            location: req.originalUrl
+            location: url
           };
+          if (req.logged && (end - start) > settings.threshold) {
+            cache.save(url, docs);
+          }
           res.render('search', util._extend(local, pagination));
         }
       });

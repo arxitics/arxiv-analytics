@@ -269,7 +269,7 @@ exports.tags = [
     description: 'A technical document intended to give assistance to people using a particular system, also known as a user guide.'
   },
   {
-    tag: 'lecture note',
+    tag: 'lecture notes',
     description: 'A record of the lecture content in an accessible way.'
   },
   {
@@ -289,15 +289,7 @@ exports.tags = [
     description: 'An article accessible to graduate students and nonspecialist researchers.'
   },
   {
-    tag: 'renowned paper',
-    description: 'A paper whose number of citations is among the top 0.2% in the field.'
-  },
-  {
     tag: 'famous paper',
-    description: 'A paper whose number of citations is among the top 0.4% in the field.'
-  },
-  {
-    tag: 'well-known paper',
     description: 'A paper whose number of citations is among the top 1% in the field.'
   },
   {
@@ -311,6 +303,10 @@ exports.tags = [
   {
     tag: 'kaleidoscope',
     description: 'An article containing aesthetically attractive images like the journal cover arts.'
+  },
+  {
+    tag: 'github project',
+    description: 'An article which has a public repository on GitHub.'
   }
 ];
 
@@ -1533,7 +1529,7 @@ exports.groups = [
             category: 'cs.CR',
             description: 'Cryptography and Security',
             topics: [
-              'authentication', 
+              'authentication',
               'code breaking',
               'data encryption standard',
               'invasive software',
@@ -1705,7 +1701,7 @@ exports.groups = [
               'error control codes',
               'formal models of communication',
               'information-theoretic security',
-              'Kolmogorov complexity', 
+              'Kolmogorov complexity',
               'measures of information',
               'nonsecret encoding scheme',
               'source coding'

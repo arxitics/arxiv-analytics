@@ -1,0 +1,58 @@
+
+extends visual
+
+block prepend variables
+  - var type = 'categories'
+
+block append head
+  link(rel='prerender' href='/visual/keywords')
+
+block append head
+  style.
+    #chart svg {
+      width: 100%;
+      margin-top: 2em;
+    }
+    #chart path {
+      stroke: #FFF;
+      fill-rule: evenodd;
+      cursor: pointer;
+    }
+    #tooltip {
+      position: absolute;
+      padding: .4em 1em;
+      font-size: 85%;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #999;
+      border-radius: .2em;
+      pointer-events: none;
+    }
+block content
+  section#chart.ui-fluid-60.ui-mobile-expand.ui-block-center.ui-text-center
+    h4.ui-header-compact Number of arXiv eprints counted by primary categories
+    .ui-text-muted (Click on the arc to zoom in and on the center circle to zoom out)
+
+block append foot
+  script(src='#{appStorage}/javascripts/sunburst-1.0.3.min.js')
+  script.
+    $(document).ready(function () {
+      $.getJSON('/visual/data/primaryCategories.json', function (data) {
+        sunburst(data, {
+          id: 'chart',
+          tooltip: {
+            id: 'tooltip',
+            html: function (d) {
+              var parent = d.parent || data;
+              var percent = (100 * d.count / parent.count).toPrecision(3) + '%';
+              return d.category + ': ' + d.count + ' (' + percent + ')';
+            }
+          },
+          partition: function (d) {
+            return d.count;
+          },
+          normalize: function (d) {
+            return (d.children ? d : d.parent).category;
+          }
+        });
+      });
+    });

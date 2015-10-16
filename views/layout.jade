@@ -52,7 +52,7 @@ html(id=pageID lang=locale)
         if logged
           .ui-header-account.ui-float-right.ui-menu-dropdown(role='menu')
             - var length = user.notifications.length
-            .ui-skip-tiny(class=(length === 0 ? 'ui-text-success' : 'ui-text-danger'))
+            .ui-skip-tiny(class=(length === 0 ? 'ui-text-success' : 'ui-text-danger') aria-haspopup='true')
               i.ui-fixed-height(data-schema-icon=(privilege.isModerator ? 'user-md' : 'user'))
               span.ui-offset-tiny= user.name
             ul.ui-pull-right.ui-text-left

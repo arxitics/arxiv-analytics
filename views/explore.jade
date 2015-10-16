@@ -5,6 +5,9 @@ block variables
   - var pageID = 'explore'
   - var pageTitle = __('explore.heading')
 
+block append head
+  link(rel='prerender' href='/visual')
+
 block main
   article.ui-container-fluid.ui-mobile-expand
     h3.ui-header-primary.ui-text-left-right

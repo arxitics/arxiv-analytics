@@ -1,21 +1,12 @@
 /*!
- * Sunburst snippets
+ * Sunburst chart snippets
  */
 
-(function ($) {
-  'use strict';
-
-  $(document).ready(function () {
-    d3.json('/articles/export/categories.json', sunburst);
-  });
-
-})(jQuery);
-
-function sunburst (data) {
+function sunburst (data, options) {
   'use strict';
 
   var PI = Math.PI;
-  var chart = d3.select('#chart');
+  var chart = d3.select('#' + (options.id || 'chart'));
   var width = Math.max(parseInt(chart.style('width')) || 300, 300);
   var height = 0.833333 * width || 250;
   var radius = Math.min(width, height) / 2;
@@ -23,13 +14,12 @@ function sunburst (data) {
   var y = d3.scale.sqrt().range([0, radius]);
   var color = d3.scale.category20c();
 
+  // Create the SVG container and set the origin
   var svg = chart.append('svg')
       .attr('width', width).attr('height', height).append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + (height / 2) + ')');
 
-  var partition = d3.layout.partition().value(function (d) {
-        return d.size;
-      });
+  var partition = d3.layout.partition().value(options.partition);
 
   var arc = d3.svg.arc()
       .startAngle(function (d) {
@@ -42,24 +32,24 @@ function sunburst (data) {
         return Math.max(0, y(d.y + d.dy));
       });
 
-  var tooltip = chart.append('div').attr('id', 'tooltip').style('opacity', 0);
+  var tooltip = chart.append('div')
+      .attr('id', (options.tooltip.id || 'tooltip')).style('opacity', 0);
 
   var path = svg.selectAll('path').data(partition.nodes(data))
       .enter().append('path').attr('d', arc)
       .style('fill', function (d) {
-        return color((d.children ? d : d.parent).category);
+        return color(options.normalize(d));
       }).on('click', function (d) {
         path.transition().duration(750).attrTween('d', arcTween(d));
       }).on('mouseover', function (d) {
-        var parent = d.parent || data;
-        var percent = (100 * d.size / parent.size).toPrecision(3) + '%';
         tooltip.transition().duration(200).style('opacity', 0.8);
-        tooltip.html(d.category + ': ' + d.size + ' (' + percent + ')')
+        tooltip.html(options.tooltip.html(d))
            .style('left', (d3.event.pageX + 20) + 'px')
-           .style('top', (d3.event.pageY - 20) + 'px');
+           .style('top', (d3.event.pageY - 45) + 'px');
       }).on('mousemove', function (d) {
-        tooltip.style('left', (d3.event.pageX + 20) + 'px')
-           .style('top', (d3.event.pageY - 20) + 'px');
+        var offset = parseInt(tooltip.style('width')) * .5
+        tooltip.style('left', (d3.event.pageX - offset) + 'px')
+           .style('top', (d3.event.pageY - 45) + 'px');
       }).on('mouseout', function (d) {
         tooltip.transition().duration(500).style('opacity', 0);
       });

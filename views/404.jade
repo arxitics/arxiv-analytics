@@ -7,10 +7,6 @@ block variables
 block main
   .ui-container-fluid.ui-mobile-expand
     section.ui-content-jumbotron
-      h3 404 Not Found: 
-          span.ui-text-muted= message || 'The requested resource is not available.'
-        p Please contact 
-          strong help
-            span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-            | @arxitics.com
-          |  if you think this should not happen again.
+      h3 404 Not Found: #[span.ui-text-muted= message || 'The requested resource is not available.']
+      p.
+        Please contact #[strong help#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com] if you think this should not happen again.

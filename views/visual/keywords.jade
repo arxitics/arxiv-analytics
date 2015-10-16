@@ -1,0 +1,110 @@
+
+extends visual
+
+block prepend variables
+  - var type = 'keywords'
+
+block append head
+  style.
+    #chart svg {
+      width: 100%;
+      overflow: auto;
+    }
+    #tooltip {
+      position: absolute;
+      padding: .4em 1em;
+      font-size: 85%;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #999;
+      border-radius: .2em;
+      pointer-events: none;
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    .grid .tick {
+      stroke: #ccc;
+      opacity: 0.8;
+    }
+    .dot {
+      stroke: #fff;
+      opacity: 0.8;
+      cursor: pointer;
+    }
+block content
+  .ui-container-grid
+    aside.ui-grid-30.ui-mobile-expand
+      form.ui-form-fluid(data-schema-validate action='/visual/keywords' method='get' role='form')
+        label(for='keyword') Keyword
+        input.ui-input-fluid(id='keyword' type='text' name='q' value=(query.q || 'topological insulator') placeholder='topological insulator' title='Please input a keyword' required)
+        label(for='categories') Categories
+        input.ui-input-fluid(id='categories' type='text' name='categories' value=query.categories placeholder='cond-mat.mes-hall, cond-mat.str-el' title='Multiple categories are separated by commas')
+        label(for='tags') Tags
+        input.ui-input-fluid(id='tags' type='text' name='tags' value=query.tags placeholder='journal article, famous paper' title='You should choose from predefined tags. See a list of tags in the help center')
+        label(for='authors') Authors
+        input.ui-input-fluid(id='authors' type='text' name='authors' value=query.authors placeholder='Shou-Cheng Zhang' title='Multiple authors are separated by commas')
+        label(for='published-date') Published date
+        - var today = new Date().toISOString().slice(0, 10)
+        input.ui-input-fluid(id='published-date' type='text' name='published' value=query.published placeholder='1991-08-14, #{today}' title='Please specify a date range')
+        .ui-skip-huge
+          button.ui-button-primary(type='submit') Submit
+          button.ui-offset-medium(type='reset') Reset
+    .ui-grid-70.ui-mobile-expand
+      #chart.ui-block-center.ui-text-center
+        h4.ui-header-compact Articles counted by published year for the keyword 
+          span.ui-text-nowrap &quot;#{query.q}&quot;
+        .ui-text-muted (Click on the dots to view search results)
+        #loading.ui-skip-large: i.ui-icon-pulse.ui-zoom-huge(data-schema-icon='spinner')
+
+block append foot
+  script(src='#{appStorage}/javascripts/bubble-1.0.0.min.js')
+  script.
+    $(document).ready(function () {
+      var params = $('aside form').serialize().split('&');
+      var queryString = params.filter(function (param) {
+            return /\=$/.test(param) === false;
+          }).join('&');
+      $.getJSON('/visual/data?' + queryString, function (data) {
+        $('#loading').remove();
+        bubble(data.map(function (d) {
+          return [d.year, d.count, d.authors];
+        }), {
+          id: 'chart',
+          labels: {
+            x: {
+              text: 'Published year'
+            },
+            y: {
+              text: 'Article counts'
+            }
+          },
+          grids: {
+            x: {
+              display: false
+            },
+            y: {
+              display: true
+            }
+          },
+          dots: {
+            onlick: function (d) {
+              var search = queryString.replace(/\b(q=)([^&]+)/, '$1"$2"').replace(/(^|&)published=[^&]*/, '');
+              window.open('/search?' + search.replace(/&$/, '') + '&published=' + d[0]);
+            }
+          },
+          tooltip: {
+            id: 'tooltip',
+            html: function (d) {
+              var year = d[0];
+              var count = d[1];
+              var authors = d[2];
+              return authors + ' author' + (authors > 1 ? 's' : '') +
+                ' published ' + count + ' article' + (count > 1 ? 's' : '') + ' in ' + year;
+            }
+          }
+        });
+      });
+    });

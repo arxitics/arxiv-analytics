@@ -1,0 +1,21 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'visual' + (type ? '/' + type : '')
+  - var pageTitle = 'Data Visualization'
+
+block main
+  article.ui-container-fluid.ui-mobile-expand
+    h3.ui-header-primary.ui-text-left-right
+      span Data Visualization
+      span.ui-text-list.ui-font-medium(role='navigation')
+        - var tabs = ['categories', 'keywords', 'journals', 'authors']
+        each tab in tabs
+          - var link = '/visual' + (tab === 'categories' ? '' : '/' + tab)
+          - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
+          a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
+    block content
+
+block append foot
+  script(src='#{appStorage}/javascripts/d3-3.4.11.min.js')

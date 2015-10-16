@@ -77,20 +77,6 @@ articles.get('/random', function (req, res) {
   });
 });
 
-// Export categories.json
-articles.get('/export/categories.json', function (req, res) {
-  analytics.lookup({'name': 'primaryCategories'}, function (data) {
-    if (data) {
-      res.json(analytics.treemap(data.stats));
-    } else {
-      console.log('failed to generate categories.json');
-      res.render('500', {
-        message: 'The server failed to generate the required data.'
-      });
-    }
-  });
-});
-
 // Set local variable
 var route = new RegExp(String(regexp.arxiv.identifier).slice(2, -2));
 articles.use(function (req, res, next) {
@@ -166,7 +152,7 @@ articles.post('*/reviews/submit', function (req, res) {
           }
         }, function (profile) {
           if (profile) {
-            var count = profile.stats.reviews; 
+            var count = profile.stats.reviews;
             console.log('user ' + uid + ' has ' + count + ' reviews');
           }
         });

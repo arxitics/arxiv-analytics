@@ -13,7 +13,7 @@ block main
       section
         h3.ui-header-primary Filters
         label(for='categories') Categories
-        input.ui-input-fluid(id='categories' type='text' name='categories' value=(filter.categories.join(', ') || false) placeholder='math-ph, math.MP, cs.CC' title='Multiple categories are separated by commas'  required)
+        input.ui-input-fluid(id='categories' type='text' name='categories' value=(filter.categories.join(', ') || false) placeholder='math-ph, math.MP, cs.CC' title='Multiple categories are separated by commas' required)
         label(for='subjects') Subjects
         input.ui-input-fluid(id='subjects' type='text' name='subjects' value=(filter.subjects.join(', ') || false) placeholder='11.15.Ha, 81T25, J.2, C87' title='Subjects refer to codes for the PACS, the MSC-class, the ACM-class, or the JEL-class')
         label(for='topics') Topics
@@ -21,7 +21,7 @@ block main
         label(for='keywords') Keywords
         input.ui-input-fluid(id='keywords' type='text' name='keywords' value=(filter.keywords.join(', ') || false) placeholder='perturbative gauge theory, twistor space' title='Multiple keywords are separated by commas')
         label(for='tags') Tags
-        input.ui-input-fluid(id='tags' type='text' name='tags' value=(filter.tags.join(', ') || false) placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')
+        input.ui-input-fluid(id='tags' type='text' name='tags' value=(filter.tags.join(', ') || false) placeholder='review article, dissertation, github project' title='You should choose from predefined tags. See a list of tags in the help center')
         label(for='authors') Authors
         input.ui-input-fluid(id='authors' type='text' name='authors' value=(filter.authors.join(', ') || false) placeholder='Albert Einstein, John von Neumann' title='Multiple authors are separated by commas')
         label(for='published-date') Published date

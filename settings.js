@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  version: '0.3.3',
+  version: '0.3.4',
   title: 'arXiv Analytics',
   keywords: [
     'arXiv',
@@ -18,13 +18,15 @@ module.exports = {
     host: 'localhost:3000',
     hostname: 'localhost',
     port: 3000,
-    storage: ''
+    storage: '',
+    threads: 8
   },
   production: {
     host: 'arxitics.com',
     hostname: 'arxitics.com',
     port: 80,
-    storage: 'http://cdn.arxitics.com'
+    storage: 'http://cdn.arxitics.com',
+    threads: 2
   },
   db: 'localhost:27017/arxiv',
   collections: [
@@ -175,7 +177,13 @@ module.exports = {
   },
   search: {
     limit: 1000,
-    perpage: 20
+    perpage: 20,
+    timeout: 500,
+    threshold: 200,
+    cache: {
+      maxItems: 20,
+      maxAge: 4 * 60 * 60 * 1000
+    }
   },
   schedule: {
     interval: 60 * 1000,

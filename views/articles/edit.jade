@@ -22,7 +22,7 @@ block content
           textarea(id='keywords' name='keywords' rows='3' title='Multiple keywords are separated by commas' required)= analyses.keywords.join(', ')
         label.ui-grid-15(for='tags') Tags
         .ui-grid-85
-          textarea(id='tags' name='tags' rows='3' placeholder='review article, lecture note, graduate level' title='You should choose from predefined tags. See a list of tags in the help center')= analyses.tags.join(', ')
+          textarea(id='tags' name='tags' rows='3' placeholder='review article, dissertation, github project' title='You should choose from predefined tags. See a list of tags in the help center')= analyses.tags.join(', ')
       fieldset
         legend Journal Information
         - var publication = analyses.publication

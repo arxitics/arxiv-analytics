@@ -164,6 +164,20 @@ video {
 }
 
 /**
+ * Remove max-width on audio player in Chrome.
+ */
+audio::-webkit-media-controls-enclosure {
+  max-width: inherit;
+}
+
+/**
+ * Remove max-width on video player in Chrome.
+ */
+video::-webkit-media-controls-enclosure {
+  max-width: inherit;
+}
+
+/**
  * Specify nearest-neighbor upscaling and "auto" downscaling.
  * Only available in Chrome 41+ or Opera 26+.
  */
@@ -628,7 +642,7 @@ select[size] > option {
   color: #fff;
 }
 
-::selection { 
+::selection {
   background-color: #3071a9;
   color: #fff;
 }

@@ -129,7 +129,8 @@ require('./models/socket')(server, secret);
 // Launch a cluster of Node processes
 var cluster = require('cluster');
 if (cluster.isMaster) {
-  var numCPUs = require('os').cpus().length;
+  var threads = settings[environment].threads;
+  var numCPUs = Math.min(threads, require('os').cpus().length);
   for (var i = 0; i < numCPUs; i++) {
     cluster.fork();
   }

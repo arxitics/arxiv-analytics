@@ -253,7 +253,7 @@ module.exports = {
       pattern: /\b(PhD|doctoral|thesis|dissertation)\b/i
     },
     {
-      label: 'lecture note',
+      label: 'lecture notes',
       pattern: /\b(lectures|lecture.+(notes?|courses?|school))\b/i
     },
     {
@@ -280,6 +280,10 @@ module.exports = {
       journals: [
         'Bull. Amer. Math. Soc.'
       ]
+    },
+    {
+      label: 'github project',
+      pattern: /\bgithub\b/i
     }
   ]
 };

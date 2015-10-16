@@ -103,7 +103,7 @@ exports.treemap = function (stats) {
           if (item.category === subject) {
             themes.push({
               'category': subject,
-              'size': item.count
+              'count': item.count
             });
             return true;
           }
@@ -115,7 +115,7 @@ exports.treemap = function (stats) {
             if (item.category === category) {
               themes.push({
                 'category': category,
-                'size': item.count
+                'count': item.count
               });
               return true;
             }
@@ -127,7 +127,7 @@ exports.treemap = function (stats) {
               if (item.category === category) {
                 themes.push({
                   'category': category,
-                  'size': item.count
+                  'count': item.count
                 });
                 return true;
               }
@@ -137,8 +137,8 @@ exports.treemap = function (stats) {
         });
         archives.push({
           'category': subject,
-          'size': themes.reduce(function (sum, current) {
-            return sum + current.size;
+          'count': themes.reduce(function (sum, current) {
+            return sum + current.count;
           }, 0),
           'children': themes
         });
@@ -147,7 +147,7 @@ exports.treemap = function (stats) {
           if (item.category === subject) {
             archives.push({
               'category': subject,
-              'size': item.count
+              'count': item.count
             });
             return true;
           }
@@ -157,17 +157,48 @@ exports.treemap = function (stats) {
     });
     children.push({
       'category': entry.group,
-      'size': archives.reduce(function (sum, current) {
-        return sum + current.size;
+      'count': archives.reduce(function (sum, current) {
+        return sum + current.count;
       }, 0),
       'children': (archives.length === 1) ? archives[0].children : archives
     });
   });
   return {
     'category': 'Total',
-    'size': children.reduce(function (sum, current) {
-      return sum + current.size;
+    'count': children.reduce(function (sum, current) {
+      return sum + current.count;
     }, 0),
     'children': children
   };
+};
+
+// Count eprints by published year
+exports.countByDate = function (eprints) {
+  var stats = [];
+  var map = {};
+  eprints.forEach(function (eprint) {
+    var year = eprint.published.toISOString().slice(0, 4);
+    var authors = eprint.authors.length;
+    if (map.hasOwnProperty(year)) {
+      var value = map[year];
+      value[0] += 1;
+      value[1] += authors;
+    } else {
+      map[year] = [1, authors];
+    }
+  });
+  for (var key in map) {
+    if (map.hasOwnProperty(key)) {
+      var value = map[key];
+      stats.push({
+        year: +key,
+        count: value[0],
+        authors: value[1]
+      });
+    }
+  }
+  stats.sort(function (a, b) {
+    return a.year - b.year;
+  });
+  return stats;
 };

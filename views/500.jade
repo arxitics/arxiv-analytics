@@ -7,10 +7,6 @@ block variables
 block main
   .ui-container-fluid.ui-mobile-expand
     section.ui-content-jumbotron
-      h3 500 Internal Server Error: 
-          span.ui-text-muted= message || 'An unexpected condition was encountered.'
-        p Please contact 
-          strong help
-            span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-            | @arxitics.com
-          |  if you think this should not happen again.
+      h3 500 Internal Server Error: #[span.ui-text-muted= message || 'An unexpected condition was encountered.']
+      p.
+        Please contact #[strong help#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com] if you think this should not happen again.

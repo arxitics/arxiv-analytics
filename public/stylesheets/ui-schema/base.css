@@ -110,6 +110,7 @@ a:hover {
  */
 
 abbr[title] {
+  text-decoration: none;
   border-bottom: 1px dotted;
 }
 
@@ -318,12 +319,15 @@ input::-moz-focus-inner {
 }
 
 /**
- * Address Firefox 4+ setting `line-height` on `input` using `!important` in
- * the UA stylesheet.
+ * 1. Remove rounded corners on input form on iOS, iPad, iPhone.
+ * 2. Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ *    the UA stylesheet.
  */
 
 input {
-  line-height: normal;
+  -webkit-appearance: none; /* 1 */
+  -webkit-border-radius: 0; /* 1 */
+  line-height: normal; /* 2 */
 }
 
 /**

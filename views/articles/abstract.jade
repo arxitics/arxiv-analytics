@@ -114,7 +114,7 @@ block content
               .ui-skip-medium
                 - var published = doc.published.toISOString().slice(0, 10)
                 - var updated = doc.updated.toISOString().slice(0, 10)
-                a(href='/articles/#{id}')= citeAs(doc)
+                a(href='/articles/#{doc.id}')= citeAs(doc)
                 |  (Published 
                 span= published
                 if updated !== published

@@ -136,6 +136,16 @@ exports.literal = {
   }
 };
 
+// Default projection
+exports.projection = {
+  '_id': 0,
+  'version': 0,
+  'revisions': 0,
+  'references': 0,
+  'resources': 0,
+  'analyses.note': 0
+};
+
 // Parse query parameters
 exports.parse = function (field, value) {
   var timestamps = exports.timestamps;
@@ -156,7 +166,7 @@ exports.parse = function (field, value) {
     } else if (timestamps.indexOf(field) !== -1) {
       result = exports.parseDate(value);
     } else if (wildcards.indexOf(field) !== -1) {
-      result = new RegExp(String(value).replace(/\s|,/g, ' .*'), 'i');
+      result = new RegExp('\\b' + String(value).replace(/\s|,/g, '\\b.*') + '\\b', 'i');
     } else if (/[,;]/.test(value)) {
       result = value.split(/\s*[,;]\s*/).map(function (item) {
         return exports.parse(field, item);
@@ -170,6 +180,12 @@ exports.parse = function (field, value) {
         });
       } else {
         result = value.toLowerCase();
+      }
+    } else if (field === 'authors') {
+      if (/\./i.test(value)) {
+        result = new RegExp('^' + String(value).replace(/\.\W*/g, '.*\\b') + '$', 'i');
+      } else {
+        result = value;
       }
     } else {
       var numeric = parseInt(value);
@@ -207,6 +223,9 @@ exports.parse = function (field, value) {
 // Parse date
 exports.parseDate = function (value) {
   var result = {};
+  if (Array.isArray(value)) {
+    value = value.join(',');
+  }
   if (/[,;]/.test(value)) {
     var values = value.split(/\s*[,;]\s*/);
     result = {
@@ -256,10 +275,10 @@ exports.parseDateRange = function (query) {
 
 // Preprocess query parameters
 exports.preprocess = function (query) {
-  var operators = exports.operators;
+  var specials = exports.operators.concat(exports.timestamps);
   var constraints = query['$and'] || [];
   for (var key in query) {
-    if (query.hasOwnProperty(key) && operators.indexOf(key) === -1) {
+    if (query.hasOwnProperty(key) && specials.indexOf(key) === -1) {
       var state = 'pass';
       var value = query[key];
       var object = {};
@@ -316,6 +335,7 @@ exports.preprocess = function (query) {
   }
   query.limit = Math.min(parseInt(query.limit) || settings.search.limit, 1000);
   query['date-range'] = query['date-range'] || 'all';
+  query.projection = exports.projection;
   return query;
 };
 
@@ -431,7 +451,7 @@ exports.find = function (query, callback) {
       console.log('no doucments returned for the query');
       docs = [];
     }
-    return (typeof callback === 'function') ? callback(docs): null;
+    return (typeof callback === 'function') ? callback(docs) : null;
   });
 };
 
@@ -808,6 +828,20 @@ exports.subscribe = function (subscription) {
       query['$or'] = disjunctions;
     }
   }
+
+  query.projection = {
+    '_id': 0,
+    'version': 0,
+    'revisions': 0,
+    'references': 0,
+    'resources': 0,
+    'analyses.citations': 0,
+    'analyses.feedback': 0,
+    'analyses.note': 0
+  };
+  if (subscription.abstract !== 'true') {
+    query.projection.abstract = 0;
+  }
   return query;
 };
 
@@ -818,6 +852,8 @@ exports.paginate = function (query, docs) {
 
   var length = docs.length;
   var current = query.page;
+  var perpage = query.perpage;
+  var start = perpage * (current - 1);
   var perpage = query.perpage;
   var start = perpage * (current - 1);
   var end = perpage * current;
