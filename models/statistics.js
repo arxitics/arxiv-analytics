@@ -1867,6 +1867,58 @@ exports.submissions = [
   },
   {
     month: '2015-04',
-    count: 4366
+    count: 8367
+  },
+  {
+    month: '2015-05',
+    count: 8172
+  },
+  {
+    month: '2015-06',
+    count: 9217
+  },
+  {
+    month: '2015-07',
+    count: 8995
+  },
+  {
+    month: '2015-08',
+    count: 7983
+  },
+  {
+    month: '2015-09',
+    count: 9318
+  },
+  {
+    month: '2015-10',
+    count: 9223
+  },
+  {
+    month: '2015-11',
+    count: 9472
+  },
+  {
+    month: '2015-12',
+    count: 9376
+  },
+  {
+    month: '2016-01',
+    count: 8251
+  },
+  {
+    month: '2016-02',
+    count: 9142
+  },
+  {
+    month: '2016-03',
+    count: 9746
+  },
+  {
+    month: '2016-04',
+    count: 8948
+  },
+  {
+    month: '2016-05',
+    count: 8436
   }
 ];

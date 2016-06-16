@@ -6,4 +6,7 @@
   .ui-content-jumbotron {
     border: 1px solid #ccc;
   }
+  .ui-print-hidden {
+    display: none;
+  }
 }

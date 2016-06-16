@@ -371,7 +371,7 @@ exports.output = function (result, callback) {
     eprint['analyses.authors'] = analyses.authors;
     eprint['analyses.subjects'] = analyses.subjects;
     article.commit(eprint, function () {
-      console.log('updated eprint ' + identifier + ' successfully');
+      console.log('update eprint ' + identifier + ' successfully');
       if (index === last) {
         return callback(true);
       }

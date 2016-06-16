@@ -7,7 +7,8 @@
 
   $(document).ready(function () {
     var location = schema.parseURL(window.location.href);
-    var query = location.query;
+    var range = $('main input[name=date-range]').val();
+    var query = location.query || {'date-range': range};
     $('main input').not('[value=custom]').on('change', function () {
       var $_this = $(this);
       var name = $_this.attr('name');

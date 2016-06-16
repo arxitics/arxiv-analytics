@@ -1,9 +1,20 @@
 
-h3.ui-header-primary Toolset
-ul.ui-list-group.ui-block-fluid.ui-zoom-large.ui-text-capitalize
-  mixin link(page, text)
-    li(class=(pageID === page ? 'ui-state-active' : ''))
-      a(href='/#{page}')= text
-  +link('terminal', 'Terminal Emulator')
-  +link('tools/parser', 'Expression Parser')
-  +link('tools/editor', 'Markdown Editor')
+extends ../layout
+
+mixin link(page, text)
+  li(class={'ui-state-active': pageID === page})
+    a(href='/#{page}')= text
+
+block main
+  aside.ui-grid-30.ui-mobile-expand
+    h3.ui-header-primary Toolset
+    ul.ui-list-group.ui-block-fluid.ui-zoom-large.ui-text-capitalize
+      if locale == 'zh'
+        li: a(href='http://forum.arxitics.com' target='_blank') Community Forum
+        +link('tools/proxy', 'Network Proxy')
+      +link('tools/research', 'Open Access Research')
+      +link('tools/parser', 'Expression Parser')
+      +link('tools/editor', 'Markdown Editor')
+      +link('terminal', 'Terminal Emulator')
+  article.ui-grid-70.ui-mobile-expand
+    block article

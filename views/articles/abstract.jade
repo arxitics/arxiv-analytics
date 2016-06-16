@@ -109,7 +109,13 @@ block content
                   | , 
         if discoveries.length
           .ui-skip-large
-            strong Related articles:
+            div
+              strong Related articles:
+              if searchMore
+                |  
+                span Most relevant
+                | &ensp;|&ensp;
+                a(href='/search?related=#{id}&sort=similarity') Search more
             each doc, index in discoveries
               .ui-skip-medium
                 - var published = doc.published.toISOString().slice(0, 10)
@@ -156,19 +162,19 @@ block content
             if logged
               if bookmarked === false
                 li
-                  form(action='/users/#{uid}/articles/bookmark' method='post' role='form')
+                  form(action='/users/#{uid}/articles/bookmark' method='post')
                     input(type='hidden' name='_csrf' value=csrfToken)
                     input(type='hidden' name='id' value=id)
                     button.ui-button-link(type='submit' tabindex='3') Add to my bookmarks
               if bookmarked && read === false
                 li
-                  form(action='/users/#{uid}/articles/read' method='post' role='form')
+                  form(action='/users/#{uid}/articles/read' method='post')
                     input(type='hidden' name='_csrf' value=csrfToken)
                     input(type='hidden' name='id' value=id)
                     button.ui-button-link(type='submit' tabindex='3') Mark this article as read
               if read && rated === false
                 li
-                  form(data-schema-rating action='/users/#{uid}/articles/rating' method='post' role='form')
+                  form(data-schema-rating action='/users/#{uid}/articles/rating' method='post')
                     input(type='hidden' name='_csrf' value=csrfToken)
                     input(type='hidden' name='id' value=id)
                     input(type='hidden' name='score')
@@ -195,8 +201,13 @@ block content
                 a(title='Reddit'): i(data-schema-icon='reddit') Reddit
                 a(title='Twitter'): i(data-schema-icon='twitter') Twitter
                 a(title='VK'): i(data-schema-icon='vk') VK
+            li#qrcode
+              button.ui-button-link Scan the QR code for this page
+              .ui-skip-medium.ui-text-hidden
+              img.ui-text-hidden(src='http://oss.arxitics.com/images/favicon.svg' alt='QR code for #{eprintID}')
 
 block append foot
+  script(src='#{appStorage}/javascripts/jquery.qrcode-0.12.0.min.js')
   include ../mathjax
   if read && rated === false
     script.
@@ -223,25 +234,44 @@ block append foot
       });
   script.
     $(document).ready(function () {
-      $('#social-media button').on('click', function () {
+      $('#social-media > button').on('click', function () {
         $(this).next().toggleClass('ui-text-hidden');
       });
       $('#social-media i[data-schema-icon]').on('click', function () {
         var sns = $(this).data('schema-icon');
-        var url = document.location.href;
-        var title = $('#eprint-title').text() + ' (' + $('#eprint-id').text() + ')';
-        var abs = $('#eprint-abstract').text();
-        var pic = 'http://arxitics.com/images/arxitics.png';
+        var resource = {
+          url: document.location.href,
+          title: schema.format('${title} [${id}]', {
+            title: $('#eprint-title').text(),
+            id: $('#eprint-id').text()
+          }),
+          abs: $('#eprint-abstract').text(),
+          pic: 'http://oss.arxitics.com/images/arxitics.png'
+        };
         var target = {
-            'renren': 'http://widget.renren.com/dialog/share?resourceUrl=' + url + '&title=' + title + '&description=' + abs + '&pic=' + pic,
-            'weibo': 'http://service.weibo.com/share/share.php?url=' + url + '&title=' + abs + '&pic=' + pic,
-            'facebook': 'https://www.facebook.com/share.php?u=' + url + '&t=' + abs + '&pic=' + pic,
-            'google-plus': 'https://plus.google.com/share?url=' + url,
-            'linkedin': 'https://www.linkedin.com/shareArticle?url=' + url + '&title=' + title + '&summary=' + abs,
-            'reddit': 'https://www.reddit.com/submit?url=' + url + '&title=' + title,
-            'twitter': 'https://twitter.com/intent/tweet?text=' + url + ' ' + abs + '&pic=' + pic,
-            'vk': 'https://vk.com/share.php?url=' + url + '&title=' + title
+            'renren': schema.format('http://widget.renren.com/dialog/share?resourceUrl=${url}&title=${title}&description=${abs}&pic=${pic}', resource),
+            'weibo': schema.format('http://service.weibo.com/share/share.php?url=${url}&title=${title}&pic=${pic}', resource),
+            'facebook': schema.format('https://www.facebook.com/share.php?u=${url}&t=${title}', resource),
+            'google-plus': schema.format('https://plus.google.com/share?url=${url}', resource),
+            'linkedin': schema.format('https://www.linkedin.com/shareArticle?url=${url}&title=${title}&summary=${abs}', resource),
+            'reddit': schema.format('https://www.reddit.com/submit?url=${url}&title=${title}', resource),
+            'twitter': schema.format('https://twitter.com/intent/tweet?text=${url} ${title}&pic=${pic}', resource),
+            'vk': schema.format('https://vk.com/share.php?url=${url}&title=${title}', resource)
           };
         window.open(target[sns]);
+      });
+      $('#qrcode > button').on('click', function () {
+        $(this).next().toggleClass('ui-text-hidden');
+      });
+      $('#qrcode > div').qrcode({
+        render: 'canvas',
+        ecLevel: 'H',
+        text: document.location.href,
+        size: $('#qrcode').width(),
+        fill: '#333',
+        background: '#fff',
+        mode: 4,
+        mSize: 0.25,
+        image: $('#qrcode > img')[0]
       });
     });

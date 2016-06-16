@@ -7,9 +7,8 @@
 
   // Trim white spaces between inline blocks
   schema.trim = function (event, options) {
-    var eventSelector = schema.events.trim.selector;
-    var optionalSelector = options && options.selector;
-    var $_elements = $(eventSelector).add(optionalSelector);
+    var selector = schema.events.trim.selector;
+    var $_elements = $(selector).add(options && options.selector);
     $_elements.contents().filter(function () {
       return this.nodeType === 3;
     }).remove();
@@ -17,58 +16,86 @@
 
   // Extract data from text contents
   schema.extract = function (event, options) {
-    var eventSelector = schema.events.extract.selector;
-    var optionalSelector = options && options.selector;
-    var $_elements = $(eventSelector).add(optionalSelector);
+    var selector = schema.events.extract.selector;
+    var $_elements = $(selector).add(options && options.selector);
     $_elements.each(function () {
       var $_this = $(this);
       var $_data = schema.parseData($_this.data());
-      var extractOption = $_data.schemaExtract;
-      if (extractOption === 'url') {
-        var urlPattern = /\b(https?|ftp)\:\/\/[^\s\"]+(\/|\b)/g;
-        $_this.html($_this.html().replace(urlPattern, function (url) {
-          return '<a href="' + url + '">' + url + '</a>';
+      var tags = $_data.extract.split(/\s*\,\s*/);
+      if (tags.indexOf('url') !== -1) {
+        var url = /\b(https?|ftp)\:\/\/[^\s\"]+(\/|\b)/g;
+        $_this.html($_this.html().replace(url, function (str) {
+          return schema.format('<a href="${href}">${href}</a>', {href: str});
+        }));
+      }
+      if (tags.indexOf('emoji') !== -1 && $_data.emoji) {
+        var emoji = /(^|[^\w\"\'\`])(\:([\w\-]+)\:)/g;
+        $_this.html($_this.html().replace(emoji, function (str, p1, p2, p3) {
+          return schema.format('${sep}<img src="${src}" height=${height} alt="${alt}" title="${title}" />', {
+            sep: p1,
+            src: $_data.emoji.replace(/\/*$/, '/') + p3.replace(/\_/g, '-') + '.svg',
+            height: Math.round(+$_this.css('font-size').slice(0, -2) * 1.2),
+            alt: p2,
+            title: p3
+          });
         }));
       }
     });
   };
 
+  // Format strings with positional parameters
+  schema.format = function (template, data) {
+    var string = String(template);
+    var type = Object.prototype.toString.call(data).slice(8, -1);
+    if (type === 'Object') {
+      string.match(/\$\{[^\{\}]+\}/g).forEach(function (placeholder, index) {
+        var key = placeholder.replace(/^\$\{\s*(.+)\s*\}$/, '$1');
+        if (data.hasOwnProperty(key)) {
+          string = string.replace(placeholder, function () {
+            return data[key];
+          });
+        }
+      });
+    }
+    return string;
+  };
+
   // Parse a URL into an object
   schema.parseURL = function (url) {
-    var anchor =  document.createElement('a');
-    anchor.href = url.replace(/([^:])\/{2,}/g, '$1/').replace(/\+/g, ' ');
+    var a =  document.createElement('a');
+    a.href = url.replace(/([^:])\/{2,}/g, '$1/').replace(/\+/g, ' ');
     return {
-      href: anchor.href,
-      origin: anchor.origin,
-      protocol: anchor.protocol,
-      username: anchor.username,
-      password: anchor.password,
-      host: anchor.host,
-      hostname: anchor.hostname,
-      port: anchor.port,
-      path: anchor.pathname + anchor.search,
-      pathname: anchor.pathname,
-      segments: anchor.pathname.replace(/^\/+/, '').split('/'),
-      search: anchor.search,
+      href: a.href,
+      origin: a.origin,
+      protocol: a.protocol,
+      username: a.username,
+      password: a.password,
+      host: a.host,
+      hostname: a.hostname,
+      port: a.port,
+      path: a.pathname + a.search,
+      pathname: a.pathname,
+      segments: a.pathname.replace(/^\/+/, '').split('/'),
+      search: a.search,
       query: (function () {
-        var queryObject = {};
-        var queryString = anchor.search.replace(/(^\?&?)|(&$)/g, '');
-        if (queryString.indexOf('=') === -1) {
-          return queryString;
+        var object = {};
+        var string = a.search.replace(/(^\?&?)|(&$)/g, '');
+        if (string.indexOf('=') === -1) {
+          return string;
         }
-        queryString.split(/&+/).forEach(function (keyValuePair) {
-          var keyValueArray = decodeURIComponent(keyValuePair).split('=');
-          var paramKey = keyValueArray[0];
-          var paramValue = keyValueArray[1];
-          if (queryObject.hasOwnProperty(paramKey)) {
-            paramValue = [].concat(queryObject[paramKey], paramValue);
+        string.split(/&+/).forEach(function (entry) {
+          var entries = decodeURIComponent(entry).split('=');
+          var key = entries[0];
+          var value = entries[1];
+          if (object.hasOwnProperty(key)) {
+            value = [].concat(object[key], value);
           }
-          queryObject[paramKey] = paramValue;
+          object[key] = value;
         });
-        return queryObject;
+        return object;
       })(),
-      hash: anchor.hash,
-      fragment: anchor.hash.replace(/^#/, '')
+      hash: a.hash,
+      fragment: a.hash.replace(/^#/, '')
     };
   };
 

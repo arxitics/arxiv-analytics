@@ -26,15 +26,30 @@ admin.use(function (req, res, next) {
   }
 });
 
-// GET admin page
+// GET default page
 admin.get('/', function (req, res) {
-  res.render('admin');
+  res.render('admin/articles');
+});
+
+// GET `articles` page
+admin.get('/articles', function (req, res) {
+  res.render('admin/articles');
+});
+
+// GET `users` page
+admin.get('/users', function (req, res) {
+  res.render('admin/users');
+});
+
+// GET `reviews` page
+admin.get('/reviews', function (req, res) {
+  res.render('admin/reviews');
 });
 
 // GET eprint updates
 admin.get('/eprints/update', function (req, res) {
   arxiv.update(req.query, function (success) {
-    res.render('admin');
+    res.redirect('/admin/articles');
   });
 });
 
@@ -59,7 +74,7 @@ admin.get('/eprints/patch', function (req, res) {
               eprints.forEach(function (eprint) {
                 var id = eprint.id;
                 arxiv.update({'list': id}, function (success) {
-                  console.log('updated eprint ' + id + ' successfully');
+                  console.log('update eprint ' + id + ' successfully');
                 });
               });
             } else {
@@ -69,7 +84,7 @@ admin.get('/eprints/patch', function (req, res) {
         }, interval * index);
       });
     }
-    res.render('admin');
+    res.redirect('/admin/articles');
   } else {
     res.render('403', {
       message: 'This page has been locked by administrator.'
@@ -98,7 +113,7 @@ admin.get('/eprints/feed', function (req, res) {
       });
     });
   }
-  res.render('admin');
+  res.redirect('/admin/articles');
 });
 
 // GET method for eprint check
@@ -116,11 +131,11 @@ admin.get('/eprints/check', function (req, res) {
           });
         }
         if (index === last) {
-          res.render('admin');
+          res.redirect('/admin/articles');
         }
       });
     } else {
-      res.render('admin');
+      res.redirect('/admin/articles');
     }
   });
 });
@@ -154,7 +169,7 @@ admin.get('/eprints/fetch', function (req, res) {
         }, 60 * interval * index);
       });
     }
-    res.render('admin');
+    res.redirect('/admin/articles');
   } else {
     res.render('403', {
       message: 'This page has been locked by administrator.'
@@ -179,7 +194,7 @@ admin.get('/inspire/fetch', function (req, res) {
         }
       });
     }
-    res.render('admin');
+    res.redirect('/admin/articles');
   } else {
     res.render('403', {
       message: 'This page has been locked by administrator.'
@@ -214,7 +229,7 @@ admin.get('/adsabs/fetch', function (req, res) {
         }, interval * index);
       });
     }
-    res.render('admin');
+    res.redirect('/admin/articles');
   } else {
     res.render('403', {
       message: 'This page has been locked by administrator.'

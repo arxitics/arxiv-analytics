@@ -53,12 +53,18 @@ module.exports = function (callback) {
       {'$group': {'_id': '$id', 'category': {'$first': '$categories'}}},
       {'$group': {'_id': '$category', 'count': {'$sum': 1}}}
     ], function (docs) {
-      docs = docs.map(function (doc) {
-        return {'category': doc._id, 'count': doc.count}
-      });
-      analytics.update({'name': 'primaryCategories'}, {
-        '$set': {'updated': new Date(), 'stats': docs}
-      })
+      if (docs.length) {
+        docs = docs.map(function (doc) {
+          return {'category': doc._id, 'count': doc.count}
+        });
+        analytics.update({'name': 'primaryCategories'}, {
+          '$set': {'updated': new Date(), 'stats': docs}
+        }, function (doc) {
+          console.log("completed aggregation job successfully");
+        });
+      } else {
+        console.log("failed to run the aggregation job");
+      }
     });
   });
 

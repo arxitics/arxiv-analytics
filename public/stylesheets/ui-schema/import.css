@@ -1,6 +1,6 @@
 /*!
- * UI Schema v0.3.5 (https://github.com/arxitics/ui-schema)
- * Copyright 2015 Arxitics <help@arxitics.com>
+ * UI Schema v0.4.0 (https://github.com/arxitics/ui-schema)
+ * Copyright 2016 Arxitics <help@arxitics.com>
  * Licensed under MIT (https://github.com/arxitics/ui-schema/blob/master/LICENSE)
  */
 
@@ -105,6 +105,12 @@
  */
 
 @import "print.css";
+
+/**
+ * Pages.
+ */
+
+@import "pages.css";
 
 /**
  * Utilities.

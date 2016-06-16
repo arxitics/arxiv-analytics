@@ -45,7 +45,7 @@ index.use(function (req, res, next) {
     res.cookie('uid', user.uid, settings.cookie);
     res.cookie('name', user.name, settings.cookie);
     if (uid !== guest) {
-      var locale = user.locale || req.locale;
+      var locale = req.query.locale || user.locale || req.locale;
       req.setLocale(locale);
       res.locals.locale = locale;
     }

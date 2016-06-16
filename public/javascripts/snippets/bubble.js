@@ -22,8 +22,8 @@
   var ymax = d3.max(ys);
   var rmin = d3.min(rs);
   var rmax = d3.max(rs);
-  var x = d3.scale.linear().domain([xmin - .5, xmax + .5]).range([0, width]);
-  var y = d3.scale.linear().domain([ymin * .9, ymax * 1.1]).range([height, 0]);
+  var x = d3.scale.linear().domain([xmin - 0.5, xmax + 0.5]).range([0, width]);
+  var y = d3.scale.linear().domain([ymin * 0.9, ymax * 1.1]).range([height, 0]);
 
   // Create the SVG container and set the origin
   var svg = chart.append('svg')
@@ -33,7 +33,8 @@
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   // Set axes
-  var gx = d3.svg.axis().orient('bottom').scale(x).ticks(10);
+  var n = Math.max(Math.min(Math.round(width / 100), 12), 6);
+  var gx = d3.svg.axis().orient('bottom').scale(x).ticks(n);
   var gy = d3.svg.axis().orient('left').scale(y).ticks(6);
   svg.append('g')
     .attr('class', 'axis')
@@ -86,11 +87,11 @@
         return y(d[1]);
       }).attr('r', function (d) {
         var factor = height / 18;
-        return factor * (d[2] - rmin) / (rmax - rmin) + 4;
-      }) .style('fill', function (d) {
+        return factor * (d[2] - rmin) / ((rmax - rmin) || 1) + 4;
+      }).style('fill', function (d) {
         var hue = 160 * (1 - d[1] / ymax) + 20;
-        var saturation = 0.8 * (d[1] - ymin) / (ymax - ymin) + 0.2;
-        var lightness = 0.6 - 0.4 * (d[0] - xmin) / (xmax - xmin);
+        var saturation = 0.8 * (d[1] - ymin) / ((ymax - ymin) || 1) + 0.2;
+        var lightness = 0.6 - 0.4 * (d[0] - xmin) / ((xmax - xmin) || 1);
         return d3.hsl(hue, saturation, lightness);
       }).sort(function (a, b) {
         // Defines a sort order so that the smallest dots are drawn on top
@@ -105,7 +106,7 @@
            .style('left', (d3.event.pageX + 20) + 'px')
            .style('top', (d3.event.pageY - 45) + 'px');
       }).on('mousemove', function (d) {
-        var offset = parseInt(tooltip.style('width')) * .5
+        var offset = parseInt(tooltip.style('width')) * 0.5
         tooltip.style('left', (d3.event.pageX - offset) + 'px')
            .style('top', (d3.event.pageY - 45) + 'px');
       }).on('mouseout', function (d) {

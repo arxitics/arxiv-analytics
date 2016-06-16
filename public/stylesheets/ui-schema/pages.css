@@ -1,0 +1,30 @@
+/*!
+ * Pages
+ */
+
+.ui-a4-paper {
+  height: 297mm;
+  width: 210mm;
+}
+
+.ui-a5-paper {
+  height: 210mm;
+  width: 148mm;
+}
+
+.ui-b5-paper {
+  height: 250mm;
+  width: 176mm;
+}
+
+.ui-letter-paper {
+  height: 279.4mm;
+  width: 215.9mm;
+}
+
+.ui-page-wrapper {
+  background-color: #fff;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10mm 16.18mm;
+}

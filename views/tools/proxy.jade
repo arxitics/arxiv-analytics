@@ -1,0 +1,43 @@
+
+extends toolset
+
+block variables
+  - var pageID = 'tools/proxy'
+  - var pageTitle = 'Network Proxy'
+
+block article
+  h3.ui-header-primary Network Proxy
+  p.
+    To make it easier to use Google and Wikipedia, we provide a free proxy service for active users of our website. #[strong You should #[a(href='/auth/login') register an account] and keep online for at least 10 hours.] The server records the time count for your activity. When you have met the requirement, you will get instructions on how to use it. Please visit this page often to see updated information about the proxy service.
+  p.
+    Besides, you should set the locale of your account preferences to #[code.ui-color-emphasis zh] to indicate that you would like to try our proxy service. The default locale is inferred from your browse's language settings. If you have any problems, please contact us by email #[strong help#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com] or ask for help in the #[a(href='/chat') chat room].
+  if logged && locale == 'zh'
+    - var hours = Math.round(user.stats.uptime / 3600)
+    if hours < 10
+      .ui-content-alert.ui-panel-danger
+        .ui-panel-body
+          div 你的在线时长为#{hours}小时，尚不满足使用条件。
+    else
+      .ui-content-alert.ui-panel-success
+        .ui-panel-body
+          div 你的总在线时长为#{hours}小时，可以使用我们的代理服务了。请在客户端如下设置网络连接：
+          .ui-container-responsive
+            table.ui-table-fluid
+              thead.ui-text-center
+                tr
+                  th 类型
+                  th 协议
+                  th 加密
+                  th 服务器地址
+                  th 用户名
+                  th 密码
+              tbody.ui-text-center
+                tr.ui-color-emphasis
+                  td: code VPN
+                  td: code PPTP
+                  td: code MPPE
+                  td: code vpn.arxitics.com
+                  td: code arxi#[span(aria-hidden='true')= Math.random().toString().slice(2, 8)]tics
+                  td: code ag#[span(aria-hidden='true')= Math.random().toString().slice(2, 8)]018329
+          div.
+            对于Windows用户，需要在VPN连接属性对话框的安全页面中选择数据加密；对于Mac OS X用户，需要在高级设置中勾选通过VPN连接发送所有通信；对于Ubuntu用户，需要在PPTP高级选项中使用点对点加密(MPPE)。如果用户名和密码被临时更改，我们会在该页面及时通知。本代理服务主要是为日常学习提供方便，请勿大量下载视频或者其它耗流量文件，不用时请断开连接，谢谢！

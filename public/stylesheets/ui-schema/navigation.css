@@ -22,8 +22,8 @@
 .ui-header-navbar > .ui-header-brand {
   float: left;
   margin-right: 1.2em;
-  padding-bottom: .5em;
-  padding-top: .5em;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
 }
 
 .ui-header-navbar > nav,
@@ -41,13 +41,13 @@
 .ui-header-navbar > nav > ul > li > a {
   display: inline-block;
   font-size: 1.25em;
-  padding: .4em .6em;
+  padding: 0.4em 0.6em;
 }
 
 .ui-header-navbar > form,
 .ui-header-navbar > .ui-header-account {
-  font-size: .875em;
-  padding-top: .8rem;
+  font-size: 0.875em;
+  padding-top: 0.8rem;
   text-align: right;
   vertical-align: bottom;
 }
@@ -55,7 +55,7 @@
 .ui-nav-collapse {
   cursor: pointer;
   display: none;
-  padding: 1em .6em;
+  padding: 1em 0.6em;
 }
 
 .ui-nav-tabs,
@@ -75,14 +75,14 @@
 
 .ui-nav-tabs > li:not(:last-child),
 .ui-nav-pills > li:not(:last-child) {
-  margin-right: .4rem;
+  margin-right: 0.4rem;
 }
 
 .ui-nav-tabs > li > a,
 .ui-nav-pills > li > a,
 .ui-nav-stacked > li > a {
   display: inline-block;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
 }
 
 .ui-nav-tabs > li:hover,
@@ -106,7 +106,7 @@
 .ui-nav-tabs > li {
   border: 1px solid transparent;
   border-bottom-color: #ddd;
-  border-radius: .4rem .4rem 0 0;
+  border-radius: 0.4rem 0.4rem 0 0;
   margin-bottom: -1px;
 }
 
@@ -139,14 +139,14 @@
 }
 
 .ui-nav-justified > li > a {
-  padding: .4em 0;
+  padding: 0.4em 0;
   text-align: center;
   vertical-align: middle;
 }
 
 .ui-nav-pills > li {
   border: 1px solid transparent;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
 }
 
 .ui-nav-pills > li.ui-state-active {
@@ -155,16 +155,16 @@
 
 .ui-nav-stacked {
   border: 1px solid #ccc;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   overflow: hidden;
 }
 
 .ui-nav-breadcrumb {
   background-color: #f5f5f5;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   list-style: none;
   margin-bottom: 2rem;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
 }
 
 .ui-nav-breadcrumb > li {
@@ -174,7 +174,7 @@
 .ui-nav-breadcrumb > li + li:before {
   color: #ccc;
   content: "/\00a0";
-  padding: 0 .4em;
+  padding: 0 0.4em;
 }
 
 .ui-nav-pagination > li {
@@ -184,9 +184,9 @@
 
 .ui-nav-pagination > li > :only-child {
   border: 1px solid #ccc;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   display: inline-block;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
 }
 
 .ui-nav-pagination > li > :only-child:focus,

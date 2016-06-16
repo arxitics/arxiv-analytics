@@ -2,7 +2,7 @@
 article.ui-grid-70.ui-mobile-expand
   h3.ui-header-primary= __('search.heading')
   div
-    form.ui-form-horizontal(data-schema-validate action='/search' method='get' role='form')
+    form.ui-form-horizontal(data-schema-validate action='/search' method='get')
       .ui-container-grid
         label.ui-grid-20(for='title') Title
         .ui-grid-80
@@ -34,9 +34,9 @@ article.ui-grid-70.ui-mobile-expand
         label.ui-grid-20(for='tags') Tags
         .ui-grid-80
           input(id='tags' type='text' name='tags' placeholder='review article, dissertation, github project' title='You should choose from predefined tags. See a list of tags in the help center')
-        div
+        .ui-container-grid
           label.ui-grid-20(for='sort') Sort by
-          .ui-grid-80
+          .ui-grid-80.ui-skip-tiny
             input(id='sort' type='radio' name='sort' value='published' checked)
             |  Published date
             input.ui-offset-small(type='radio' name='sort' value='updated')
@@ -45,9 +45,9 @@ article.ui-grid-70.ui-mobile-expand
             |  Reader counts
             input.ui-offset-small(type='radio' name='sort' value='score')
             |  Rating score
-        div
+        .ui-container-grid
           label.ui-grid-20(for='order') Sort order
-          .ui-grid-80
+          .ui-grid-80.ui-skip-tiny
             input(id='order' type='radio' name='order' value='ascending')
             |  Ascending
             input.ui-offset-small(type='radio' name='order' value='descending' checked)
@@ -59,14 +59,13 @@ article.ui-grid-70.ui-mobile-expand
 aside.ui-grid-30.ui-mobile-expand.ui-phone-hidden
   h3.ui-header-primary= __('search.syntax')
   ul
-    li Values separated by commas or semicolons specify an 
-      code $in
-      |  or 
-      code $all
-      |  expression for the array.
-    li Regular expressions are supported, 
-      em e.g.
-      | 
-      code /(W|Z|Higgs).*boson/
-      | .
-    li If only one result is found, you will be redirected to the article page.
+    li.
+      Values separated by commas or semicolons specify an #[code.ui-color-emphasis $in] or #[code.ui-color-emphasis $all] expression for the array.
+    li.
+      Regular expressions are supported, #[em e.g.] #[code.ui-color-emphasis /(W|Z|Higgs).*boson/].
+    li.
+      Pattern matching for the #[code.ui-color-emphasis title], #[code.ui-color-emphasis abstract], and #[code.ui-color-emphasis comments] fields is case-insensitive.
+    li.
+      If only one result is found, you will be redirected to the article page.
+    li.
+      Please review the #[a(href='/help/mongodb') help page] and #[a(href='http://arxitics.github.io/user-guide/' rel='external' target='_blank') user guide] to see more search examples.

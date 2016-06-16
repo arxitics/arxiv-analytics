@@ -1,0 +1,18 @@
+
+extends ../layout
+
+block variables
+  - var pageID = 'admin' + (type ? '/' + type : '')
+  - var pageTitle = __('admin.heading')
+
+block main
+  article.ui-container-fluid
+    h3.ui-header-primary.ui-text-left-right
+      span Administration
+      span.ui-text-list.ui-font-medium(role='navigation')
+        - var tabs = ['articles', 'users', 'reviews']
+        each tab in tabs
+          - var link = '/admin' + (tab === 'articles' ? '' : '/' + tab)
+          - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
+          a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
+    block content

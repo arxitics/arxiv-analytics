@@ -6,7 +6,7 @@ block prepend variables
 
 block content
   .ui-grid-70.ui-offset-15.ui-mobile-expand
-    form.ui-form-horizontal(data-schema-validate action='/users/#{uid}/documents/submit' method='post' enctype='multipart/form-data' role='form')
+    form.ui-form-horizontal(data-schema-validate action='/users/#{uid}/documents/submit' method='post' enctype='multipart/form-data')
       input(type='hidden' name='_csrf' value=csrfToken)
       fieldset
         legend Upload New Documents
@@ -28,7 +28,7 @@ block content
         label.ui-grid-15(for='file') File
         .ui-grid-85
           input(id='file' type='file' name='file' accept='application/pdf, image/svg+xml, image/png, application/zip, text/plain' title='We only accept .pdf, .svg, .png, .zip, and text files' required)
-        .ui-grid-85.ui-offset-15
+        .ui-grid-85.ui-offset-15.ui-skip-tiny
           label
             input(type='checkbox' name='certified' value='true' required)
             |  I certify that this is my own work and I agree to distribute it under 

@@ -2,7 +2,7 @@
 extends review
 
 block review
-  form.ui-form-horizontal.ui-skip-medium(data-schema-validate action='/articles/#{id}/reviews/submit' method='post' role='form')
+  form.ui-form-horizontal.ui-skip-medium(data-schema-validate action='/articles/#{id}/reviews/submit' method='post')
     .ui-container-grid
       input(type='hidden' name='_csrf' value=csrfToken)
       input(type='text' name='title' pattern=pattern.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)

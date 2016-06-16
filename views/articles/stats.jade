@@ -17,6 +17,38 @@ block main
           - var text = tab.charAt(0).toUpperCase() + tab.slice(1)
           a(class=(tab === type ? 'ui-text-active' : false) href=link)= text
     .ui-container-grid
+      .ui-grid-30.ui-mobile-expand
+        section.ui-skip-medium
+          h4.ui-header-compact Date Range
+          ul.ui-list-unstyled.ui-skip-small.ui-offset-small
+            - var dateRange = query['date-range']
+            li
+              label
+                input(type='radio' name='date-range' value='all' checked=(dateRange === 'all'))
+                |  Any time
+            li
+              label
+                input(type='radio' name='date-range' value='past-week' checked=(dateRange === 'past-week' ))
+                |  Past week
+            li
+              label
+                input(type='radio' name='date-range' value='past-month' checked=(dateRange === 'past-month'))
+                |  Past month
+            li
+              label
+                input(type='radio' name='date-range' value='past-year' checked=(dateRange === 'past-year' ))
+                |  Past year
+            li
+              - var enabled = (dateRange === 'custom')
+              label
+                input(type='radio' name='date-range' value='custom' checked=enabled)
+                |  Custom range
+              .ui-container-grid.ui-skip-small.ui-offset-medium
+                - var datePattern = /\d{4}(-\d{2})?(-\d{2})?/.toString().slice(1, -1)
+                input.ui-fluid-30(type='text' name='date-from' pattern=datePattern value=query['date-from'] placeholder='1991-08-14' title='The start date should be less than the end date' disabled=!enabled required)
+                span.ui-offset-medium.ui-text-center to
+                - var today = new Date().toISOString().slice(0, 10)
+                input.ui-fluid-30.ui-offset-tiny(type='text' name='date-to' value=query['date-to'] placeholder=today title='The end date should be greater than the start date' pattern=datePattern disabled=!enabled required)
       .ui-grid-70.ui-mobile-expand
         - var startItem = startIndex + 1
         - var endItem = Math.min(endIndex, count)
@@ -103,6 +135,7 @@ block main
                       a(href=normalize(tagSearch + tag))= tag
                       if index !== last
                         | , 
+                include ../links
         .ui-skip-large
           - var paginationURL = baseURL + (baseURL.indexOf('=') !== -1 ? '&' : '') + 'page='
           if currentPage > 1
@@ -113,5 +146,6 @@ block main
             a.ui-float-right.ui-text-button(rel='next' href=normalize(paginationURL + (currentPage + 1)) accesskey='n')
               | Next 
               i(data-schema-icon='arrow-right')
-      .ui-grid-30.ui-mobile-expand
-        div
+
+block append foot
+  script(src='#{appStorage}/javascripts/search-1.0.2.min.js')

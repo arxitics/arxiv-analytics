@@ -33,7 +33,7 @@ block review
               = ' ' + downvotes + ' downvote' + (downvotes !== 1 ? 's' : '')
         else 
           li
-            form(action='/users/#{uid}/reviews/voting' method='post' role='form')
+            form(action='/users/#{uid}/reviews/voting' method='post')
               input(type='hidden' name='_csrf' value=csrfToken)
               input(type='hidden' name='pid' value=pid)
               input(type='hidden' name='voting' value='upvote')
@@ -41,7 +41,7 @@ block review
                 i(data-schema-icon='thumbs-o-up')
                 |  Upvote
           li
-            form(action='/users/#{uid}/reviews/voting' method='post' role='form')
+            form(action='/users/#{uid}/reviews/voting' method='post')
               input(type='hidden' name='_csrf' value=csrfToken)
               input(type='hidden' name='pid' value=pid)
               input(type='hidden' name='voting' value='downvote')
@@ -55,7 +55,7 @@ block review
               i(data-schema-icon='bookmark')
               = ' ' + bookmarks + ' bookmark' + (bookmarks !== 1 ? 's' : '')
           else
-            form(action='/users/#{uid}/reviews/bookmark' method='post' role='form')
+            form(action='/users/#{uid}/reviews/bookmark' method='post')
               input(type='hidden' name='_csrf' value=csrfToken)
               input(type='hidden' name='pid' value=pid)
               button.ui-button-link(type='submit' title='Add this review to my bookmarks')
@@ -84,7 +84,7 @@ block review
           if index !== last
             hr
   if logged
-    form.ui-form-horizontal.ui-skip-large(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post' role='form')
+    form.ui-form-horizontal.ui-skip-large(data-schema-validate action='/reviews/#{pid}/comments/submit' method='post')
         .ui-container-grid
           input(type='hidden' name='_csrf' value=csrfToken)
           textarea(name='content' rows='6' placeholder='Please share with us if you have any constructive comments. Markdown and LaTeX are supported.' title='At least 40 characters' required autofocus)

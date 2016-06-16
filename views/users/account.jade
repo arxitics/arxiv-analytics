@@ -13,10 +13,11 @@ block main
         - var authorizedLinks = ['profile', 'preferences', 'bookmarks', 'publications', 'documents', 'messages']
         - var guestLinks = ['profile', 'bookmarks', 'publications', 'documents']
         - var links = (authorized) ? authorizedLinks : guestLinks
+        - var notifications = user.notifications.length
         each page in links
           - var link = '/users/' + uid + (page === 'profile' ? '' : '/' + page)
-          if page === pageID
-            a.ui-text-active(href=link)= __(page + '.heading')
-          else 
-            a(href=link)= __(page + '.heading')
+          a(class={'ui-text-active': page === pageID} href=link)= __(page + '.heading')
+            if page === 'messages' && notifications >= 1
+              |  
+              span.ui-text-danger (#{notifications})
     block content

@@ -24,6 +24,7 @@
       contents.push(chat.parse(message, index + 1));
     });
     $('#chat-room').html(contents.join('')).scrollTop($('#chat-room').height());
+    $(document).trigger('create.dom');
     if (window.MathJax) {
       MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'chat-room']);
     }
@@ -32,11 +33,14 @@
   // Parse message
   chat.parse = function (message, index) {
     var sender = message.sender;
-    var user = '<span>' + sender.uid + ' &lt;' + sender.name + '&gt;</span>';
-    var date = '<span>' + message.sent.slice(0, 19).replace('T', ' ') + '</span>';
-    var messageID = 'message-' + index;
-    var content = '<div id="' + messageID + '" class="ui-offset-large">' + message.markup + '</div>';
-    return '<li><div class="ui-color-success">' + date + ' &ensp;|&ensp; ' + user + '</div>' + content + '</li>';
+    var data = {
+      id: index,
+      uid: sender.uid,
+      name: sender.name,
+      markup: message.markup,
+      date: message.sent.slice(0, 19).replace('T', ' ')
+    };
+    return schema.format('<li><div class="ui-color-success"><span>${date}</span> &ensp;|&ensp; <span>${uid} &lt;${name}&gt;</span></div><div id="message-${id}" class="ui-offset-large">${markup}</div></li>', data);
   };
 
   // Save chat data
@@ -79,6 +83,7 @@
   chat.display = function (message) {
     var index = $('#chat-room > li').size() + 1;
     $('#chat-room').append(chat.parse(message, index)).scrollTop($('#chat-room').height());
+    $(document).trigger('create.dom');
     if (window.MathJax) {
       MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'message-' + index]);
     }
@@ -94,12 +99,12 @@
     });
     var open = (receivers.length === 0);
     users.forEach(function (user) {
-      var uid = user.uid;
-      var checked = (open || receivers.indexOf(uid) !== -1) ? 'checked ' : '';
-      var profile = '<span>' + uid + ' &lt;' + user.name + '&gt;</span>';
-      var link = '<a href="/users/' + uid + '" target="_blank">' + profile + '</a>';
-      var checkbox = '<input type="checkbox" name="user-' + uid + '" value="true" title="Checked to allow this user receive your messages" ' + checked + '/>';
-      list += '<li>' + checkbox + ' ' + link + '</li>';
+      var data = {
+        uid: user.uid,
+        name: user.name,
+        checked: (open || receivers.indexOf(uid) !== -1) ? 'checked ' : ''
+      };
+      list += schema.format('<li><input type="checkbox" name="user-${uid}" value="true" title="Checked to allow this user receive your messages" ${checked}/> <a href="/users/${uid}" target="_blank"><span>${uid} &lt;${name}&gt;</span></a></li>', data);
     });
     $('#user-list').html(list);
     $('#user-list input').change();
@@ -107,7 +112,9 @@
 
   // WebSocket connection
   chat.connect = function () {
-    var socket = new WebSocket('ws://' + document.location.host);
+    var hostname = document.location.hostname;
+    var port = document.location.port || '3000';
+    var socket = new WebSocket('ws://' + hostname + ':' + port);
     socket.onopen = function (event) {
       $('#chat-safe').prop('checked', false);
       socket.send(chat.encode(JSON.stringify({

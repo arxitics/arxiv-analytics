@@ -12,27 +12,22 @@
   };
 
   // Bind and trigger schema events
-  schema.load = function (setup, events) {
-    var schemaSetup = $.extend({}, schema.setup, setup);
-    var schemaEvents = $.extend({}, schema.events, events);
-
-    var schemaDataPrefix = schemaSetup.dataPrefix;
-    var dataPrefix = schemaDataPrefix ? schemaDataPrefix + '-' : '';
-
-    for (var key in schemaEvents) {
-      if (schemaEvents.hasOwnProperty(key)) {
-        var schemaFunction = schema[key];
-        var eventObject = schemaEvents[key];
-        var eventDelegation = eventObject.delegation;
-        if (!eventObject.hasOwnProperty('delegation')) {
-          eventDelegation = schema.delegate(eventObject);
-          eventObject.delegation = eventDelegation;
+  schema.load = function (options) {
+    var events = $.extend({}, schema.events, options);
+    for (var key in events) {
+      if (events.hasOwnProperty(key)) {
+        var func = schema[key];
+        var event = events[key];
+        var delegation = event.delegation;
+        if (!event.hasOwnProperty('delegation')) {
+          delegation = schema.delegate(event);
+          event.delegation = delegation;
         }
-        if (eventDelegation > 1) {
-          var eventName = eventObject.type + eventObject.namespace;
-          $(document).on(eventName, schemaFunction);
-          if (eventDelegation > 2) {
-            $(document).trigger(eventName);
+        if (delegation > 1) {
+          var name = event.type + event.namespace;
+          $(document).on(name, func);
+          if (delegation > 2) {
+            $(document).trigger(name);
           }
         }
       }
@@ -41,40 +36,39 @@
 
   // Assign an integer as the delegation of an event
   schema.delegate = function (event) {
-    var schemaSetup = schema.setup;
-    var eventsBind = schemaSetup.autoBind.split(' ');
-    var eventsTrigger = schemaSetup.autoTrigger.split(' ');
-    var eventName = event.type + event.namespace;
-    var eventArray = eventName.replace(/^\./, '').split('.');
+    var setup = schema.setup;
+    var bindings = setup.autoBind.split(' ');
+    var triggers = setup.autoTrigger.split(' ');
+    var name = event.type + event.namespace;
+    var phrases = name.replace(/^\./, '').split('.');
 
-    var eventDelegation = eventsBind.some(function (bindEvent) {
-      var bindArray = bindEvent.replace(/^\./, '').split('.');
-      return bindArray.every(function (eventKeyword) {
-        return eventArray.indexOf(eventKeyword) !== -1;
+    var delegation = bindings.some(function (binding) {
+      var keywords = binding.replace(/^\./, '').split('.');
+      return keywords.every(function (keyword) {
+        return phrases.indexOf(keyword) !== -1;
       });
     }) ? 2 : 0;
-    eventDelegation += eventsTrigger.some(function (triggerEvent) {
-      var triggerArray = triggerEvent.replace(/^\./, '').split('.');
-      return triggerArray.every(function(eventKeyword) {
-        return eventArray.indexOf(eventKeyword) !== -1;
+    delegation += triggers.some(function (trigger) {
+      var keywords = trigger.replace(/^\./, '').split('.');
+      return keywords.every(function(keyword) {
+        return phrases.indexOf(keyword) !== -1;
       });
     }) ? 1 : 0;
 
-    return eventDelegation;
+    return delegation;
   };
 
   // Retrieve schema event options and store as event data
   schema.retrieve = function (event, options) {
-    var eventSelector = schema.events.retrieve.selector;
-    var optionalSelector = options && options.selector;
-    var $_elements = $(eventSelector).add(optionalSelector);
+    var selector = schema.events.retrieve.selector;
+    var $_elements = $(selector).add(options && options.selector);
     $_elements.each(function () {
       var $_this = $(this);
       var $_data = schema.parseData($_this.data());
-      var schemaOptions = schema.parseOptions($_data.schemaOptions);
-      for (var key in schemaOptions) {
-        if (schemaOptions.hasOwnProperty(key)) {
-          $_this.data(key, schemaOptions[key]);
+      var $_options = schema.parseOptions($_data.options);
+      for (var key in $_options) {
+        if ($_options.hasOwnProperty(key)) {
+          $_this.data(key, $_options[key]);
         }
       }
     });
@@ -82,60 +76,61 @@
 
   // Parse and normalize schema data
   schema.parseData = function (data) {
-    var dataObject = {};
-    var schemaDataPrefix = schema.setup.dataPrefix;
-    var dataPrefixLength = schemaDataPrefix && schemaDataPrefix.length;
+    var output = {};
+    var prefix = schema.setup.dataPrefix;
+    var length = prefix && prefix.length || 0;
     for (var key in data) {
       if (data.hasOwnProperty(key)) {
-        var dataKey = 'schema-' + key.slice(dataPrefixLength);
-        var dataValue = data[key];
-        dataKey = dataKey.replace(/\-\w/g, function (matchedSubstr) {
-          return matchedSubstr.charAt(1).toUpperCase();
+        var index = key.slice(length);
+        var value = data[key];
+        index = index.replace(/^[A-Z]/, function (substr) {
+          return substr.toLowerCase();
         });
-        dataObject[dataKey] = (dataValue === '' ? true : dataValue);
+        output[index] = (value === '' ? true : value);
       }
     }
-    return dataObject;
+    return output;
   };
 
   // Parse and normalize schema options
   schema.parseOptions = function (options) {
-    var optionsObject = {};
-    var parsedOptionsObject = {};
-    var schemaDataPrefix = schema.setup.dataPrefix;
-    var optionsPrefix = schemaDataPrefix ? schemaDataPrefix + '-' : '';
-    var optionsType = Object.prototype.toString.call(options).slice(8, -1);
-    if (optionsType === 'Object') {
-      optionsObject = options;
-    }
-    if (optionsType === 'String') {
+    var output = {};
+    var object = {};
+    var prefix = schema.setup.dataPrefix;
+    var type = Object.prototype.toString.call(options).slice(8, -1);
+    if (type === 'Object') {
+      object = options;
+    } else if (type === 'String') {
       try {
-        optionsObject = JSON.parse(options);
-      } catch (parseError) {
+        object = JSON.parse(options);
+      } catch (error) {
         if (options.indexOf(':') !== -1) {
           options = options.trim().replace(/\s*;$/, '');
-          options.split(/\s*;\s*/).forEach(function (keyValuePair) {
-            var keyValueArray = keyValuePair.split(/\s*:\s*/);
-            var optionKey = keyValueArray[0].toLowerCase();
-            var optionValue = keyValueArray[1].replace(/\,/g, ' ').trim();
-            if(optionValue.search(/\s+/) !== -1) {
-              optionValue = optionValue.split(/\s+/);
+          options.split(/\s*;\s*/).forEach(function (entry) {
+            var entries = entry.split(/\s*:\s*/);
+            var key = entries[0].toLowerCase();
+            var value = entries[1].replace(/\,/g, ' ').trim();
+            if(value.search(/\s+/) !== -1) {
+              value = value.split(/\s+/);
             }
-            optionsObject[optionKey] = optionValue;
+            object[key] = kalue;
           });
         }
       }
     }
-    for (var key in optionsObject) {
-      if (optionsObject.hasOwnProperty(key)) {
-        var optionKey = optionsPrefix + key;
-        optionKey = optionKey.replace(/\-\w/g, function (matchedSubstr) {
-          return matchedSubstr.charAt(1).toUpperCase();
+    if (prefix && prefix.length) {
+      prefix += '-';
+    }
+    for (var key in object) {
+      if (object.hasOwnProperty(key)) {
+        var index = prefix + key;
+        index = index.replace(/\-\w/g, function (substr) {
+          return substr.charAt(1).toUpperCase();
         });
-        parsedOptionsObject[optionKey] = optionsObject[key];
+        output[index] = object[key];
       }
     }
-    return parsedOptionsObject;
+    return output;
   };
 
 })(jQuery);

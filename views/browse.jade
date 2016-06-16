@@ -8,7 +8,7 @@ block variables
 block main
   - var baseURL = location.replace(/(^|\&|(\?))page=\d*/, '$2')
   aside.ui-grid-30.ui-mobile-expand.ui-phone-hidden
-    form.ui-form-fluid(data-schema-validate action='/browse' method='get' role='form')
+    form.ui-form-fluid(data-schema-validate action='/browse' method='get')
       - var subscription = user.subscription
       section
         h3.ui-header-primary Filters

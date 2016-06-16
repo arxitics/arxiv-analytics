@@ -10,7 +10,6 @@ var crypto = require('crypto');
 var multer = require('multer');
 var file = require('./file');
 var mime = require('./mime');
-var crawler = require('./crawler');
 var settings = require('../settings').oss;
 
 // Handle `multipart/form-data`

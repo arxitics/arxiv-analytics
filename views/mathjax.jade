@@ -1,25 +1,27 @@
 
-script(src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')
 script(type='text/x-mathjax-config').
   MathJax.Hub.Config({
-    MMLorHTML: {
-      prefer: {Firefox: 'MML'}
-    },
+    jax: ['input/TeX', 'input/MathML', 'output/CommonHTML'],
+    extensions: ['tex2jax.js', 'mml2jax.js', 'MathMenu.js', 'MathZoom.js', 'AssistiveMML.js'],
     tex2jax: {
       inlineMath: [['$', '$'], ['\\(', '\\)'], ['\\\\(', '\\\\)'], ['\\begin{math}', '\\end{math}']],
       displayMath: [['$$', '$$'], ['\\[', '\\]'], ['\\\\[', '\\\\]'], ['\\begin{displaymath}', '\\end{displaymath}']],
       processEscapes: true
     },
     TeX: {
+      extensions: ['AMSmath.js', 'AMSsymbols.js', 'noErrors.js', 'noUndefined.js'],
+      TagSide: 'right',
+      TagIndent: '0em',
+      MultLineWidth: '85%',
       equationNumbers: {autoNumber: 'AMS'},
       Macros: {
         slashed: ['\\not{\\!#1}', 1]
       },
       noUndefined: {
-        attributes: {
-          mathcolor: ''
-        }
+        attributes: {mathcolor: ''}
       }
     },
+    displayIndent: '0em',
     messageStyle: 'none'
   });
+script(async src='http://cdn.mathjax.org/mathjax/2.6-latest/MathJax.js')

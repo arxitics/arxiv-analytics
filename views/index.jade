@@ -91,6 +91,7 @@ block main
                     a(href=normalize(tagSearch + tag))= tag
                     if index !== last
                       | , 
+              include links
     else
       h3.ui-header-primary= __('index.features')
       .ui-content-link
@@ -152,18 +153,26 @@ block main
   aside.ui-grid-30.ui-mobile-expand(class=(logged ? 'ui-phone-hidden' : ''))
     h3.ui-header-primary= __('index.start')
     .ui-content-alert.ui-alert-success
-      p ArXiv Analytics is a web portal that offers more features and a better user interface for reading and discussing #[a(href='http://arxiv.org/' rel='external' target='_blank') arXiv eprints].
+      p.
+        ArXiv Analytics is a web portal that offers more features and a better user interface for reading and discussing #[a(href='http://arxiv.org/' rel='external' target='_blank') arXiv eprints].
     .ui-content-alert.ui-alert-success
-      p It's 100% free, no registration required to use the basic functionalities. You need #[a(href='/auth/login') sign in] to enjoy the customized services.
+      p.
+        It's 100% free, no registration required to use the basic functionalities. You need #[a(href='/auth/login') sign in] to enjoy the customized services.
     .ui-content-alert.ui-alert-info
-      p Tutorials on using this website can be found in the #[a(href='/help') help center]. If you have other questions, please contact us at #[strong help#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com].
+      p.
+        Tutorials on using this website can be found in the #[a(href='/help') help center]. If you have other questions, please contact us at #[strong help#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com].
     .ui-content-alert.ui-alert-info
-      p Accessibility is one of important features of our design. You are recommended to use #[a(href='/help/keyboard') keyboard navigation] to be more efficient.
+      p.
+        Accessibility is one of important features of our design. You are recommended to use #[a(href='/help/keyboard') keyboard navigation] to be more efficient.
     .ui-content-alert.ui-alert-warning
-      p Our website is built upon some cutting edge web technologies. Please use the #[a(href='/help/browsers') latest browsers] to get a better user experience.
+      p.
+        Our website is built upon some cutting edge web technologies. Please use the #[a(href='/help/browsers') latest browsers] to get a better user experience.
     .ui-content-alert.ui-alert-warning
-      p An optimal font size is chosen based on screen resolution. If necessary, you can manually adjust the size by #[kbd #[kbd Ctrl]+#[kbd +]] or #[kbd #[kbd Ctrl]+#[kbd -]].
+      p.
+        An optimal font size is chosen based on screen resolution. If necessary, you can manually adjust it by #[code #[kbd Ctrl] + #[kbd +]] or #[code #[kbd Ctrl] + #[kbd -]].
     .ui-content-alert.ui-alert-danger
-      p We encourage frank, open, and constructive conversation, but frankness doesn't mean lack of civility or lack of respect for others.
+      p.
+        We encourage frank, open, and constructive conversation, but frankness doesn't mean lack of civility or lack of respect for others.
     .ui-content-alert.ui-alert-danger
-      p We cannot guarantee the stability and reliability of our services. It's a good idea to backup your personal data elsewhere.
+      p.
+        We cannot guarantee the stability and reliability of our services. It's a good idea to backup your personal data elsewhere.

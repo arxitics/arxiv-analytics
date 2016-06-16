@@ -23,17 +23,17 @@ block main
   article.ui-grid-70.ui-mobile-expand
     h3.ui-header-primary= __('chat.heading')
     .ui-text-left-right
-      .ui-button-group.ui-space-collapse.ui-block-inline
+      .ui-button-group.ui-space-trim.ui-block-inline
         button(id='chat-view' title='View chat history') View
         button(id='chat-clear' title='Clear current chat room') Clear
         button(id='chat-export' title='Export chat data as JSON') Export
         button(id='chat-delete' title='Delete all chat data') Delete
-      .ui-button-group.ui-space-collapse.ui-block-inline
+      .ui-button-group.ui-space-trim.ui-block-inline
         button(id='chat-refresh' title='Refresh this page') Refresh
         button(id='chat-close' title='Close the connection') Close
     .ui-content-alert.ui-skip-large
-      ul.ui-list-unstyled(id='chat-room')
-      form.ui-form-horizontal(id='chat-form' action='/chat' method='post' role='form')
+      ul.ui-list-unstyled(id='chat-room' data-schema-extract='emoji' data-schema-emoji='http://oss.arxitics.com/images/emoji/')
+      form.ui-form-horizontal(id='chat-form' action='/chat' method='post')
         input(type='hidden' name='_csrf' value=csrfToken)
         textarea(name='content' rows='3' placeholder='Markdown and LaTeX are supported.' title='Please mind your manners and watch your tone' autofocus)
         .ui-skip-small
@@ -50,4 +50,4 @@ block main
 
 block append foot
   include mathjax
-  script(src='#{appStorage}/javascripts/chat-1.0.2.min.js')
+  script(src='#{appStorage}/javascripts/chat-1.0.4.min.js')

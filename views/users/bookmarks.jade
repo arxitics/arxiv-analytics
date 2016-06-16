@@ -13,7 +13,7 @@ block content
       - var tabs = ['articles', 'readings', 'ratings', 'edits', 'reviews', 'votes']
       each tab in tabs
         - var link = baseURL + (tab === 'articles' ? '' : '?type=' + tab)
-        li(class=(tab === type ? 'ui-state-active' : '') role='tab')
+        li(class={'ui-state-active': tab === type} role='tab')
           a(href=link)= tab.charAt(0).toUpperCase() + tab.slice(1)
     ol(start=startIndex + 1)
       - var activity = profile.activity

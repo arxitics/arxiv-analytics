@@ -17,11 +17,13 @@ visual.get('/', function (req, res) {
 // GET `keywords` page
 visual.get('/keywords', function (req, res) {
   var query = req.query;
-  if (!query.hasOwnProperty('q')) {
-    query.q = 'topological insulator';
+  var phrase = query.q || 'topological insulator';
+  if (phrase.indexOf(',') !== -1) {
+    phrase = phrase.replace(/(,|[^;])\s+/g, ', ');
   }
   res.render('visual/keywords', {
-    query: query
+    query: query,
+    phrase: phrase
   });
 });
 
@@ -53,9 +55,13 @@ visual.get('/data/primaryCategories.json', function (req, res) {
 visual.get('/data', function (req, res) {
   var query = article.preprocess(req.query);
   if (query.hasOwnProperty('q')) {
-    query.q = String(query.q).trim().replace(/^\"?|\"?$/g, '"');
+    var q = String(query.q).trim();
+    if (!/\-|\"/.test(q)) {
+      q = q.replace(/^\"?|\"?$/g, '"');
+    }
+    query.q = q;
   } else {
-    query.q = 'topological insulator';
+    query.q = '"topological insulator"';
   }
   query.projection = {
     '_id': 0,

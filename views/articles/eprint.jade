@@ -6,14 +6,20 @@ block variables
   - var pageTitle = articleID + ' ' + __(pageID + '.heading')
 
 block main
+  - var eprintID = citeAs(eprint)
   article.ui-container-fluid.ui-mobile-expand
     h3.ui-header-primary.ui-text-left-right
-      span#eprint-id= citeAs(eprint)
+      span#eprint-id= eprintID
       span.ui-text-list.ui-font-medium(role='navigation')
+        - var reviews = eprint.analyses.feedback.reviews
+        - var supplementaries = eprint.resources.length
         each page in ['abstract', 'references', 'reviews', 'resources']
           - var link = '/articles/' + id + (page === 'abstract' ? '' : '/' + page)
-          if page === pageID
-            a.ui-text-active(href=link)= __(page + '.heading')
-          else 
-            a(href=link)= __(page + '.heading')
+          a(class={'ui-text-active': page === pageID} href=link)= __(page + '.heading')
+            if page === 'reviews' && reviews > 0
+              |  
+              span (#{reviews})
+            else if page === 'resources' && supplementaries > 0
+              |  
+              span (#{supplementaries})
     block content

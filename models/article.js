@@ -273,9 +273,21 @@ exports.parseDateRange = function (query) {
   return range;
 };
 
+// Parse full-text search string
+exports.parseText = function (text) {
+  if (/^\".+\"$/.test(text)) {
+    if (text.indexOf(';') !== -1) {
+      text = text.replace(/;\s*/g, '" "');
+    } else if (text.indexOf(',') !== -1) {
+      text = text.replace(/^\"|\"$/g, '').replace(/,\s*/g, ' ');
+    }
+  }
+  return text;
+};
+
 // Preprocess query parameters
 exports.preprocess = function (query) {
-  var specials = exports.operators.concat(exports.timestamps);
+  var specials = exports.operators.concat(exports.timestamps).concat('q');
   var constraints = query['$and'] || [];
   for (var key in query) {
     if (query.hasOwnProperty(key) && specials.indexOf(key) === -1) {
@@ -392,6 +404,8 @@ exports.find = function (query, callback) {
           if (collected) {
             field = 'analyses.publication.journal';
           }
+        } else if (field === 'related') {
+          field = 'id';
         }
         criteria[field] = exports.parse(field, value);
       } else {
@@ -400,6 +414,9 @@ exports.find = function (query, callback) {
         }
       }
     }
+  }
+  if (criteria.hasOwnProperty('id')) {
+    criteria = {id: criteria.id};
   }
   // Sorting by textScore comes first for full-text search
   if (criteria.hasOwnProperty('$text')) {
@@ -412,8 +429,11 @@ exports.find = function (query, callback) {
     }
   }
   if (query.hasOwnProperty('q') || query.hasOwnProperty('search')) {
-    criteria['$text'] = {'$search': query['q'] || query['search']};
-    projection['score'] = {'$meta': 'textScore'};
+    var text = query['q'] || query['search'];
+    if (typeof text === 'string') {
+      criteria['$text'] = {'$search': exports.parseText(text)};
+      projection['score'] = {'$meta': 'textScore'};
+    }
   }
   if (typeof sort === 'string') {
     if (analyses.feedback.hasOwnProperty(sortby)) {
@@ -451,7 +471,15 @@ exports.find = function (query, callback) {
       console.log('no doucments returned for the query');
       docs = [];
     }
-    return (typeof callback === 'function') ? callback(docs) : null;
+    if (query.hasOwnProperty('related')) {
+      return exports.discover({
+        eprint: docs[0] || {},
+        filter: query,
+        discovery: {sort: sort, limit: limit}
+      }, callback);
+    } else {
+      return (typeof callback === 'function') ? callback(docs) : null;
+    }
   });
 };
 
@@ -470,6 +498,62 @@ exports.lookup = function (query, callback) {
     return (typeof callback === 'function') ? callback(eprint) : null;
   });
 };
+
+// Find related articles
+exports.discover = function (query, callback) {
+  var eprint = query.eprint;
+  var filter = query.filter;
+  var id = eprint.id;
+  var categories = eprint.categories;
+  var analyses = eprint.analyses;
+  var subjects = analyses.subjects;
+  var keywords = analyses.keywords;
+  var discovery = query.discovery;
+  var sort = discovery.sort || {similarity: -1};
+  var order = sort.similarity || -1;
+  var search = {
+    'categories.0': categories[0],
+    'limit': discovery.limit || settings.search.limit
+  };
+  if (keywords.length) {
+    search.keywords = {'$in': keywords};
+  }
+  for (var key in filter) {
+    if (filter.hasOwnProperty(key) && key !== 'related') {
+      search[key] = filter[key];
+    }
+  }
+  exports.find(search, function (docs) {
+    docs = docs.filter(function (doc) {
+      return doc.id !== id;
+    });
+    if (sort.hasOwnProperty('similarity')) {
+      docs.forEach(function (doc) {
+        var similarity = 0;
+        doc.categories.forEach(function (category, index) {
+          if (categories.indexOf(category) !== -1) {
+            similarity += 1 / (1 + index);
+          }
+        });
+        doc.analyses.subjects.forEach(function (subject, index) {
+          if (subjects.indexOf(subject) !== -1) {
+            similarity += 2 / (1 + index);
+          }
+        });
+        doc.analyses.keywords.forEach(function (keyword, index) {
+          if (keywords.indexOf(keyword) !== -1) {
+            similarity += 4 / (1 + index);
+          }
+        });
+        doc.similarity = similarity;
+      });
+      docs.sort(function (a, b) {
+        return (a.similarity - b.similarity) * order;
+      });
+    }
+    return (typeof callback === 'function') ? callback(docs) : null;
+  });
+}
 
 // Create new eprint
 exports.create = function (id, callback) {
@@ -685,10 +769,14 @@ exports.bibEntries = [
 exports.exportBibtex = function (eprint) {
   var content = '@article {' + eprint.id + ',\n';
   var publication = eprint.analyses.publication;
+  var authors = eprint.authors;
+  if (authors.length >= 7) {
+    authors = [authors[0], 'others'];
+  }
   publication['archivePrefix'] = 'arXiv';
   publication['eprint'] = eprint.id;
   publication['primaryClass'] = eprint.categories[0];
-  publication['author'] = eprint.authors.join(' and ');
+  publication['author'] = authors.join(' and ');
   publication['title'] = eprint.title;
   if (publication.hasOwnProperty('publisher')) {
     var label = publication['publisher'];

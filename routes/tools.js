@@ -12,9 +12,19 @@ tools.get('/', function (req, res) {
   res.render('tools');
 });
 
+// GET `proxy` page
+tools.get('/proxy', function (req, res) {
+  res.render('tools/proxy');
+});
+
 // GET `editor` page
 tools.get('/editor', function (req, res) {
   res.render('tools/editor');
+});
+
+// GET `research` page
+tools.get('/research', function (req, res) {
+  res.render('tools/research');
 });
 
 // GET `parser` page

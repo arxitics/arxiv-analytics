@@ -20,6 +20,7 @@ var articles = express.Router();
 articles.get('/', function (req, res) {
   var query = req.query;
   var tab = query.sort || 'views';
+  var range = query['date-range'] || 'past-month';
   var filter = {};
   var search = {};
   var filtered = Object.keys(query).some(function (field) {
@@ -41,8 +42,14 @@ articles.get('/', function (req, res) {
   query.page = parseInt(query.page) || 1;
   query.perpage = Math.min(parseInt(query.perpage) || settings.search.perpage, 100);
   query.skip = query.perpage * (query.page - 1);
+  query['date-range'] = range;
   search['skip'] = query.skip;
   search['limit'] = query.perpage;
+  search['date-range'] = range;
+  if (range === 'custom') {
+    search['date-from'] = query['date-from'];
+    search['date-to'] = query['date-to'];
+  }
   article.find(search, function (docs) {
     var queryString = security.serialize(filter, {paramsCombined: true});
     res.render('articles/stats', {
@@ -453,45 +460,13 @@ articles.get(route, function (req, res) {
   }
 
   var discovery = settings.eprint.discovery;
-  var categories = eprint.categories;
-  var subjects = analyses.subjects;
-  var keywords = analyses.keywords;
-  var query = {
-    'categories.0': categories[0],
-    'limit': discovery.limit
-  };
-  if (subjects.length) {
-    query.subjects = {'$in': subjects};
-  }
-  if (keywords.length) {
-    query.keywords = {'$in': keywords};
-  }
-  article.find(query, function (docs) {
-    docs.forEach(function (doc) {
-      var similarity = 0;
-      doc.categories.forEach(function (category, index) {
-        if (categories.indexOf(category) !== -1) {
-          similarity += 1 / (1 + index);
-        }
-      });
-      doc.analyses.subjects.forEach(function (subject, index) {
-        if (subjects.indexOf(subject) !== -1) {
-          similarity += 2 / (1 + index);
-        }
-      });
-      doc.analyses.keywords.forEach(function (keyword, index) {
-        if (keywords.indexOf(keyword) !== -1) {
-          similarity += 4 / (1 + index);
-        }
-      });
-      doc.similarity = similarity;
-    });
+  article.discover({
+    eprint: eprint,
+    discovery: discovery
+  }, function (docs) {
     res.render('articles/abstract', {
-      discoveries: docs.filter(function (doc) {
-        return doc.id !== id;
-      }).sort(function (a, b) {
-        return b.similarity - a.similarity;
-      }).slice(0, discovery.maxRank),
+      discoveries: docs.slice(0, discovery.maxRank),
+      searchMore: docs.length > discovery.maxRank,
       bookmarked: articles.some(function (article) {
         return article.id === id;
       }),

@@ -129,7 +129,7 @@ h6 {
 }
 
 p {
-  margin: .8em 0;
+  margin: 0.8em 0;
   line-height: 1.42857;
   orphans: 2;
   widows: 2;
@@ -178,12 +178,11 @@ video::-webkit-media-controls-enclosure {
 }
 
 /**
- * Specify nearest-neighbor upscaling and "auto" downscaling.
- * Only available in Chrome 41+ or Opera 26+.
+ * Remove default margin.
  */
 
-canvas {
-  image-resizing: pixelated;
+figure {
+  margin: 0;
 }
 
 i {
@@ -197,6 +196,7 @@ i > svg {
   fill: currentColor;
   height: 100%;
   overflow: visible;
+  shape-rendering: geometricPrecision;
   stroke: none;
   width: 100%;
 }
@@ -214,8 +214,8 @@ progress {
   appearance: none;
   background-color: #f5f5f5;
   border: none;
-  border-radius: .5em;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+  border-radius: 0.5em;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   color: #428bca;
   height: 1.5em;
   overflow: hidden;
@@ -232,7 +232,7 @@ progress::-ms-fill {
 
 progress::-webkit-progress-bar {
   background-color: #f5f5f5;
-  border-radius: .5em;
+  border-radius: 0.5em;
 }
 
 progress::-webkit-progress-value {
@@ -257,15 +257,14 @@ address {
 }
 
 blockquote {
-  border-left: .4em solid #eee;
-  font-size: 125%;
+  background-color: #f5f5f5;
+  border-left: 0.4em solid #ddd;
   margin: 0 0 1.6em;
   overflow: hidden;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
 }
 
 blockquote > footer {
-  font-size: 80%;
   text-align: right;
 }
 
@@ -277,12 +276,23 @@ samp {
   font-size: 90%;
 }
 
+kbd {
+  border: 1px solid currentColor;
+  border-radius: 0.2em;
+  padding: 0.2em 0.4em;
+}
+
+/**
+ * 1. Contain overflow in all browsers.
+ */
+
 pre {
   background-color: #f5f5f5;
   border: 1px solid #ccc;
-  border-radius: .4em;
+  border-radius: 0.4em;
   display: block;
-  padding: .6em;
+  overflow: auto; /* 1 */
+  padding: 0.6em;
   word-break: break-all;
 }
 
@@ -309,6 +319,7 @@ ol,
 ul {
   line-height: 1.71428;
   margin: 0 0 1em;
+  text-indent: 0;
 }
 
 ol,
@@ -329,7 +340,7 @@ dt {
 }
 
 dd {
-  margin: 0 0 .5em;
+  margin: 0 0 0.5em;
 }
 
 /* Forms
@@ -341,14 +352,14 @@ form {
 
 fieldset {
   border: 1px solid #ccc;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   margin: 1.5em 0;
-  padding: .8em 1.2em;
+  padding: 0.8em 1.2em;
 }
 
 legend {
   color: #999;
-  padding: 0 .4em;
+  padding: 0 0.4em;
 }
 
 button,
@@ -356,10 +367,10 @@ input,
 select,
 textarea {
   border: 1px solid #ccc;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   display: inline-block;
   outline: none;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
 }
 
 button {
@@ -379,7 +390,21 @@ button:hover {
   background-color: #ebebeb;
 }
 
+button:focus,
+input:focus {
+  outline: none;
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
 input {
+  line-height: normal;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
   background-color: #fff;
   height: 1.42857em;
 }
@@ -388,7 +413,7 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: #66afe9;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 .4em rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0.4em rgba(102, 175, 233, 0.6);
 }
 
 input:invalid,
@@ -399,7 +424,13 @@ textarea:invalid {
 input:invalid:focus,
 textarea:invalid:focus {
   border-color: #843534;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 .3em #ce8483;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0.3em #ce8483;
+}
+
+input[type="search"] {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 input[type="checkbox"],
@@ -418,7 +449,6 @@ input[type="radio"]:focus,
 input[type="range"]:focus {
   border-color: none;
   box-shadow: none;
-  outline: none;
 }
 
 input[type="file"] {
@@ -430,17 +460,17 @@ input[type="file"]::-ms-browse,
 input[type="file"]::-ms-value {
   background: transparent;
   border: 1px solid #ccc;
-  border-radius: .4rem;
-  padding: .4em .8em;
+  border-radius: 0.4rem;
+  padding: 0.4em 0.8em;
 }
 
 input[type="file"]::-webkit-file-upload-button {
   background-color: transparent;
   border: 1px solid #ccc;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   cursor: pointer;
   outline: none;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
 }
 
 input[type="range"] {
@@ -455,8 +485,8 @@ input[type="range"]::-moz-focus-outer {
 input[type="range"]::-moz-range-track {
   background: #ddd;
   border: none;
-  border-radius: .2em;
-  height: .4em;
+  border-radius: 0.2em;
+  height: 0.4em;
   width: 100%;
 }
 
@@ -470,12 +500,12 @@ input[type="range"]::-moz-range-thumb {
 
 input[type="range"]::-ms-fill-lower {
   background: #777;
-  border-radius: .2em;
+  border-radius: 0.2em;
 }
 
 input[type="range"]::-ms-fill-upper {
   background: #ddd;
-  border-radius: .2em;
+  border-radius: 0.2em;
 }
 
 input[type="range"]::-ms-thumb {
@@ -489,18 +519,18 @@ input[type="range"]::-ms-thumb {
 input[type="range"]::-ms-track {
   background: transparent;
   border-color: transparent;
-  border-width: .4em 0;
+  border-width: 0.4em 0;
   color: transparent;
   cursor: pointer;
-  height: .4em;
+  height: 0.4em;
   width: 100%;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
   background: #ddd;
   border: none;
-  border-radius: .2em;
-  height: .4em;
+  border-radius: 0.2em;
+  height: 0.4em;
   width: 100%;
 }
 
@@ -510,7 +540,7 @@ input[type="range"]::-webkit-slider-thumb {
   border: none;
   border-radius: 50%;
   height: 1.2em;
-  margin-top: -.4em;
+  margin-top: -0.4em;
   width: 1.2em;
 }
 
@@ -530,11 +560,8 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
   background: #ccc;
 }
 
-label {
-  cursor: pointer;
-}
-
 label[for] {
+  cursor: pointer;
   font-weight: bold;
 }
 
@@ -542,8 +569,8 @@ label[for] {
  * 1. Reset the default appearance of select in Firefox 35+.
  * 2. Reset the default appearance of select in Chrome, Opera 15+, and Safari.
  * 3. Use a caret as the background:
- *    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 20 32">
- *      <path d="M6 14h12l-6 6z"/>
+ *    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32">
+ *      <path d="M6 14h12l-6 8z"/>
  *    </svg>
  */
 
@@ -551,7 +578,7 @@ select {
   -moz-appearance: none; /* 1 */
   -webkit-appearance: none; /* 2 */
   appearance: none;
-  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDIwIDMyIj48cGF0aCBkPSJNNiAxNGgxMmwtNiA2eiIvPjwvc3ZnPg==") no-repeat scroll 100%; /* 3 */
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDMyIj48cGF0aCBkPSJNNiAxNGgxMmwtNiA4eiIvPjwvc3ZnPg==") no-repeat scroll 100% / 1.42857em; /* 3 */
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
@@ -564,7 +591,7 @@ select::-ms-expand {
 }
 
 select > option {
-  padding: .2em .8em;
+  padding: 0.2em 0.8em;
 }
 
 select[multiple],
@@ -575,7 +602,7 @@ select[size] {
 
 select[multiple] > option,
 select[size] > option {
-  padding: .2em .4em;
+  padding: 0.2em 0.4em;
 }
 
 /**
@@ -632,8 +659,7 @@ select[size] > option {
 
 :disabled,
 [disabled] {
-  background-color: #eee;
-  opacity: .65;
+  opacity: 0.65;
   pointer-events: none;
 }
 
@@ -651,6 +677,8 @@ select[size] > option {
    ========================================================================== */
 
 table {
+  border-collapse: collapse;
+  border-spacing: 0;
   margin: 1.2em 0 1.6em;
   text-align: left;
 }
@@ -662,7 +690,7 @@ thead {
 td,
 th {
   border-bottom: 1px solid #ddd;
-  padding: .6em .8em;
+  padding: 0.6em 0.8em;
   vertical-align: middle;
 }
 
@@ -678,15 +706,6 @@ tr:last-child > td {
 
 /* Animations
    ========================================================================== */
-
-@-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(360deg);
-  }
-}
 
 @-webkit-keyframes spin {
   0% {

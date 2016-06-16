@@ -6,7 +6,7 @@ block prepend variables
 
 block content
   .ui-grid-70.ui-offset-15.ui-mobile-expand
-    form.ui-form-horizontal(data-schema-validate='changed' action='/articles/#{id}/edit' method='post' role='form')
+    form.ui-form-horizontal(data-schema-validate='changed' action='/articles/#{id}/edit' method='post')
       input(type='hidden' name='_csrf' value=csrfToken)
       - var analyses = eprint.analyses
       fieldset

@@ -40,19 +40,19 @@ html(id=pageID lang=locale)
       ga('create', 'UA-52769098-1', 'auto');
       ga('send', 'pageview');
   body
-    header.ui-header-navbar.ui-container-fluid.ui-container-grid(role='banner')
+    header.ui-header-navbar.ui-container-fluid.ui-container-grid
       block header
         .ui-header-brand
           h2: a(rel='index' href='/' accesskey='0')= appTitle
-        nav.ui-fluid-33.ui-mobile-auto(role='navigation')
+        nav.ui-fluid-33.ui-mobile-auto
           ul
             li: a(href='/browse' accesskey='1')= __('browse.heading')
             li: a(href='/explore' accesskey='2')= __('explore.heading')
             li: a(href='/tools' accesskey='3')= __('tools.heading')
         if logged
           .ui-header-account.ui-float-right.ui-menu-dropdown(role='menu')
-            - var length = user.notifications.length
-            .ui-skip-tiny(class=(length === 0 ? 'ui-text-success' : 'ui-text-danger') aria-haspopup='true')
+            - var notifications = user.notifications.length
+            .ui-skip-tiny(class=(notifications ? 'ui-text-danger' : 'ui-text-success') aria-haspopup='true')
               i.ui-fixed-height(data-schema-icon=(privilege.isModerator ? 'user-md' : 'user'))
               span.ui-offset-tiny= user.name
             ul.ui-pull-right.ui-text-left
@@ -68,9 +68,9 @@ html(id=pageID lang=locale)
                 i.ui-fixed-wdith(data-schema-icon='envelope')
                 |  
                 = __('messages.heading')
-                if length >= 1
+                if notifications > 0
                   |  
-                  span.ui-text-danger (#{length})
+                  span.ui-text-danger (#{notifications})
               li: a(href='/chat' accesskey='c')
                 i.ui-fixed-wdith(data-schema-icon='chat')
                 |  
@@ -82,19 +82,19 @@ html(id=pageID lang=locale)
         else
           .ui-header-account.ui-float-right
             a.ui-text-button.ui-button-primary(href='/auth/login' role='button')= __('login.button')
-        form.ui-fluid-40.ui-mobile-expand.ui-phone-hidden(data-schema-validate action='/search' method='get' role='form')
+        form.ui-fluid-40.ui-mobile-expand.ui-phone-hidden(data-schema-validate action='/search' method='get')
           .ui-input-addon
             input.ui-grid-80(type='search' name='q' placeholder=__('search.placeholder') title=__('search.title') accesskey='s' tabindex='1')
             button(type='submit' tabindex='-1')
               i(data-schema-icon='search') Go!
 
-    main.ui-container-fluid.ui-container-grid(role='main')
+    main.ui-container-fluid.ui-container-grid
       block main
-    footer.ui-container-fluid(role='contentinfo')
+    footer.ui-container-fluid
       block footer
         address
           .ui-float-left.ui-text-muted.ui-mobile-expand
-            span &copy; 2014&ndash;2015 Arxitics &nbsp;
+            span &copy; 2014&ndash;2016 Arxitics &nbsp;
             if locale === 'zh'
               a(href='http://www.miitbeian.gov.cn/' rel='external' target='_blank')= __('address.ICP')
               |  
@@ -116,3 +116,4 @@ html(id=pageID lang=locale)
     block foot
       script(src='#{appStorage}/javascripts/jquery-2.1.1.min.js')
       script(src='#{appStorage}/javascripts/ui-schema-#{appVersion}.min.js')
+      script(src='#{appStorage}/javascripts/icons-1.0.0.min.js')

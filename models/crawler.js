@@ -10,14 +10,16 @@ var cheerio = require('cheerio');
 var file = require('./file');
 
 // Get resources form web
-exports.get = function (urlString, filePath, callback) {
+exports.get = function (options, filePath, callback) {
+  var urlString = (typeof options === 'string') ? options : options.urlString;
   var urlObject = url.parse(urlString);
-  var options = {
+  var headers = options.headers || {};
+  headers['User-Agent'] = 'Mozilla/5.0';
+  http.get({
     host: urlObject.host,
     path: urlObject.path,
-    headers: {'User-Agent': 'Mozilla/5.0'}
-  };
-  http.get(options, function (res) {
+    headers: headers
+  }, function (res) {
     console.log('downloading ' + urlString + ' ...');
     var data = '';
     res.setEncoding('utf8');

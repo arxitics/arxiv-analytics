@@ -9,7 +9,7 @@
 
 .ui-form-fluid label {
   display: block;
-  margin-bottom: .4rem;
+  margin-bottom: 0.4rem;
 }
 
 .ui-form-fluid input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
@@ -29,7 +29,7 @@
 }
 
 .ui-form-horizontal label[for] {
-  padding: .4em 0;
+  padding: 0.4em 0;
   text-align: right;
 }
 
@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-.ui-form-horizontal input,
+.ui-form-horizontal input:not([type="checkbox"]):not([type="radio"]),
 .ui-form-horizontal select {
   height: 2.34694em;
 }
@@ -63,8 +63,8 @@
 
 .ui-input-addon > :not(button):not(input) {
   border: 1px solid #ccc;
-  border-radius: .4rem;
-  padding: .4em .8em;
+  border-radius: 0.4rem;
+  padding: 0.4em 0.8em;
 }
 
 .ui-input-addon > input {
@@ -76,7 +76,7 @@
 }
 
 .ui-input-addon > :first-child,
-.ui-input-addon > input,
+.ui-input-addon > input:not([type="checkbox"]):not([type="radio"]),
 .ui-input-addon > :last-child {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -107,6 +107,16 @@
   border-top-left-radius: 0;
 }
 
+.ui-input-underline {
+  border: none;
+  border-bottom: 1px solid #333;
+  border-radius: 0;
+}
+
+.ui-input-underline:focus {
+  box-shadow: none !important;
+}
+
 .ui-button-toolbar > .ui-button-group,
 .ui-button-toolbar > .ui-button-switch {
   display: inline-block;
@@ -125,22 +135,26 @@
   display: none;
 }
 
+.ui-button-group > label,
+.ui-button-switch > label {
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  display: inline-block;
+  font-weight: normal;
+}
+
 .ui-button-switch {
   height: 2.34694em;
 }
 
 .ui-button-switch > label {
-  border: 1px solid #ccc;
-  border-radius: .4rem;
-  display: inline-block;
-  font-weight: normal;
   overflow: hidden;
 }
 
 .ui-button-switch > label > span {
   background-color: #ebebeb;
   display: inline-block;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
   visibility: hidden;
 }
 
@@ -154,10 +168,6 @@
 }
 
 .ui-button-group > label {
-  border: 1px solid #ccc;
-  border-radius: .4rem;
-  display: inline-block;
-  font-weight: normal;
   padding: .4em .8em;
 }
 
@@ -171,7 +181,7 @@
 
 .ui-button-block button {
   display: block;
-  margin-top: .8em;
+  margin-top: 0.8em;
   padding: auto 0;
   width: 100%;
 }

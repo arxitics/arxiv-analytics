@@ -1,6 +1,6 @@
 /*!
- * UI Schema v0.3.5 (https://github.com/arxitics/ui-schema)
- * Copyright 2015 Arxitics <help@arxitics.com>
+ * UI Schema v0.3.9 (https://github.com/arxitics/ui-schema)
+ * Copyright 2016 Arxitics <help@arxitics.com>
  * Licensed under MIT (https://github.com/arxitics/ui-schema/blob/master/LICENSE)
  */
 
@@ -29,16 +29,6 @@ var schema = jQuery.isPlainObject(schema) ? schema : {};
         namespace: '.options.data-api.schema',
         selector: '[data-schema-options]'
       },
-      trim: {
-        type: 'remove',
-        namespace: '.white-space.text-node.schema',
-        selector: '.ui-space-collapse'
-      },
-      extract: {
-        type: 'create',
-        namespace: '.dom.data-api.schema',
-        selector: '[data-schema-extract]'
-      },
       validate: {
         type: 'validate',
         namespace: '.form-validate.form.data-api.schema',
@@ -48,6 +38,16 @@ var schema = jQuery.isPlainObject(schema) ? schema : {};
         type: 'create',
         namespace: '.icons.svg.data-api.schema',
         selector: 'i[data-schema-icon]'
+      },
+      trim: {
+        type: 'remove',
+        namespace: '.white-space.text-node.schema',
+        selector: '.ui-space-trim'
+      },
+      extract: {
+        type: 'create',
+        namespace: '.dom.data-api.schema',
+        selector: 'body [data-schema-extract]'
       }
     }
   }, schema);

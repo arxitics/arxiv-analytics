@@ -783,7 +783,7 @@ users.get('/:uid/documents/upload', function (req, res) {
   }
 });
 
-// POST method for adding new publications
+// POST method for uploading new documents
 users.post('/:uid/documents/submit', function (req, res) {
   var user = req.user;
   var uid = user.uid;
@@ -826,7 +826,7 @@ users.post('/:uid/documents/submit', function (req, res) {
           }
           oss.putObject({
             resource: href.replace(/^https?\:\/\/[^\/]+/, ''),
-            origin: './' + file.path
+            origin: file.path
           }, function (success) {
             if (success) {
               res.redirect('/users/' + uid + '/documents');

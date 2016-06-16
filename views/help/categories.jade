@@ -11,7 +11,7 @@ block content
       each entry in groups
         - var label = entry.label
         - var link = '/help/categories' + (label === 'physics' ? '' : '?group=' + label)
-        li(class=(tab === label ? 'ui-state-active' : '') role='tab')
+        li(class={'ui-state-active': tab === label} role='tab')
           a(href=link)= entry.group
     ul
       each theme in themes

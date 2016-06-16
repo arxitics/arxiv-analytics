@@ -7,20 +7,18 @@
 
   // Validate user input
   schema.validate = function (event, options) {
-    var eventSelector = schema.events.validate.selector;
-    var optionalSelector = options && options.selector;
-    var $_elements = $(eventSelector).add(optionalSelector);
+    var selector = schema.events.validate.selector;
+    var $_elements = $(selector).add(options && options.selector);
     $_elements.each(function () {
       var $_this = $(this);
       var $_data = schema.parseData($_this.data());
-      var validateOption = $_data.schemaValidate;
-      var requireChanged = (validateOption === 'changed');
+      var validate = $_data.validate;
       $_this.find(':input').one('change', function () {
         $_this.data('changed', true);
       });
       $_this.on('submit', function (event) {
         var $_form = $(this);
-        var validated = (requireChanged) ? $_form.data('changed') : true;
+        var validated = (validate === 'changed') ? $_form.data('changed') : true;
         if (validated) {
           $_form.find('input, textarea').each(function () {
             var $_input = $(this);
@@ -29,7 +27,7 @@
               $_input.prop('disabled', true).data('disabled', true);
             }
           });
-          if (validateOption === 'once') {
+          if (validate === 'once') {
             $_this.find(':submit').prop('disabled', true);
           }
           $_form.submit();

@@ -79,7 +79,7 @@ module.exports = {
     }
   },
   arxiv: {
-    mirror: /^(lanl|cn|fr|de|in|jp|es)?$/,
+    mirror: /^(lanl|cn|fr|de|in|es)?$/,
     group: /^(math|cs|q-bio|q-fin|stat)$/,
     archive: /^([a-z\-\.]+[a-zA-Z])|(\d{2}(0[1-9]|1[0-2]))/,
     identifier: /^((\d{2})(0[1-9]|1[0-2])\.(\d{4,5})|[a-zA-Z\-\.]+\/(9[1-9]|0[0-7])(0[1-9]|1[0-2])(\d{3}))(v[1-9][0-9]*)?$/,

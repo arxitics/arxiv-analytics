@@ -6,7 +6,7 @@ block review
   section
     h4.ui-header-compact!= parse(review.title).replace(/<\/?p>|\n/g, '')
     .ui-article-body!= parse(review.content)
-    form.ui-form-horizontal(data-schema-validate='changed' action='/reviews/#{pid}/submit' method='post' role='form')
+    form.ui-form-horizontal(data-schema-validate='changed' action='/reviews/#{pid}/submit' method='post')
       .ui-container-grid
         input(type='hidden' name='_csrf' value=csrfToken)
         input(type='text' name='title' pattern=pattern.title value=review.title placeholder='Title: to summarize the key point of your review' title='At least 20 characters' required autofocus)

@@ -12,7 +12,7 @@ each reading in readings
       a(href='/articles/#{id}')= citeAs(eprint)
       |  (Published #{published}, read #{read})
       if authorized
-        form.ui-offset-medium(data-schema-rating action='/users/#{uid}/articles/rating' method='post' role='form')
+        form.ui-offset-medium(data-schema-rating action='/users/#{uid}/articles/rating' method='post')
           input(type='hidden' name='_csrf' value=csrfToken)
           input(type='hidden' name='id' value=id)
           input(type='hidden' name='score')

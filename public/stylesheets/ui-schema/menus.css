@@ -24,7 +24,7 @@
 .ui-menu-selection > ul {
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   display: inline-block;
   list-style: none;
   padding-left: 0;
@@ -39,9 +39,9 @@
 }
 
 .ui-menu-dropdown > ul {
-  box-shadow: 0 .6rem 1.2rem rgba(0, 0, 0, .175);
-  padding-bottom: .4em;
-  padding-top: .4em;
+  box-shadow: 0 0.6rem 1.2rem rgba(0, 0, 0, 0.175);
+  padding-bottom: 0.4em;
+  padding-top: 0.4em;
 }
 
 .ui-menu-dropdown > :first-child,
@@ -52,7 +52,7 @@
 .ui-menu-dropdown:hover > .ui-placement-left,
 .ui-menu-dropdown:hover > .ui-placement-right {
   display: inline-block;
-  margin-top: -.4em;
+  margin-top: -0.4em;
 }
 
 .ui-menu-dropdown:hover > ul,
@@ -66,7 +66,7 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: inline-block;
-  padding: .2em .8em;
+  padding: 0.2em 0.8em;
   width: 100%;
 }
 
@@ -86,6 +86,6 @@
 }
 
 .ui-menu-selection > ul > li {
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
 }
 

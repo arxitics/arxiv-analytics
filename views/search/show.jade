@@ -76,18 +76,18 @@ article.ui-grid-70.ui-mobile-expand
       - var endItem = Math.min(endIndex, total)
       span.ui-text-muted.ui-zoom-small Showing #{startItem}-#{endItem} of #{total}
         if total >= 1000
-          span.ui-color-danger  (too many results)
+          span.ui-color-danger.ui-phone-hidden  (too many results)
     else
       span.ui-text-muted.ui-zoom-small No more results
   .ui-text-left-right
     div
       span.ui-text-muted Sort by
-      .ui-button-group.ui-space-collapse.ui-block-inline
+      .ui-button-group.ui-space-trim.ui-block-inline
         - var sort = query.sort
         input(id='published-date' type='radio' name='sort' value='published' checked=(sort === 'published'))
         label(for='published-date') Published Date
-        input(id='updated-date' type='radio' name='sort' value='updated' checked=(sort === 'updated'))
-        label(for='updated-date') Updated Date
+        input.ui-phone-hidden(id='updated-date' type='radio' name='sort' value='updated' checked=(sort === 'updated'))
+        label.ui-phone-hidden(for='updated-date') Updated Date
         input(id='article-views' type='radio' name='sort' value='views' checked=(sort === 'views' ))
         label(for='article-views') Article Views
         input(id='citation-counts' type='radio' name='sort' value='citations' checked=(sort === 'citations'))

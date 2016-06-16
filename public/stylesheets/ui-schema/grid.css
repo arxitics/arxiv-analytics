@@ -219,11 +219,11 @@
 }
 
 .ui-offset-small {
-  margin-left: .8rem;
+  margin-left: 0.8rem;
 }
 
 .ui-offset-tiny {
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 
 .ui-skip-huge {
@@ -239,11 +239,11 @@
 }
 
 .ui-skip-small {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
 }
 
 .ui-skip-tiny {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .ui-block-center {
@@ -262,9 +262,9 @@
 }
 
 .ui-vertical-center {
-  display: table-cell !important;
-  height: 50vh;
-  vertical-align: middle;
+  margin: 50vh auto 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .ui-float-left {
@@ -288,33 +288,50 @@
   display: table;
 }
 
-.ui-fixed-top,
-.ui-fixed-bottom {
-  border-color: #ccc;
-  border-style: solid;
-  left: 0;
-  right: 0;
-  overflow: visible !important;
-  position: fixed;
-  z-index: 1099;
-}
-
-.ui-fixed-top {
-  border-width: 0 0 1px;
-  top: 0;
-}
-
-.ui-fixed-bottom {
-  border-width: 1px 0 0;
-  bottom: 0;
-}
-
 .ui-fixed-width {
   width: 1.42857em !important;
 }
 
 .ui-fixed-height {
   height: 1.42857em !important;
+}
+
+.ui-fixed-top,
+.ui-fixed-right,
+.ui-fixed-bottom,
+.ui-fixed-left {
+  overflow: visible !important;
+  position: fixed;
+  z-index: 1099;
+}
+
+.ui-absolute-top,
+.ui-absolute-right,
+.ui-absolute-bottom,
+.ui-absolute-left {
+  overflow: visible !important;
+  position: absolute;
+  z-index: 999;
+}
+
+.ui-fixed-top,
+.ui-absolute-top {
+  top: 0;
+}
+
+.ui-fixed-right,
+.ui-absolute-right {
+  right: 0;
+}
+
+.ui-fixed-bottom,
+.ui-absolute-bottom {
+  bottom: 0;
+}
+
+.ui-fixed-left,
+.ui-absolute-left {
+  left: 0;
 }
 
 .ui-columns-2 {

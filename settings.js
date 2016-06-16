@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  version: '0.3.5',
+  version: '0.4.0',
   title: 'arXiv Analytics',
   keywords: [
     'arXiv',

@@ -14,14 +14,14 @@
 
 .ui-icon-bordered {
   border: 1px solid #ccc;
-  border-radius: .4rem;
-  padding: .2em .2em;
+  border-radius: 0.4rem;
+  padding: 0.2em 0.2em;
 }
 
 .ui-icon-circular {
   border: 1px solid #ccc;
   border-radius: 50%;
-  padding: .2em .2em;
+  padding: 0.2em 0.2em;
 }
 
 .ui-icon-inverse {
@@ -38,7 +38,7 @@
   fill: #fff;
 }
 
-.ui-icon-outline > svg > path {
+.ui-icon-stroked > svg > path {
   fill: none;
   stroke: currentColor;
   stroke-width: 1px;

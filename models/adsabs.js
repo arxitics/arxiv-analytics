@@ -21,18 +21,18 @@ exports.generate = function (query) {
   if (query.hasOwnProperty('year')) {
     query.filter = 'year:' + query.year;
   } else if (query.hasOwnProperty('month')) {
-    query.filter = 'pubdate:' + query.month + '-00';
+    query.filter = 'pubdate:' + query.month;
   }
+  query.fields = exports.fields.join(',');
   if (!query.hasOwnProperty('order') || query.order.charAt(0) === 'd') {
     query.order = 'desc';
   } else {
     query.order = 'asc';
   }
-  query.sort = (query.sort || 'cited').toUpperCase() + '+' + query.order;
+  query.sort = (query.sort || 'citation_count') + '+' + query.order;
   query.limit = parseInt(query.limit) || settings.limit;
   query.skip = parseInt(query.skip) || 0;
   query.format = 'json';
-  query.key = settings.key;
   for (var key in prefixes) {
     if (prefixes.hasOwnProperty(key)) {
       if (query.hasOwnProperty(key) && query[key]) {
@@ -100,7 +100,12 @@ exports.update = function (query, callback) {
     } else {
       var queryString = exports.generate(query);
       var urlString = exports.api.search.replace('${query}', queryString);
-      crawler.get(urlString, filePath, function (jsonFile) {
+      crawler.get({
+        urlString: urlString,
+        headers: {
+          'Authorization': 'Bearer:' + settings.key
+        },
+      }, filePath, function (jsonFile) {
         if (parse) {
           crawler.parseJSON(jsonFile, function (result) {
             exports.output(result, callback);
@@ -116,7 +121,7 @@ exports.update = function (query, callback) {
 // Output eprint data to database
 exports.output = function (result, callback) {
   callback = (typeof callback === 'function') ? callback : function () {};
-  var docs = result.results && result.results.docs;
+  var docs = result.response && result.response.docs;
   if (!(Array.isArray(docs) && docs.length)) {
     console.log('no ADS records found for arXiv eprints');
     return callback(false);
@@ -250,7 +255,7 @@ exports.commit = function (record, callback) {
         }
 
         article.update({'id': id}, {'$set': changes}, function () {
-          console.log('updated eprint ' + id + ' successfully');
+          console.log('update eprint ' + id + ' successfully');
           return callback(true);
         });
       } else {
@@ -266,20 +271,38 @@ exports.commit = function (record, callback) {
 
 // ADS API
 exports.api = {
-  search: 'http://adslabs.org/adsabs/api/search/?${query}',
-  record: 'http://adslabs.org/adsabs/abs/${identifier}/?${query}',
-  metrics: 'http://adslabs.org/adsabs/api/search/metrics/?${query}',
-  references: 'http://adslabs.org/adsabs/abs/${bibcode}/references/?${query}',
-  citations: 'http://adslabs.org/adsabs/abs/${bibcode}/citations/?${query}'
+  search: 'https://api.adsabs.harvard.edu/v1/search/query?${query}',
+  record: 'https://ui.adsabs.harvard.edu/#abs/${bibcode}/abstract?${query}',
+  metrics: 'https://api.adsabs.harvard.edu/v1/metrics',
+  references: 'https://ui.adsabs.harvard.edu/#abs/${bibcode}/references/?${query}',
+  citations: 'https://ui.adsabs.harvard.edu/#abs/${bibcode}/citations/?${query}'
 };
 
 // ADS search field prefixes
 exports.prefixes = {
-  filter: 'filter',
+  filter: 'fq',
   fields: 'fl',
   sort: 'sort',
   limit: 'rows',
   skip: 'start',
-  format: 'fmt',
-  key: 'dev_key'
+  format: 'fmt'
 };
+
+// ADS fields
+exports.fields = [
+  'bibcode',
+  'citation_count',
+  'identifier',
+  'author',
+  'aff',
+  'title',
+  'keyword',
+  'property',
+  'pub',
+  'year',
+  'pubdate',
+  'volume',
+  'issue',
+  'doi',
+  'page'
+];

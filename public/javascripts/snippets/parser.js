@@ -11,7 +11,7 @@
   } else {
     var today = new Date().toISOString();
     notebook = {
-      created: today, 
+      created: today,
       updated: today,
       sheets: []
     };
@@ -31,20 +31,19 @@
 
   // Parse sheet
   notebook.parse = function (sheet, index) {
-    var sheetID = 'sheet-' + index;
-    var input = '<code>(i' + index + ')</code> ';
-    var output = '<code>(o' + index + ')</code> ';
-    var content = '<div>' + input + sheet.expr + '</div>';
-    if (sheet.tex) {
-      content += '<div>' + sheet.tex + '</div>';
-    }
+    var data = {
+      id: index,
+      expr: sheet.expr,
+      tex: String(sheet.tex).replace(/^[\$]{2}(.*)[\$]{2}$/, '\\(\\displaystyle $1\\)')
+    };
     if (sheet.result) {
-      var result = JSON.stringify(sheet.result, null, 1);
-      content += '<div>' + output + '<span class="ui-color-success">' + result + '</span></div>';
+      data.state = 'success';
+      data.report = JSON.stringify(sheet.result, null, 1);
     } else if (sheet.error) {
-      content += '<div>' + output + '<span class="ui-color-danger">' + sheet.error + '</span></div>';
+      data.state = 'danger';
+      data.report = sheet.error;
     }
-    return '<li id="' + sheetID + '">' + content + '</li>';
+    return schema.format('<li id="sheet-${id}"><div><code>(i${id})</code> ${expr}</div><div><p class="ui-offset-small ui-text-indent">${tex}</p><code>(o${id})</code> <span class="ui-color-${state}">${report}</span></div></li>', data);
   };
 
   // Save notebook data
@@ -53,7 +52,7 @@
     this.sheets.push(sheet);
     localStorage.notebook = JSON.stringify(this);
   };
-  
+
   // Export notebook data
   notebook.export = function () {
     var json = JSON.stringify(this, null, 2);

@@ -27,19 +27,19 @@ block append head
     }
     .grid .tick {
       stroke: #ccc;
-      opacity: 0.8;
+      opacity: .8;
     }
     .dot {
       stroke: #fff;
-      opacity: 0.8;
+      opacity: .8;
       cursor: pointer;
     }
 block content
   .ui-container-grid
     aside.ui-grid-30.ui-mobile-expand
-      form.ui-form-fluid(data-schema-validate action='/visual/keywords' method='get' role='form')
-        label(for='keyword') Keyword
-        input.ui-input-fluid(id='keyword' type='text' name='q' value=(query.q || 'topological insulator') placeholder='topological insulator' title='Please input a keyword' required)
+      form.ui-form-fluid(data-schema-validate action='/visual/keywords' method='get')
+        label(for='keywords') Keywords
+        input.ui-input-fluid(id='keywords' type='text' name='q' value=(query.q || 'topological insulator') placeholder='topological insulator' title='Keywords separated by semicolons/commas specify the AND/OR logic' required)
         label(for='categories') Categories
         input.ui-input-fluid(id='categories' type='text' name='categories' value=query.categories placeholder='cond-mat.mes-hall, cond-mat.str-el' title='Multiple categories are separated by commas')
         label(for='tags') Tags
@@ -54,13 +54,13 @@ block content
           button.ui-offset-medium(type='reset') Reset
     .ui-grid-70.ui-mobile-expand
       #chart.ui-block-center.ui-text-center
-        h4.ui-header-compact Articles counted by published year for the keyword 
-          span.ui-text-nowrap &quot;#{query.q}&quot;
+        h4.ui-header-compact Articles counted by published year of the keywords 
+          span.ui-text-nowrap &ldquo;#{phrase}&rdquo;
         .ui-text-muted (Click on the dots to view search results)
         #loading.ui-skip-large: i.ui-icon-pulse.ui-zoom-huge(data-schema-icon='spinner')
 
 block append foot
-  script(src='#{appStorage}/javascripts/bubble-1.0.0.min.js')
+  script(src='#{appStorage}/javascripts/bubble-1.0.2.min.js')
   script.
     $(document).ready(function () {
       var params = $('aside form').serialize().split('&');
@@ -91,7 +91,10 @@ block append foot
           },
           dots: {
             onlick: function (d) {
-              var search = queryString.replace(/\b(q=)([^&]+)/, '$1"$2"').replace(/(^|&)published=[^&]*/, '');
+              var search = queryString.replace(/(^|&)published=[^&]*/, '');
+              if (!/\-|\"|%22/.test(search)) {
+                search = search.replace(/\b(q=)([^&]+)/, '$1"$2"');
+              }
               window.open('/search?' + search.replace(/&$/, '') + '&published=' + d[0]);
             }
           },

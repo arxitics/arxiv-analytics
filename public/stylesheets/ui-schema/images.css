@@ -14,13 +14,13 @@
 .ui-image-rounded,
 .ui-image-thumbnail,
 .ui-image-thumbnail + .ui-image-reveal {
-  border-radius: .4rem;
+  border-radius: 0.4rem;
 }
 
 .ui-image-thumbnail {
   background-color: #fff;
   border: 1px solid #ddd;
-  padding: .4rem;
+  padding: 0.4rem;
 }
 
 .ui-image-lightbox {
@@ -29,7 +29,7 @@
 }
 
 .ui-image-lightbox > .ui-image-reveal {
-  background-color: rgba(0, 0, 0, .65);
+  background-color: rgba(0, 0, 0, 0.65);
   bottom: 0;
   color: #fff;
   left: 0;
@@ -40,9 +40,8 @@
   right: 0;
   text-align: center;
   top: 0;
-  -moz-transition: opacity .5s linear;
-  -webkit-transition: opacity .5s linear;
-  transition: opacity .5s linear;
+  -webkit-transition: opacity 0.5s linear;
+  transition: opacity 0.5s linear;
 }
 
 .ui-image-lightbox:hover > .ui-image-reveal {
@@ -50,7 +49,7 @@
 }
 
 .ui-lightbox-target {
-  background-color: rgba(0, 0, 0, .65);
+  background-color: rgba(0, 0, 0, 0.65);
   display: none;
   height: 100%;
   left: 0;
@@ -63,7 +62,7 @@
 .ui-lightbox-target > figure,
 .ui-lightbox-target > div {
   background-color: #fff;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   box-shadow: 0 0 1em #ccc;
   display: block;
   margin: 5% 10%;

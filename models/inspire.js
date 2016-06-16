@@ -264,7 +264,7 @@ exports.commit = function (record, callback) {
         }
 
         article.update({'id': id}, {'$set': changes}, function () {
-          console.log('updated eprint ' + id + ' successfully');
+          console.log('update eprint ' + id + ' successfully');
           return callback(true);
         });
       } else {

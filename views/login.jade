@@ -9,27 +9,24 @@ block main
   .ui-container-fluid.ui-mobile-expand.ui-vertical-center
     if !authorized
       .ui-grid-40.ui-offset-10.ui-mobile-expand
-        form.ui-form-fluid(data-schema-validate='once' action='/auth' method='post' role='form')
+        form.ui-form-fluid(data-schema-validate='once' action='/auth' method='post')
           input(type='hidden' name='_csrf' value=csrfToken)
           .ui-input-addon
             label(for='email' title=__('login.email.label'))
               i(data-schema-icon='envelope-o') Email
-            input.ui-fluid-80(id='email' type='email' name='email' pattern=pattern.email title=__('login.email.title') required)
+            input.ui-fluid-80(id='email' type='email' name='email' pattern=pattern.email placeholder='user@example.com' title=__('login.email.title') required)
           .ui-input-addon.ui-skip-large
             label(for='key' title=__('login.key.label'))
               i(data-schema-icon='key') Key
-            input.ui-fluid-80(id='key' type='text' name='key' inputmode='verbatim' pattern=pattern.auth.key title=__('login.key.title'))
+            input.ui-fluid-80(id='key' type='text' name='key' inputmode='verbatim' pattern=pattern.auth.key placeholder='59f7c1836bd8bb8cada75036b324882e' title=__('login.key.title'))
           button.ui-button-primary.ui-skip-large(type='submit')= __('login.submit')
       .ui-grid-40.ui-mobile-expand
         .ui-content-alert.ui-alert-info
-          p You can choose to login with your permanent private key or a temporary security code. If you submit the form without your private key, an email containing the security code will sent to you by 
-            strong noreply
-              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-              | @arxitics.com
-            | . Please add this contact to your address book or white list to avoid spam filters.
+          p.
+            You can choose to login with your permanent private key or a temporary security code. If you submit the form without your private key, an email containing the security code will sent to you by #[strong noreply#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com]. Please add this contact to your address book or white list to avoid spam filters.
     else
       .ui-grid-40.ui-offset-10.ui-mobile-expand
-        form.ui-form-fluid(data-schema-validate='once' action='/auth/login' method='post' role='form')
+        form.ui-form-fluid(data-schema-validate='once' action='/auth/login' method='post')
           input(type='hidden' name='_csrf' value=csrfToken)
           .ui-input-addon
             label(for='email' title=__('login.email.label'))
@@ -38,12 +35,9 @@ block main
           .ui-input-addon.ui-skip-large
             label(for='code' title=__('login.code.label'))
               i(data-schema-icon='key') Code
-            input.ui-fluid-80(id='code' type='text' name='code' inputmode='numeric' pattern=pattern.auth.code title=__('login.code.title') required)
+            input.ui-fluid-80(id='code' type='text' name='code' inputmode='numeric' pattern=pattern.auth.code placeholder='123456' title=__('login.code.title') required)
           button.ui-button-primary.ui-skip-large(type='submit')= __('login.signin')
       .ui-grid-40.ui-mobile-expand
         .ui-content-alert.ui-alert-success
-          p An email has been sent to you by 
-            strong noreply
-              span(aria-hidden='true')= Math.random().toString().slice(1, 8)
-              | @arxitics.com
-            | . Please input the security code or click the signature link contained therein to complete this authentication. Sometimes you may experience a delay to receive our email. It is better for you to wait a few minutes rather than repeat the request.
+          p.
+            An email has been sent to you by #[strong noreply#[span(aria-hidden='true')= Math.random().toString().slice(1, 8)]@arxitics.com]. Please input the security code or click the signature link contained therein to complete this authentication. Sometimes you may experience a delay to receive our email. It is better for you to wait a few minutes rather than repeat the request.
